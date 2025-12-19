@@ -36,8 +36,8 @@ const Header: React.FC = () => {
     {
       name: 'Art',
       links: [
-        { label: 'Gallery', path: '/' },
-        { label: 'Featured Artists', path: '/' },
+        { label: 'Gallery', path: '/art' },
+        { label: 'Featured Artists', path: '/art' },
       ],
     },
     {
