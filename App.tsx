@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Menu from './pages/Menu';
 import Login from './pages/Login';
 import Payment from './pages/Payment';
+import Franchise from './pages/Franchise';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/payment" element={<Payment />} />
             <Route path="/workshop" element={<Workshop/>}/>
+            <Route path="/franchise" element={<Franchise/>} />
           </Routes>
         </main>
 
