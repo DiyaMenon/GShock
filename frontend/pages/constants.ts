@@ -1,5 +1,20 @@
 
 import { WorkshopType, FaqItemType } from './types';
+import { 
+  Category, 
+  CoffeeTag, 
+  MenuItem, 
+  Order, 
+  OrderStatus, 
+  Artwork, 
+  ArtStatus, 
+  Workshop, 
+  WorkshopCategory, 
+  FranchiseLead, 
+  LeadStatus, 
+  FAQ, 
+  User 
+} from './types';
 
 export const WORKSHOPS: WorkshopType[] = [
   { id: 1, title: "Latte Art Basics", description: "Learn milk frothing & latte art foundations with our head baristas.", date: "2025-12-21", time: "16:00 – 18:00", price: 799, category: 'Foundations', image: 'https://picsum.photos/id/425/800/600' },
@@ -37,4 +52,100 @@ export const FAQS: FaqItemType[] = [
     question: "What should I bring?",
     answer: "For Foundations and Breather sessions, just your enthusiasm. For Expert sessions, we provide all specialized equipment including refractometers and scales.",
   },
+];
+
+
+
+export const INITIAL_MENU: MenuItem[] = [
+  {
+    id: '1',
+    name: 'Monarch Blend',
+    description: 'Our house staple. A perfect balance of sweetness and body.',
+    price: 18.50,
+    category: Category.COFFEE,
+    imageUrl: 'https://picsum.photos/seed/coffee1/400/400',
+    stockStatus: 'In Stock',
+    roastLevel: 'Medium-Dark',
+    tastingNotes: 'Chocolate | Red Berries | Molasses',
+    tags: [CoffeeTag.BEST_SELLER, CoffeeTag.BOLD]
+  }
+];
+
+export const INITIAL_ARTWORKS: Artwork[] = [
+  {
+    id: 'art-1',
+    title: 'Ephemeral Bloom',
+    artist: 'Soren K.',
+    year: '2024',
+    medium: 'Oil on Canvas',
+    dimensions: '24" x 36"',
+    price: 1200,
+    status: ArtStatus.AVAILABLE,
+    primaryImageUrl: 'https://picsum.photos/seed/art1/600/800',
+    hoverImageUrl: 'https://picsum.photos/seed/art1hover/600/800',
+    themeColor: '#2d3436',
+    tastingNotes: 'Velvety | Floral | Deep'
+  }
+];
+
+export const INITIAL_WORKSHOPS: Workshop[] = [
+  {
+    id: 'ws-1',
+    title: 'Foundations of Pour-Over',
+    description: 'Master the art of the V60 and Chemex with our head roaster.',
+    startTime: '2024-06-15T10:00:00',
+    endTime: '2024-06-15T12:00:00',
+    category: WorkshopCategory.FOUNDATIONS,
+    price: 45,
+    capacity: 10,
+    attendees: ['user-1', 'user-2']
+  }
+];
+
+export const INITIAL_LEADS: FranchiseLead[] = [
+  {
+    id: 'lead-1',
+    name: 'Marcus Thorne',
+    email: 'marcus@invest.co',
+    phone: '+1 555-0123',
+    city: 'San Francisco',
+    investment: '$250k - $500k',
+    message: 'Interested in a multi-unit agreement in the Bay Area.',
+    status: LeadStatus.NEW,
+    createdAt: new Date().toISOString()
+  }
+];
+
+export const INITIAL_FAQS: FAQ[] = [
+  {
+    id: 'faq-1',
+    question: 'How do I track my order?',
+    answer: 'Once your order is ready for pickup, you will receive a notification via email.',
+    category: 'General'
+  }
+];
+
+export const INITIAL_USERS: User[] = [
+  {
+    id: 'user-1',
+    name: 'Julian Casablancas',
+    email: 'julian@strokes.com',
+    joinDate: '2023-01-12',
+    orderHistory: ['ORD-001'],
+    workshopHistory: ['ws-1']
+  }
+];
+
+export const INITIAL_ORDERS: Order[] = [
+  {
+    id: 'ORD-001',
+    customerName: 'Julian Casablancas',
+    items: [
+      { id: '1', name: 'Monarch Blend', quantity: 2, price: 18.50 }
+    ],
+    totalPrice: 37.00,
+    pickupTime: '10:45 AM',
+    status: OrderStatus.PENDING,
+    createdAt: new Date().toISOString()
+  }
 ];

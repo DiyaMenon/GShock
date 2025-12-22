@@ -11,6 +11,7 @@ import Payment from './pages/Payment';
 import Franchise from './pages/Franchise';
 import Art from './pages/Art';
 import ArtProduct from './pages/ArtProduct'; 
+import Admin from './pages/Admin';
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/admin/*" element={<Admin />} />
             <Route path="/payment" element={<Payment />} />
             <Route path="/workshop" element={<Workshop/>}/>
             <Route path="/franchise" element={<Franchise />} />
