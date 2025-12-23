@@ -1,9 +1,28 @@
 import { useNavigate } from "react-router-dom";
-import { useAuthMock } from "../hooks/useAuthMock";
+import { auth, googleProvider } from "../firebase";
+import { signInWithPopup } from "firebase/auth";
+import { useAuth } from "../hooks/useAuth";
+import { useEffect } from "react";
 
 const Login = () => {
-  const { login } = useAuthMock();
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
+
+  const handleGoogleSignIn = () => {
+    signInWithPopup(auth, googleProvider)
+      .then(() => {
+        // The onAuthStateChanged listener in useAuth will handle the redirect
+      })
+      .catch((error) => {
+        console.error("Google Sign-In Error:", error);
+      });
+  };
 
   return (
     <div className="min-h-screen bg-cream flex items-center justify-center px-6">
@@ -11,10 +30,8 @@ const Login = () => {
         
         {/* Title */}
         <h1 className="text-4xl font-extralight tracking-[0.15em] uppercase text-onyx/80 mb-16">
-  Login
-</h1>
-
-
+          Login
+        </h1>
 
         {/* Email */}
         <div className="mb-10">
@@ -52,15 +69,22 @@ const Login = () => {
             </button>
           </div>
 
-          <button
-            onClick={() => {
-              login();
-              navigate("/payment");
-            }}
-            className="px-12 py-3 border border-onyx uppercase tracking-[0.25em] text-xs hover:bg-onyx hover:text-cream transition-all duration-300"
-          >
-            Login
-          </button>
+          <div className="flex flex-col space-y-4">
+            <button
+              onClick={() => {
+                // Add email/password login logic here if needed
+              }}
+              className="px-12 py-3 border border-onyx uppercase tracking-[0.25em] text-xs hover:bg-onyx hover:text-cream transition-all duration-300"
+            >
+              Login
+            </button>
+            <button
+              onClick={handleGoogleSignIn}
+              className="px-12 py-3 border border-onyx uppercase tracking-[0.25em] text-xs hover:bg-onyx hover:text-cream transition-all duration-300"
+            >
+              Sign in with Google
+            </button>
+          </div>
         </div>
       </div>
     </div>

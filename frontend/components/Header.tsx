@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, ShoppingBag, X } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
+import { auth } from '../firebase';
+import { signOut } from 'firebase/auth';
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -16,6 +20,11 @@ const Header: React.FC = () => {
   const closeAndNavigate = (path: string) => {
     setIsMenuOpen(false);
     navigate(path);
+  };
+
+  const handleLogout = () => {
+    signOut(auth);
+    closeAndNavigate('/');
   };
 
   const navItems = [
@@ -98,12 +107,21 @@ const Header: React.FC = () => {
             >
               Visit Café
             </button>
-            <button
-  onClick={() => closeAndNavigate('/login')}
-  className="hidden md:flex items-center uppercase text-sm font-bold tracking-wider hover:text-gold transition-colors"
->
-  Login
-</button>
+            {user ? (
+              <button
+                onClick={handleLogout}
+                className="hidden md:flex items-center uppercase text-sm font-bold tracking-wider hover:text-gold transition-colors"
+              >
+                Logout
+              </button>
+            ) : (
+              <button
+                onClick={() => closeAndNavigate('/login')}
+                className="hidden md:flex items-center uppercase text-sm font-bold tracking-wider hover:text-gold transition-colors"
+              >
+                Login
+              </button>
+            )}
 
 
             <button
