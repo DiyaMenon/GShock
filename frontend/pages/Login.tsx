@@ -1,12 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { auth, googleProvider } from "../firebase";
-import { signInWithPopup } from "firebase/auth";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../context/AuthContext";
 import { useEffect } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, loginWithGoogle, loading } = useAuth();
 
   useEffect(() => {
     if (user) {
@@ -14,14 +12,13 @@ const Login = () => {
     }
   }, [user, navigate]);
 
-  const handleGoogleSignIn = () => {
-    signInWithPopup(auth, googleProvider)
-      .then(() => {
-        // The onAuthStateChanged listener in useAuth will handle the redirect
-      })
-      .catch((error) => {
-        console.error("Google Sign-In Error:", error);
-      });
+  const handleGoogleSignIn = async () => {
+    try {
+      await loginWithGoogle();
+      // onAuthStateChanged in AuthContext will handle backend sync and redirect
+    } catch (error) {
+      console.error("Google Sign-In Error:", error);
+    }
   };
 
   return (
@@ -81,8 +78,9 @@ const Login = () => {
             <button
               onClick={handleGoogleSignIn}
               className="px-12 py-3 border border-onyx uppercase tracking-[0.25em] text-xs hover:bg-onyx hover:text-cream transition-all duration-300"
+              disabled={loading}
             >
-              Sign in with Google
+              {loading ? "Signing in..." : "Sign in with Google"}
             </button>
           </div>
         </div>

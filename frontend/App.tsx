@@ -12,15 +12,13 @@ import Franchise from './pages/Franchise';
 import Art from './pages/Art';
 import ArtProduct from './pages/ArtProduct'; 
 import Admin from './pages/Admin';
-import { AuthProvider } from './hooks/useAuth';
 import About from './pages/About'
 
 const App = () => {
   return (
-    <AuthProvider>
-      <Router>
-        <div className="min-h-screen flex flex-col font-sans bg-cream text-onyx selection:bg-gold selection:text-white">
-          <Header />
+    <Router>
+      <div className="min-h-screen flex flex-col font-sans bg-cream text-onyx selection:bg-gold selection:text-white">
+        <Header />
 
         <main className="flex-grow pt-[120px]">
           <Routes>
@@ -36,10 +34,9 @@ const App = () => {
           </Routes>
         </main>
 
-          <Footer />
-        </div>
-      </Router>
-    </AuthProvider>
+        <Footer />
+      </div>
+    </Router>
   );
 };
 

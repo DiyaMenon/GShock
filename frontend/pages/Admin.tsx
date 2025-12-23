@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Layout from './admin/Layout';
 import Dashboard from './admin/Dashboard';
 import MenuManagement from './admin/MenuManagement';
@@ -32,8 +32,28 @@ import {
   User, 
   LeadStatus 
 } from './types';
+import { useAuth } from '../context/AuthContext';
 
 const Admin: React.FC = () => {
+  const navigate = useNavigate();
+  const { user, loading } = useAuth();
+
+  // Frontend guard: only allow admins to access admin dashboard UI
+  useEffect(() => {
+    if (loading) return;
+
+    if (!user) {
+      navigate('/login', { replace: true });
+    } else if (user.role !== 'admin') {
+      navigate('/', { replace: true });
+    }
+  }, [user, loading, navigate]);
+
+  // While checking auth / redirecting, don't render admin UI
+  if (loading || !user || user.role !== 'admin') {
+    return null;
+  }
+
   const [menuItems, setMenuItems] = useState<MenuItem[]>(INITIAL_MENU);
   const [orders, setOrders] = useState<Order[]>(INITIAL_ORDERS);
   const [artworks, setArtworks] = useState<Artwork[]>(INITIAL_ARTWORKS);

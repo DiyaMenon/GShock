@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, ShoppingBag, X } from 'lucide-react';
-import { useAuth } from '../hooks/useAuth';
-import { auth } from '../firebase';
-import { signOut } from 'firebase/auth';
+import { useAuth } from '../context/AuthContext';
+import { useCart } from '../hooks/useCart';
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const { totalItems, setIsCartOpen } = useCart();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -22,8 +22,8 @@ const Header: React.FC = () => {
     navigate(path);
   };
 
-  const handleLogout = () => {
-    signOut(auth);
+  const handleLogout = async () => {
+    await logout();
     closeAndNavigate('/');
   };
 
@@ -125,11 +125,14 @@ const Header: React.FC = () => {
 
 
             <button
-              onClick={() => closeAndNavigate('/menu')}
+              onClick={() => {
+                closeAndNavigate('/menu');
+                setIsCartOpen(true);
+              }}
               className="flex items-center gap-2 uppercase text-sm font-bold tracking-wider hover:text-gold transition-colors"
             >
               <ShoppingBag size={20} />
-              <span className="hidden md:inline">0</span>
+              <span className="hidden md:inline">{totalItems}</span>
             </button>
 
             <button
