@@ -56,9 +56,10 @@ export const CoffeeMenu: React.FC<CoffeeMenuProps> = ({ onAddToCart }) => {
       {/* Editorial Header */}
       <header className="pt-24 pb-16 text-center">
         <div className="mb-4">
-          <h1 className="text-6xl md:text-[140px] font-black tracking-tighter leading-none mb-10 font-oswald uppercase select-none">
+          <h1 className="text-6xl md:text-[140px] font-black tracking-tighter leading-none mb-10 font-oswald uppercase select-none text-coffee-dark">
             MENU
           </h1>
+
         </div>
         
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12 mt-4 px-2 text-left">
