@@ -73,7 +73,7 @@ export const CoffeeMenu: React.FC<CoffeeMenuProps> = ({ onAddToCart }) => {
             <button 
               onClick={() => setActiveCategory('All')}
               className={`text-[10px] font-black uppercase tracking-widest px-8 py-4 border transition-all flex-grow md:flex-none ${
-                activeCategory === 'All' ? 'bg-black text-white border-black' : 'bg-white text-black border-gray-100 hover:border-black'
+                activeCategory === 'All' ? 'bg-coffee-primary text-white border-coffee-primary' : 'bg-white text-black border-gray-100 hover:border-coffee-mid hover:text-coffee-mid'
               }`}
             >
               All
@@ -83,7 +83,7 @@ export const CoffeeMenu: React.FC<CoffeeMenuProps> = ({ onAddToCart }) => {
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
                 className={`text-[10px] font-black uppercase tracking-widest px-8 py-4 border transition-all flex-grow md:flex-none ${
-                  activeCategory === cat ? 'bg-black text-white border-black' : 'bg-white text-black border-gray-100 hover:border-black'
+                  activeCategory === cat ? 'bg-coffee-primary text-white border-coffee-primary' : 'bg-white text-black border-gray-100 hover:border-coffee-mid hover:text-coffee-mid'
                 }`}
               >
                 {cat}
