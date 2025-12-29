@@ -1,6 +1,7 @@
 
 export type WorkshopType = {
-  id: number;
+  id: string;
+  _id?: string;
   title: string;
   description: string;
   date: string; // YYYY-MM-DD
@@ -55,6 +56,7 @@ export enum LeadStatus {
 
 export interface MenuItem {
   id: string;
+  _id?: string;
   name: string;
   description: string;
   price: number;
@@ -63,13 +65,16 @@ export interface MenuItem {
   stockStatus: 'In Stock' | 'Out of Stock';
   roastLevel?: string;
   tastingNotes?: string;
-  tags: CoffeeTag[];
+  tags: CoffeeTag[] | string[];
+  isAvailable?: boolean;
 }
 
 export interface Artwork {
   id: string;
+  _id?: string;
   title: string;
-  artist: string;
+  artist?: string;
+  artistName?: string;
   year: string;
   medium: string;
   dimensions: string;
@@ -79,18 +84,25 @@ export interface Artwork {
   hoverImageUrl: string;
   themeColor: string;
   tastingNotes: string;
+  description?: string;
+  isAvailable?: boolean;
 }
 
 export interface Workshop {
   id: string;
+  _id?: string;
   title: string;
   description: string;
   startTime: string;
   endTime: string;
+  date?: string;
   category: WorkshopCategory;
   price: number;
   capacity: number;
   attendees: string[]; // User IDs
+  imageUrl?: string;
+  primaryImageUrl?: string;
+  tags?: string[];
 }
 
 export interface FranchiseLead {

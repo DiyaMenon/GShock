@@ -56,9 +56,10 @@ export const CoffeeMenu: React.FC<CoffeeMenuProps> = ({ onAddToCart }) => {
       {/* Editorial Header */}
       <header className="pt-24 pb-16 text-center">
         <div className="mb-4">
-          <h1 className="text-6xl md:text-[140px] font-black tracking-tighter leading-none mb-10 font-oswald uppercase select-none">
+          <h1 className="text-6xl md:text-[140px] font-black tracking-tighter leading-none mb-10 font-oswald uppercase select-none text-coffee-dark">
             MENU
           </h1>
+
         </div>
         
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12 mt-4 px-2 text-left">
@@ -73,7 +74,7 @@ export const CoffeeMenu: React.FC<CoffeeMenuProps> = ({ onAddToCart }) => {
             <button 
               onClick={() => setActiveCategory('All')}
               className={`text-[10px] font-black uppercase tracking-widest px-8 py-4 border transition-all flex-grow md:flex-none ${
-                activeCategory === 'All' ? 'bg-black text-white border-black' : 'bg-white text-black border-gray-100 hover:border-black'
+                activeCategory === 'All' ? 'bg-coffee-primary text-white border-coffee-primary' : 'bg-white text-black border-gray-100 hover:border-coffee-mid hover:text-coffee-mid'
               }`}
             >
               All
@@ -83,7 +84,7 @@ export const CoffeeMenu: React.FC<CoffeeMenuProps> = ({ onAddToCart }) => {
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
                 className={`text-[10px] font-black uppercase tracking-widest px-8 py-4 border transition-all flex-grow md:flex-none ${
-                  activeCategory === cat ? 'bg-black text-white border-black' : 'bg-white text-black border-gray-100 hover:border-black'
+                  activeCategory === cat ? 'bg-coffee-primary text-white border-coffee-primary' : 'bg-white text-black border-gray-100 hover:border-coffee-mid hover:text-coffee-mid'
                 }`}
               >
                 {cat}

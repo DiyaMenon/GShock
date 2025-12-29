@@ -21,7 +21,15 @@ const Menu = () => {
 
   const handleCheckout = () => {
     setIsCartOpen(false);
-    navigate(user ? "/payment" : "/login");
+
+    if (!user) {
+      // If not logged in, go to login page
+      navigate("/login");
+    } else {
+      // If logged in, redirect to external Razorpay page
+      // method 1: Direct Redirect
+      window.location.href = "https://rzp.io/rzp/hjt56u8";
+    }
   };
 
   return (
