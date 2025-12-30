@@ -8,6 +8,7 @@ const connectDB = require('./src/config/db');
 const routes = require('./src/routes');
 const { notFoundHandler, errorHandler } = require('./src/middleware/error.middleware');
 const { seedWorkshops } = require('./src/seeds/workshops.seed');
+const { seedPendingWorkshops } = require('./src/seeds/pending-workshops.seed');
 
 const app = express();
 
@@ -15,6 +16,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
 
 // Routes
 app.use('/api', routes);
@@ -33,6 +39,9 @@ async function startServer() {
 
     // Seed workshops data on startup
     await seedWorkshops();
+    
+    // Seed pending workshops for admin review
+    await seedPendingWorkshops();
 
     app.listen(PORT, () => {
       // eslint-disable-next-line no-console
