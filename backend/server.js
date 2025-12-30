@@ -7,8 +7,6 @@ const morgan = require('morgan');
 const connectDB = require('./src/config/db');
 const routes = require('./src/routes');
 const { notFoundHandler, errorHandler } = require('./src/middleware/error.middleware');
-const { seedWorkshops } = require('./src/seeds/workshops.seed');
-const { seedPendingWorkshops } = require('./src/seeds/pending-workshops.seed');
 
 const app = express();
 
@@ -37,11 +35,8 @@ async function startServer() {
   try {
     await connectDB();
 
-    // Seed workshops data on startup
-    await seedWorkshops();
-    
-    // Seed pending workshops for admin review
-    await seedPendingWorkshops();
+    // NOTE: Seeding disabled on startup to avoid duplicate inserts.
+    // If you need to seed again, run the seed scripts manually.
 
     app.listen(PORT, () => {
       // eslint-disable-next-line no-console
