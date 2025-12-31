@@ -38,9 +38,9 @@ const Header: React.FC = () => {
 
   const navItems = [
     {
-      name: 'Coffee',
+      name: 'Menu',
       links: [
-        { label: 'Menu', path: '/menu' },
+        { label: 'Coffee', path: '/menu' },
         { label: 'Savory Bites & Desserts', path: '/menu' },
       ],
     },
@@ -96,12 +96,21 @@ const Header: React.FC = () => {
           
           {/* LOGO */}
           <button
-            onClick={() => closeAndNavigate('/')}
-            className="text-2xl md:text-3xl font-oswald font-bold uppercase tracking-[0.2em] transition-colors duration-300 hover:opacity-80"
-            style={{ color: isMenuOpen ? THEME.gold : THEME.cream }}
-          >
-            Rabuste
-          </button>
+          onClick={() => closeAndNavigate('/')}
+          className="flex items-center gap-3 md:gap-4 transition-opacity duration-300 hover:opacity-80"
+          aria-label="Rabuste Home"
+        >
+
+          {/* RIGHT: WORDMARK */}
+          <img
+            src="https://ik.imagekit.io/manofcentury/gshock/products/Rabuste_logo_iNHcgLQ4z.png"
+            alt="Rabuste Wordmark"
+            loading="eager"
+            className="h-8 md:h-10 object-contain"
+          />
+        </button>
+
+
 
           {/* RIGHT CONTROLS */}
           <div className="flex items-center gap-4 md:gap-8">
