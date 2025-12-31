@@ -6,6 +6,7 @@ import SplitSection from '../components/SplitSection';
 import DoubleSplit from '../components/DoubleSplit';
 import Arches from '../components/Arches';
 import GridMenu from '../components/GridMenu';
+import SplitSection2 from '@/components/SplitSection2';
 
 const Home: React.FC = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -140,7 +141,7 @@ const Home: React.FC = () => {
         backgroundColor="bg-cream-dark"
       /> */}
 
-      <SplitSection
+      <SplitSection2
         alignment="center"
         mediaUrl="https://images.unsplash.com/photo-1521017432531-fbd92d768814"
         mediaType="image"
