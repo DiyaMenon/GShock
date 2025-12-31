@@ -13,46 +13,74 @@ interface DoubleSplitProps {
   right: BlockProps;
 }
 
-const SingleBlock: React.FC<BlockProps> = ({ mediaUrl, mediaType, title, text, link }) => (
-  <div className="relative w-full md:w-1/2 h-[60vh] md:h-screen group overflow-hidden border-r border-cream/20 last:border-none">
-    <div className="absolute inset-0 z-0">
-      {mediaType === 'video' ? (
-        <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline 
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+const SingleBlock: React.FC<BlockProps> = ({
+  mediaUrl,
+  mediaType,
+  title,
+  text,
+  link,
+}) => {
+  return (
+    <div className="relative w-full h-[55vh] sm:h-[65vh] lg:h-[75vh] xl:h-[80vh] overflow-hidden group rounded-xl">
+      {/* MEDIA */}
+      <div className="absolute inset-0 z-0">
+        {mediaType === 'video' ? (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+          >
+            <source src={mediaUrl} type="video/mp4" />
+          </video>
+        ) : (
+          <img
+            src={mediaUrl}
+            alt={title}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+          />
+        )}
+
+        {/* overlay */}
+        <div className="absolute inset-0 bg-black/30 group-hover:bg-black/45 transition-colors duration-300" />
+      </div>
+
+      {/* CONTENT */}
+      <div className="absolute inset-0 z-10 flex flex-col justify-end p-6 sm:p-8 lg:p-10 text-cream">
+        <h2 className="text-2xl sm:text-3xl lg:text-5xl font-oswald font-bold uppercase mb-3 leading-tight">
+          {title}
+        </h2>
+
+        <p className="max-w-lg text-sm sm:text-base lg:text-lg mb-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 leading-relaxed">
+          {text}
+        </p>
+
+        <a
+          href={link}
+          className="w-fit text-gold text-xs sm:text-sm lg:text-base font-bold uppercase tracking-widest hover:text-white transition-colors"
         >
-          <source src={mediaUrl} type="video/mp4" />
-        </video>
-      ) : (
-        <img 
-          src={mediaUrl} 
-          alt={title} 
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
-      )}
-      <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors duration-300"></div>
+          Learn More →
+        </a>
+      </div>
     </div>
-    
-    <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 md:p-12 text-cream transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-      <h2 className="text-3xl md:text-5xl font-bold font-oswald uppercase mb-4">{title}</h2>
-      <p className="text-base md:text-lg mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 leading-relaxed max-w-lg">
-        {text}
-      </p>
-      <a href={link} className="inline-block text-gold font-bold uppercase tracking-widest hover:text-white transition-colors">
-        Learn More →
-      </a>
-    </div>
-  </div>
-);
+  );
+};
 
 const DoubleSplit: React.FC<DoubleSplitProps> = ({ left, right }) => {
   return (
-    <section className="flex flex-col md:flex-row w-full bg-[#3E2723]">
-      <SingleBlock {...left} />
-      <SingleBlock {...right} />
+    <section className="w-full bg-[#3E2723] py-10 sm:py-14 lg:py-20">
+      {/* 
+        FLUID CONTAINER:
+        - no max-w on large screens
+        - padding scales with screen
+      */}
+      <div className="mx-auto w-full px-4 sm:px-6 md:px-10 xl:px-16 2xl:px-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-10">
+          <SingleBlock {...left} />
+          <SingleBlock {...right} />
+        </div>
+      </div>
     </section>
   );
 };
