@@ -42,7 +42,7 @@ const SingleBlock: React.FC<BlockProps> = ({
           />
         )}
 
-        {/* overlay */}
+        {/* OVERLAY */}
         <div className="absolute inset-0 bg-black/30 group-hover:bg-black/45 transition-colors duration-300" />
       </div>
 
@@ -69,12 +69,8 @@ const SingleBlock: React.FC<BlockProps> = ({
 
 const DoubleSplit: React.FC<DoubleSplitProps> = ({ left, right }) => {
   return (
-    <section className="w-full bg-[#3E2723] py-10 sm:py-14 lg:py-20">
-      {/* 
-        FLUID CONTAINER:
-        - no max-w on large screens
-        - padding scales with screen
-      */}
+    <section className="w-full bg-cream py-10 sm:py-14 lg:py-20">
+      {/* FLUID CONTAINER */}
       <div className="mx-auto w-full px-4 sm:px-6 md:px-10 xl:px-16 2xl:px-24">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-10">
           <SingleBlock {...left} />

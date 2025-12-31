@@ -79,6 +79,7 @@ const Home: React.FC = () => {
           title: "Community at the Core",
           text: "Every Rabuste café is designed to feel local, welcoming, and human — a place where people come together over shared experiences.",
           link: "#"
+          
         }}
       />
 
@@ -90,7 +91,7 @@ const Home: React.FC = () => {
         text="Our spaces are compact, cozy, and thoughtfully designed to balance efficiency with atmosphere — perfect for quick visits or lingering conversations."
         ctaText="Our Café Concept"
         ctaLink="#"
-        theme="dark"
+        backgroundColor="bg-cream"
       />
 
       {/* <SplitSection
@@ -123,7 +124,7 @@ const Home: React.FC = () => {
         text="Rabuste explores how AI can enhance café experiences — from personalized coffee discovery to intelligent art and workshop recommendations."
         ctaText="See How AI Fits In"
         ctaLink="#"
-        theme="dark"
+        backgroundColor="bg-cream"
       />
 
       
