@@ -47,12 +47,31 @@ async function createWorkshopByUser(req, res) {
             return res.status(400).json({ message: 'Title and date are required' });
         }
 
+        // Parse date and time fields
+        let parsedDate = new Date(date);
+        let parsedStartTime = null;
+        let parsedEndTime = null;
+
+        if (startTime) {
+            // startTime is in HH:mm format, combine with date
+            const [hours, minutes] = startTime.split(':');
+            parsedStartTime = new Date(date);
+            parsedStartTime.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0);
+        }
+
+        if (endTime) {
+            // endTime is in HH:mm format, combine with date
+            const [hours, minutes] = endTime.split(':');
+            parsedEndTime = new Date(date);
+            parsedEndTime.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0);
+        }
+
         const workshopData = {
             title,
             description,
-            date,
-            startTime,
-            endTime,
+            date: parsedDate,
+            startTime: parsedStartTime,
+            endTime: parsedEndTime,
             price: price || 0,
             capacity: capacity || 0,
             category: category || 'Breather',
@@ -70,6 +89,7 @@ async function createWorkshopByUser(req, res) {
             workshop 
         });
     } catch (error) {
+        console.error('Workshop creation error:', error);
         res.status(500).json({ message: 'Internal server error', error: error.message });
     }
 }

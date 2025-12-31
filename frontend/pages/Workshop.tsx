@@ -232,7 +232,7 @@ const WorkshopSubmissionForm: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full px-6 py-3 bg-coffee text-cream font-black uppercase tracking-widest rounded-lg hover:bg-coffee/90 disabled:opacity-50 transition-colors"
+              className="w-full px-6 py-3 bg-amber-900 text-amber-50 font-black uppercase tracking-widest rounded-lg hover:bg-amber-800 disabled:opacity-50 transition-colors"
             >
               {isSubmitting ? 'Submitting...' : 'Submit Workshop'}
             </button>
