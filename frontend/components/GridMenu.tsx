@@ -4,45 +4,51 @@ const GridMenu: React.FC = () => {
   const items = [
     {
       title: 'Coffee',
-      img: 'https://drive.google.com/file/d/1NWf1ZT_DLoz0l3xPC1JgJCcb2eoqxM_b/view?usp=drive_link',
-      link: '#'
+      img: 'https://ik.imagekit.io/btpcp9tvm/GShock/coffee.jpeg',
+      link: '/menu'
     },
     {
       title: 'Savory Bites',
-      img: 'https://drive.google.com/file/d/13ccbocysOZscyGnjqIGwHU-PxWSfwJsJ/view?usp=drive_link',
-      link: '#'
+      img: 'https://ik.imagekit.io/btpcp9tvm/GShock/savory.jpeg',
+      link: '/menu'
     },
     {
       title: 'Desserts',
-      img: 'https://drive.google.com/file/d/1hkSoKw54H4JTEcSkq79a8bzecOzTlAiy/view?usp=drive_link',
-      link: '#'
+      img: 'https://ik.imagekit.io/btpcp9tvm/GShock/dessert.jpeg',
+      link: '/menu'
     }
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 w-full">
-      {items.map((item, i) => (
-        <a
-          key={i}
-          href={item.link}
-          className="relative aspect-square group overflow-hidden border border-cream/10"
-        >
-          <img
-            src={item.img}
-            alt={item.title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-          />
-          <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex flex-col items-center justify-center">
-            <h3 className="text-white text-2xl font-bold font-oswald uppercase mb-4 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-              {item.title}
-            </h3>
-            <span className="bg-cream text-[#3E2723] px-6 py-2 uppercase font-bold text-xs tracking-widest transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 delay-100 hover:bg-gold hover:text-white">
-              Shop
-            </span>
-          </div>
-        </a>
-      ))}
-    </div>
+    <section className="w-full px-4 sm:px-6 md:px-10 lg:px-16 py-16 md:py-24">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+        {items.map((item, i) => (
+          <a
+            key={i}
+            href={item.link}
+            className="relative aspect-square group overflow-hidden rounded-xl border border-cream/10 bg-black/10"
+          >
+            {/* image */}
+            <img
+              src={item.img}
+              alt={item.title}
+              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+            />
+
+            {/* overlay */}
+            <div className="absolute inset-0 bg-black/30 group-hover:bg-black/45 transition-colors duration-500 flex flex-col items-center justify-center text-center px-6">
+              <h3 className="text-white text-xl sm:text-2xl font-bold uppercase mb-5 tracking-wide transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-400">
+                {item.title}
+              </h3>
+
+              <span className="bg-cream text-[#3E2723] px-7 py-2.5 uppercase font-semibold text-xs tracking-widest transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-400 delay-100 hover:bg-gold hover:text-white">
+                Shop
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
   );
 };
 

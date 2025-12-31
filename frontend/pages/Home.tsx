@@ -33,7 +33,7 @@ const Home: React.FC = () => {
         title="Why Robusta?"
         text="Robusta coffee is bold, powerful, and often misunderstood. At Rabuste, we focus exclusively on premium Robusta beans to showcase their strength, rich body, and higher caffeine content — redefining what great coffee can be."
         ctaText="Learn About Robusta"
-        ctaLink="#"
+        ctaLink="/about"
       />
 
       <DoubleSplit 
@@ -62,7 +62,7 @@ const Home: React.FC = () => {
         title="Coffee × Art × Culture"
         text="Rabuste blends coffee culture with fine art and creativity. Our café doubles as a micro art gallery, showcasing rotating works from emerging and local artists."
         ctaText="Explore the Art"
-        ctaLink="#"
+        ctaLink="/art"
         backgroundColor="bg-cream"
       />
 
@@ -72,14 +72,14 @@ const Home: React.FC = () => {
           mediaType: "image",
           title: "Workshops & Experiences",
           text: "From coffee brewing sessions to creative workshops, Rabuste hosts intimate, community-driven experiences that inspire learning and connection.",
-          link: "#"
+          link: "/workshop"
         }}
         right={{
           mediaUrl: "https://ik.imagekit.io/btpcp9tvm/GShock/workshop-community.png",
           mediaType: "image",
           title: "Community at the Core",
           text: "Every Rabuste café is designed to feel local, welcoming, and human — a place where people come together over shared experiences.",
-          link: "#"
+          link: "/workshop"
           
         }}
       />
@@ -91,7 +91,7 @@ const Home: React.FC = () => {
         title="Designed for Experience"
         text="Our spaces are compact, cozy, and thoughtfully designed to balance efficiency with atmosphere — perfect for quick visits or lingering conversations."
         ctaText="Our Café Concept"
-        ctaLink="#"
+        ctaLink="/about"
         backgroundColor="bg-cream"
       />
 
@@ -148,7 +148,7 @@ const Home: React.FC = () => {
         title="Built for Growth"
         text="Rabuste is a compact, scalable café model designed for expansion. We’re opening franchise opportunities for partners who believe in bold coffee and meaningful experiences."
         ctaText="Explore Franchise Opportunities"
-        ctaLink="#"
+        ctaLink="/franchise"
         theme="dark"
       />
       <Arches />
