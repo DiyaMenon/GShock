@@ -50,7 +50,7 @@ const SingleBlock: React.FC<BlockProps> = ({ mediaUrl, mediaType, title, text, l
 
 const DoubleSplit: React.FC<DoubleSplitProps> = ({ left, right }) => {
   return (
-    <section className="flex flex-col md:flex-row w-full bg-onyx">
+    <section className="flex flex-col md:flex-row w-full bg-[#3E2723]">
       <SingleBlock {...left} />
       <SingleBlock {...right} />
     </section>

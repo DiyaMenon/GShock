@@ -20,7 +20,7 @@ const App = () => {
 
   return (
     // 3. Removed <Router> from here because it's now in main.tsx
-    <div className="min-h-screen flex flex-col font-sans bg-cream text-onyx selection:bg-gold selection:text-white">
+    <div className="min-h-screen flex flex-col font-sans bg-cream text-[#3E2723] selection:bg-gold selection:text-white">
       
       {/* 4. Conditionally hide Header */}
       {!isAuthPage && <Header />}

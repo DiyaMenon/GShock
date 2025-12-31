@@ -127,7 +127,7 @@ const ArtProduct: React.FC = () => {
       {/* --- LAYER 2: THE REVEAL (SCROLLING) --- */}
       <div className="relative z-10 mt-[100vh]">
         {/* Frosted Glass "Wipe" Container */}
-        <div className="bg-white/90 backdrop-blur-xl text-onyx rounded-t-[3rem] shadow-[0_-50px_100px_rgba(0,0,0,0.3)] min-h-screen">
+        <div className="bg-white/90 backdrop-blur-xl text-[#3E2723] rounded-t-[3rem] shadow-[0_-50px_100px_rgba(0,0,0,0.3)] min-h-screen">
           
           <div className="container mx-auto px-6 md:px-20 py-24">
             
@@ -213,12 +213,12 @@ const ArtProduct: React.FC = () => {
           {/* Contextual Dropdowns (Visual Only) */}
           <div className="hidden md:flex gap-2">
              <select className="bg-transparent text-white text-[10px] font-bold uppercase tracking-widest border border-white/20 rounded-lg px-4 py-3 outline-none hover:border-white/50 transition-colors cursor-pointer">
-               <option className="bg-onyx">Every 2 Weeks</option>
-               <option className="bg-onyx">Every Month</option>
+               <option className="bg-[#3E2723]">Every 2 Weeks</option>
+               <option className="bg-[#3E2723]">Every Month</option>
              </select>
              <select className="bg-transparent text-white text-[10px] font-bold uppercase tracking-widest border border-white/20 rounded-lg px-4 py-3 outline-none hover:border-white/50 transition-colors cursor-pointer">
-               <option className="bg-onyx">Original Scale</option>
-               <option className="bg-onyx">Large Print</option>
+               <option className="bg-[#3E2723]">Original Scale</option>
+               <option className="bg-[#3E2723]">Large Print</option>
              </select>
           </div>
 

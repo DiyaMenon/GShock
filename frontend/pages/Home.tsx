@@ -4,7 +4,6 @@ import Ticker from '../components/Ticker';
 import EmailPopup from '../components/EmailPopup';
 import SplitSection from '../components/SplitSection';
 import DoubleSplit from '../components/DoubleSplit';
-// import Accolades from '../components/Accolades';
 import Arches from '../components/Arches';
 import GridMenu from '../components/GridMenu';
 

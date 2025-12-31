@@ -89,7 +89,7 @@ const Header: React.FC = () => {
   
   const headerBgStyle = isScrolled 
     ? { backgroundColor: `${THEME.espresso}F2`, backdropFilter: 'blur(10px)', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' } // F2 = 95% opacity
-    : { backgroundColor: 'transparent', color: headerTextColor };
+    : { backgroundColor: `${THEME.espresso}F2`, backdropFilter: 'blur(10px)', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' };
 
   return (
     <>

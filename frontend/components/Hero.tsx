@@ -8,7 +8,7 @@ const Hero: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-onyx">
+    <div className="relative h-screen w-full overflow-hidden bg-[#3E2723]">
       <div className="absolute inset-0 z-0">
         <video 
           autoPlay 
@@ -34,7 +34,7 @@ const Hero: React.FC = () => {
           <p className="text-lg md:text-xl font-light mb-8 leading-relaxed">
             Bold coffee doesn’t whisper. Rabuste is a cozy, grab-and-go café experience dedicated exclusively to premium Robusta — blending strong flavors, art, and culture into every cup.
           </p>
-          <a href="#" className="inline-block border-2 border-cream text-cream px-8 py-3 font-bold uppercase tracking-widest hover:bg-cream hover:text-onyx transition-colors duration-300">
+          <a href="#" className="inline-block border-2 border-cream text-cream px-8 py-3 font-bold uppercase tracking-widest hover:bg-cream hover:text-[#3E2723] transition-colors duration-300">
             Explore the Rabuste Experience →
           </a>
         </div>

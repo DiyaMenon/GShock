@@ -2,14 +2,14 @@ import React from "react";
 
 const OurStory: React.FC = () => {
   return (
-    <section className="bg-cream text-onyx w-full">
+    <section className="bg-cream text-[#3E2723] w-full">
       {/* HERO */}
       <section className="min-h-[70vh] flex items-center justify-center px-6 text-center">
         <div className="max-w-3xl">
           <h1 className="font-oswald uppercase text-4xl md:text-6xl tracking-wide mb-6">
             Our Story
           </h1>
-          <p className="text-lg md:text-xl text-onyx/80">
+          <p className="text-lg md:text-xl text-[#3E2723]/80">
             born from strength. built on culture.
           </p>
         </div>
@@ -24,7 +24,7 @@ const OurStory: React.FC = () => {
               rabuste began with a simple but stubborn belief —{" "}
               <span className="font-semibold">robusta deserves respect</span>.
             </p>
-            <p className="leading-relaxed text-onyx/80">
+            <p className="leading-relaxed text-[#3E2723]/80">
               for years, coffee culture told us that arabica was refined and
               robusta was inferior. the founder of rabuste never believed that.
               raised around strong flavours and deeply rooted indian food
@@ -38,11 +38,11 @@ const OurStory: React.FC = () => {
             <h2 className="font-oswald uppercase text-3xl tracking-wide">
               why robusta. and only robusta.
             </h2>
-            <p className="leading-relaxed text-onyx/80">
+            <p className="leading-relaxed text-[#3E2723]/80">
               india is the world’s no. 1 producer of high-quality robusta coffee —
               yet most cafés ignore it. we don’t.
             </p>
-            <p className="leading-relaxed text-onyx/80">
+            <p className="leading-relaxed text-[#3E2723]/80">
               every cup at rabuste is brewed exclusively using{" "}
               <span className="font-semibold">
                 premium indian robusta coffee seeds
@@ -58,7 +58,7 @@ const OurStory: React.FC = () => {
               <li>long finish</li>
             </ul>
 
-            <p className="leading-relaxed text-onyx/80">
+            <p className="leading-relaxed text-[#3E2723]/80">
               no blends. no dilution. no compromise. this is coffee meant to be
               felt, not softened.
             </p>
@@ -69,18 +69,18 @@ const OurStory: React.FC = () => {
             <h2 className="font-oswald uppercase text-3xl tracking-wide">
               coffee meets art
             </h2>
-            <p className="leading-relaxed text-onyx/80">
+            <p className="leading-relaxed text-[#3E2723]/80">
               the founder comes from an art-driven background, and rabuste was
               always imagined as more than a café. the space itself functions as
               a living gallery.
             </p>
-            <p className="leading-relaxed text-onyx/80">
+            <p className="leading-relaxed text-[#3E2723]/80">
               we actively support local and emerging artists by displaying and
               selling their work directly in the café. the walls don’t just hold
               art — they hold stories.
             </p>
 
-            <div className="border border-onyx/20 rounded-xl p-6 text-center text-sm uppercase tracking-widest text-onyx/50">
+            <div className="border border-[#3E2723]/20 rounded-xl p-6 text-center text-sm uppercase tracking-widest text-[#3E2723]/50">
               artist artworks / reels placeholder
             </div>
           </div>
@@ -90,17 +90,17 @@ const OurStory: React.FC = () => {
             <h2 className="font-oswald uppercase text-3xl tracking-wide">
               a space to gather & create
             </h2>
-            <p className="leading-relaxed text-onyx/80">
+            <p className="leading-relaxed text-[#3E2723]/80">
               rabuste is also a space for people to come together. we open our
               doors for workshops, creative meetups, coffee tastings, and
               intimate conversations.
             </p>
-            <p className="leading-relaxed text-onyx/80">
+            <p className="leading-relaxed text-[#3E2723]/80">
               whether you’re an artist, a student, or simply curious — this is a
               space built for conversation, creation, and community.
             </p>
 
-            <div className="border border-onyx/20 rounded-xl p-6 text-center text-sm uppercase tracking-widest text-onyx/50">
+            <div className="border border-[#3E2723]/20 rounded-xl p-6 text-center text-sm uppercase tracking-widest text-[#3E2723]/50">
               workshops / events photos placeholder
             </div>
           </div>
@@ -116,7 +116,7 @@ const OurStory: React.FC = () => {
               <li>culture over trends</li>
               <li>space for voices & ideas</li>
             </ul>
-            <p className="leading-relaxed text-onyx/80">
+            <p className="leading-relaxed text-[#3E2723]/80">
               rabuste isn’t trying to be everywhere. it’s trying to mean
               something where it exists.
             </p>
@@ -124,10 +124,10 @@ const OurStory: React.FC = () => {
 
           {/* CTA */}
           <div className="flex flex-col md:flex-row gap-4 pt-10">
-            <button className="px-6 py-3 border border-onyx uppercase tracking-widest text-sm hover:bg-onyx hover:text-cream transition">
+            <button className="px-6 py-3 border border-[#3E2723] uppercase tracking-widest text-sm hover:bg-[#3E2723] hover:text-cream transition">
               learn about robusta
             </button>
-            <button className="px-6 py-3 border border-onyx uppercase tracking-widest text-sm hover:bg-onyx hover:text-cream transition">
+            <button className="px-6 py-3 border border-[#3E2723] uppercase tracking-widest text-sm hover:bg-[#3E2723] hover:text-cream transition">
               collaborate with us
             </button>
           </div>

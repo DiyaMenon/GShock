@@ -26,8 +26,8 @@ const SplitSection: React.FC<SplitSectionProps> = ({
   theme = 'light'
 }) => {
   const isDark = theme === 'dark';
-  const textColor = isDark ? 'text-cream' : 'text-onyx';
-  const bgColor = isDark ? 'bg-onyx' : backgroundColor;
+  const textColor = isDark ? 'text-cream' : 'text-[#3E2723]';
+  const bgColor = isDark ? 'bg-[#3E2723]' : backgroundColor;
 
   const MediaComponent = () => (
     <div className="relative w-full h-[50vh] md:h-screen overflow-hidden group">
@@ -61,12 +61,12 @@ const SplitSection: React.FC<SplitSectionProps> = ({
           {title}
         </h2>
       )}
-      <p className="text-lg leading-relaxed mb-8 opacity-90 max-w-xl">
+      <p className={`text-lg leading-relaxed mb-8 opacity-90 max-w-xl ${textColor}`}>
         {text}
       </p>
       <a 
         href={ctaLink} 
-        className={`inline-block w-fit border-2 ${isDark ? 'border-cream text-cream hover:bg-cream hover:text-onyx' : 'border-onyx text-onyx hover:bg-onyx hover:text-cream'} px-8 py-3 font-bold uppercase tracking-widest transition-colors duration-300`}
+        className={`inline-block w-fit border-2 ${isDark ? 'border-cream text-cream hover:bg-cream hover:text-[#3E2723]' : 'border-[#3E2723] text-[#3E2723] hover:bg-[#3E2723] hover:text-cream'} px-8 py-3 font-bold uppercase tracking-widest transition-colors duration-300`}
       >
         {ctaText}
       </a>
@@ -75,7 +75,7 @@ const SplitSection: React.FC<SplitSectionProps> = ({
 
   if (alignment === 'center') {
     return (
-      <section className={`relative h-screen w-full flex flex-col justify-center items-center text-center px-4 ${isDark ? 'text-cream' : 'text-onyx'}`}>
+      <section className={`relative h-screen w-full flex flex-col justify-center items-center text-center px-4 ${isDark ? 'text-cream' : 'text-[#3E2723]'} ${bgColor}`}>
         <div className="absolute inset-0 z-0">
            {MediaComponent()}
         </div>
@@ -84,7 +84,7 @@ const SplitSection: React.FC<SplitSectionProps> = ({
            <p className="text-lg md:text-xl mb-8 leading-relaxed text-white">{text}</p>
            <a 
             href={ctaLink} 
-            className="inline-block border-2 border-white text-white px-10 py-4 font-bold uppercase tracking-widest hover:bg-white hover:text-onyx transition-colors duration-300"
+            className="inline-block border-2 border-white text-white px-10 py-4 font-bold uppercase tracking-widest hover:bg-white hover:text-[#3E2723] transition-colors duration-300"
           >
             {ctaText}
           </a>

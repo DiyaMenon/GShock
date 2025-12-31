@@ -20,13 +20,13 @@ const Arches: React.FC = () => {
   ];
 
   return (
-    <section className="bg-onyx py-24 text-cream">
+    <section className="bg-[#3E2723] py-24 text-cream">
       <div className="container mx-auto px-4 text-center mb-16">
         <h2 className="text-4xl md:text-6xl font-oswald font-bold uppercase mb-6">Winter Offerings</h2>
         <p className="max-w-xl mx-auto opacity-80 mb-8">
           See our latest offerings from around the world, brought straight to you. Keep up to date with new coffee launches by signing up for our weekly release newsletter.
         </p>
-        <a href="#" className="inline-block border-2 border-cream px-8 py-2 uppercase font-bold hover:bg-cream hover:text-onyx transition-colors">
+        <a href="#" className="inline-block border-2 border-cream px-8 py-2 uppercase font-bold hover:bg-cream hover:text-[#3E2723] transition-colors">
           Learn More
         </a>
       </div>

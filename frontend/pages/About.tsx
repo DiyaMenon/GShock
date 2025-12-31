@@ -79,10 +79,10 @@ const About: React.FC = () => {
       </section>
 
       {/* Animated Storytelling Section: The Journey */}
-      <section className="mb-32 py-20 bg-onyx/5 rounded-3xl px-8 md:px-16 border border-gold/10">
+      <section className="mb-32 py-20 bg-[#3E2723]/5 rounded-3xl px-8 md:px-16 border border-gold/10">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-serif text-coffee mb-4">The Bean-to-Soul Journey</h2>
-          <p className="text-onyx/50 uppercase tracking-widest text-xs font-bold">How we craft the boldest brew in Surat</p>
+          <p className="text-[#3E2723]/50 uppercase tracking-widest text-xs font-bold">How we craft the boldest brew in Surat</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -115,13 +115,13 @@ const About: React.FC = () => {
                   onClick={() => setActiveStep(index)}
                 >
                   <div className="flex items-center space-x-4">
-                    <span className={`w-12 h-px transition-all duration-500 ${activeStep === index ? 'bg-gold w-20' : 'bg-onyx/20'}`}></span>
-                    <h3 className={`text-2xl font-serif ${activeStep === index ? 'text-coffee' : 'text-onyx'}`}>
+                    <span className={`w-12 h-px transition-all duration-500 ${activeStep === index ? 'bg-gold w-20' : 'bg-[#3E2723]/20'}`}></span>
+                    <h3 className={`text-2xl font-serif ${activeStep === index ? 'text-coffee' : 'text-[#3E2723]'}`}>
                       {index + 1}. {step.title}
                     </h3>
                   </div>
                   {activeStep === index && (
-                    <p className="mt-4 text-onyx/70 leading-relaxed pl-16 animate-in slide-in-from-left duration-500">
+                    <p className="mt-4 text-[#3E2723]/70 leading-relaxed pl-16 animate-in slide-in-from-left duration-500">
                       {step.description}
                     </p>
                   )}
@@ -134,7 +134,7 @@ const About: React.FC = () => {
                   key={index}
                   onClick={() => setActiveStep(index)}
                   className={`h-1 rounded-full transition-all duration-500 ${
-                    activeStep === index ? 'w-12 bg-gold' : 'w-4 bg-onyx/10'
+                    activeStep === index ? 'w-12 bg-gold' : 'w-4 bg-[#3E2723]/10'
                   }`}
                  />
                ))}
@@ -147,10 +147,10 @@ const About: React.FC = () => {
       <section className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center mb-32">
         <div className="space-y-8">
           <h2 className="text-4xl font-serif text-coffee">The Rabuste Spirit</h2>
-          <p className="text-lg text-onyx/70 leading-relaxed font-light">
+          <p className="text-lg text-[#3E2723]/70 leading-relaxed font-light">
             In a city that never stops, we felt the need for a coffee that keeps up. Named after the <strong className="text-gold italic font-medium">Canephora</strong> species, better known as Robusta, our cafe is a tribute to the resilient, bold, and powerful character of the bean. 
           </p>
-          <p className="text-lg text-onyx/70 leading-relaxed font-light">
+          <p className="text-lg text-[#3E2723]/70 leading-relaxed font-light">
             We don't just serve coffee; we serve a philosophy of strength and peace. Located in the heart of Surat, we provide a sanctuary where the intensity of a double-shot meets the tranquility of a modern art gallery.
           </p>
           <div className="pt-4 border-l-2 border-gold pl-6">
@@ -164,7 +164,7 @@ const About: React.FC = () => {
       </section>
 
       {/* Animated Robusta vs Arabica Section */}
-      <section className="bg-onyx text-cream rounded-3xl p-8 md:p-20 mb-32 relative overflow-hidden">
+      <section className="bg-[#3E2723] text-cream rounded-3xl p-8 md:p-20 mb-32 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-gold/5 blur-[100px] rounded-full translate-x-1/2 -translate-y-1/2 animate-pulse"></div>
         
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
@@ -224,7 +224,7 @@ const About: React.FC = () => {
                    hoveredBean === 'arabica' ? 'opacity-30 blur-[2px] scale-95' : 'opacity-100 scale-105 md:scale-110 z-20'
                  }`}
                >
-                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gold text-onyx text-[9px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">
+                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gold text-[#3E2723] text-[9px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">
                    The RABUSTE Standard
                  </div>
                  <div className="text-center mb-8">
@@ -243,7 +243,7 @@ const About: React.FC = () => {
                    </li>
                    <li className="flex items-center space-x-2 text-gold">
                      <span className="w-1.5 h-1.5 bg-gold rounded-full"></span>
-                     <span className="font-bold underline decoration-onyx/20">2.2% - 2.7% Caffeine</span>
+                     <span className="font-bold underline decoration-[#3E2723]/20">2.2% - 2.7% Caffeine</span>
                    </li>
                  </ul>
                </div>
@@ -257,7 +257,7 @@ const About: React.FC = () => {
         <div className="space-y-12">
            <div>
               <h3 className="text-3xl font-serif text-coffee mb-4">Master the Craft</h3>
-              <p className="text-onyx/70 leading-relaxed mb-6">
+              <p className="text-[#3E2723]/70 leading-relaxed mb-6">
                 Every weekend, we open our bar to the curious. Join our <strong>Rabuste Brewing Workshops</strong> where our head baristas teach the secrets of Robusta—from grind size consistency to the perfect pour-over. 
               </p>
               <button
@@ -270,7 +270,7 @@ const About: React.FC = () => {
            </div>
            <div className="p-8 border-2 border-dashed border-gold/30 rounded-lg">
               <h4 className="font-serif text-xl mb-3">Host Your Event</h4>
-              <p className="text-sm text-onyx/60 mb-4 leading-relaxed">
+              <p className="text-sm text-[#3E2723]/60 mb-4 leading-relaxed">
                 Our space is available for private bookings. Whether it's a corporate coffee tasting, a book launch, or an intimate birthday, let the aroma of Robuste set the mood.
               </p>
               <a href="mailto:events@rabustecafe.com" className="text-gold font-bold text-xs uppercase tracking-widest hover:underline">Inquire About Hosting →</a>
@@ -285,7 +285,7 @@ const About: React.FC = () => {
           />
           <div className="absolute -bottom-8 -right-8 bg-white p-8 max-w-xs shadow-xl hidden lg:block border border-gold/10">
             <h3 className="text-xl font-serif text-coffee mb-2">The Silent Gallery</h3>
-            <p className="text-xs text-onyx/50 leading-relaxed">
+            <p className="text-xs text-[#3E2723]/50 leading-relaxed">
               We believe coffee and art are the same expression of the human spirit. Our in-house gallery features local Surat artists. 
               <br /><br />
               <span className="text-gold font-medium italic">Every piece is for sale. Find your peace, and take it home.</span>
@@ -297,7 +297,7 @@ const About: React.FC = () => {
       {/* Final Call to Action */}
       <section className="text-center py-24 bg-cream border-y border-gold/10">
         <h2 className="text-4xl md:text-5xl font-serif text-coffee mb-8 italic">Ready for a real kick?</h2>
-        <p className="text-onyx/60 max-w-xl mx-auto mb-12">
+        <p className="text-[#3E2723]/60 max-w-xl mx-auto mb-12">
           Visit us today at our flagship store in Vesu, Surat. Experience the raw power of Robusta and the quiet beauty of local art.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
@@ -307,7 +307,7 @@ const About: React.FC = () => {
       >
         Go to Menu
       </button>
-          <button className="w-full sm:w-auto px-12 py-4 border border-onyx text-onyx uppercase text-xs tracking-[0.3em] font-bold hover:bg-onyx hover:text-white transition-all">
+          <button className="w-full sm:w-auto px-12 py-4 border border-[#3E2723] text-[#3E2723] uppercase text-xs tracking-[0.3em] font-bold hover:bg-[#3E2723] hover:text-white transition-all">
             Find Location
           </button>
         </div>

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-onyx text-cream py-16 border-t border-white/10">
+    <footer className="bg-[#3E2723] text-cream py-16 border-t border-white/10">
       <div className="container mx-auto px-8">
         {/* TOP SECTION */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
                 placeholder="Email Address"
                 className="bg-transparent flex-grow px-4 py-2 outline-none text-white placeholder-white/40"
               />
-              <button className="bg-gold text-white px-6 py-2 font-bold uppercase text-sm hover:bg-white hover:text-onyx transition-colors">
+              <button className="bg-gold text-white px-6 py-2 font-bold uppercase text-sm hover:bg-white hover:text-[#3E2723] transition-colors">
                 Join
               </button>
             </form>

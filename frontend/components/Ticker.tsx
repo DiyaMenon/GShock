@@ -27,7 +27,7 @@ const TickerLane: React.FC<TickerLaneProps> = ({
   return (
     <div className="flex items-center overflow-hidden relative h-full">
       {/* Static label on the left side of the lane */}
-      <div className="absolute left-0 bg-cream z-10 px-2 h-full flex items-center border-r border-onyx">
+      <div className="absolute left-0 bg-cream z-10 px-2 h-full flex items-center border-r border-[#3E2723]">
         {label}
       </div>
       {/* Scrolling container */}
@@ -65,9 +65,9 @@ const Ticker: React.FC = () => {
   ];
 
   return (
-    <div className="bg-cream border-b border-onyx text-xs uppercase font-bold tracking-widest overflow-hidden h-[40px] flex items-center relative z-20">
+    <div className="bg-cream border-b border-[#3E2723] text-xs uppercase font-bold tracking-widest overflow-hidden h-[40px] flex items-center relative z-20">
       {/* Left Ticker Lane */}
-      <div className="w-1/2 border-r border-onyx h-full">
+      <div className="w-1/2 border-r border-[#3E2723] h-full">
         <TickerLane
           label="Today at Rabuste"
           items={leftItems}
@@ -89,7 +89,7 @@ const Ticker: React.FC = () => {
 
       {/* Center Announcement */}
       <div className="absolute inset-0 pointer-events-none flex justify-center items-center">
-        <div className="bg-cream px-4 py-1 border border-onyx text-[10px] pointer-events-auto">
+        <div className="bg-cream px-4 py-1 border border-[#3E2723] text-[10px] pointer-events-auto">
           ROBUSTA • ART • COMMUNITY
         </div>
       </div>

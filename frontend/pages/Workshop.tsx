@@ -88,7 +88,7 @@ const WorkshopSubmissionForm: React.FC = () => {
     <div className="mb-12">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-6 py-4 bg-gold text-onyx font-black uppercase tracking-widest text-sm rounded-full hover:bg-[#FFB81D] transition-colors"
+        className="w-full px-6 py-4 bg-gold text-[#3E2723] font-black uppercase tracking-widest text-sm rounded-full hover:bg-[#FFB81D] transition-colors"
       >
         {isOpen ? '✕ Close' : '+ Become a Tutor - Submit Workshop'}
       </button>

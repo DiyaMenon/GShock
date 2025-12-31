@@ -19,7 +19,7 @@ const EmailPopup: React.FC<EmailPopupProps> = ({ isOpen, onClose }) => {
       <div className="relative bg-cream w-full max-w-4xl h-[500px] shadow-2xl flex overflow-hidden animate-fade-in">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 text-onyx hover:text-gold transition-colors"
+          className="absolute top-4 right-4 z-10 text-white hover:text-gold transition-colors"
         >
           <X size={24} />
         </button>
@@ -32,7 +32,7 @@ const EmailPopup: React.FC<EmailPopupProps> = ({ isOpen, onClose }) => {
           />
         </div>
 
-        <div className="w-full md:w-1/2 p-12 flex flex-col justify-center bg-onyx text-cream">
+        <div className="w-full md:w-1/2 p-12 flex flex-col justify-center bg-[#3E2723] text-cream">
           <h2 className="text-3xl font-bold mb-4 font-oswald uppercase">
             Stay Connected with Rabuste
           </h2>
