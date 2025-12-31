@@ -7,6 +7,14 @@ import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 
 gsap.registerPlugin(ScrollTrigger);
+const THEME = {
+  espresso: '#2A1A14',
+  bronze: '#B6771D',
+  gold: '#FF9D00',
+  cream: '#FFF7E6',
+  latte: '#FFCF71',
+  white: '#FFFFFF',
+};
 
 /* ================= WORKSHOP SUBMISSION FORM ================= */
 
