@@ -7,6 +7,7 @@ import DoubleSplit from '../components/DoubleSplit';
 import Arches from '../components/Arches';
 import GridMenu from '../components/GridMenu';
 import SplitSection2 from '@/components/SplitSection2';
+import Highlights from '@/components/Highlights';
 
 const Home: React.FC = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -151,6 +152,7 @@ const Home: React.FC = () => {
         ctaLink="/franchise"
         theme="dark"
       />
+      <Highlights />
       <Arches />
       {/* <SplitSection
         alignment="left"

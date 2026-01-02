@@ -11,6 +11,7 @@ import WorkshopManagement from './admin/WorkshopManagement';
 import FranchiseManagement from './admin/FranchiseManagement';
 import MarketingCMS from './admin/MarketingCMS';
 import UserManagement from './admin/UserManagement';
+import ReelManagement from './admin/ReelManagement';
 import Header from '@/components/Header';
 
 import { 
@@ -332,6 +333,10 @@ const Admin: React.FC = () => {
         <Route 
           path="/users" 
           element={<UserManagement users={users} />} 
+        />
+        <Route 
+          path="/reels" 
+          element={<ReelManagement />} 
         />
       </Routes>
     </Layout>
