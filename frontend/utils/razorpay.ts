@@ -180,6 +180,7 @@ export const initiateRazorpayPayment = async (
       return {
         itemType: 'menu',
         itemId: item.id,
+        productName: item.name || '',
         quantity: item.quantity,
         price: isNaN(price) ? 0 : price,
       };

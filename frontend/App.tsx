@@ -15,6 +15,7 @@ import About from './pages/About'
 import Why from './pages/Why';
 import FlavorStrength from './pages/FlavourStrength';
 import WhyRobusta from './pages/WhyRobusta';
+import Profile from './pages/Profile';
 const App = () => {
   const location = useLocation();
   const isAuthPage = location.pathname.startsWith('/login') || location.pathname.startsWith('/admin');
@@ -43,6 +44,7 @@ const App = () => {
             <Route path="/why" element={<Why/>}/>
             <Route path="/flavor" element={<FlavorStrength/>}/>
             <Route path="/whyrob" element={<WhyRobusta/>}/>
+            <Route path="/profile" element={<Profile/>}/>
           </Routes>
         </main>
 

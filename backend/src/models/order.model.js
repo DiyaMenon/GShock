@@ -21,6 +21,11 @@ const orderSchema = new mongoose.Schema(
           required: true,
         },
 
+        productName: {
+          type: String,
+          default: '',
+        },
+
         quantity: {
           type: Number,
           default: 1,

@@ -25,6 +25,7 @@ interface Order {
       price: number;
       [key: string]: any;
     };
+    productName?: string;
     quantity: number;
     price: number;
   }>;
@@ -175,9 +176,7 @@ const AdminOrders: React.FC = () => {
                   {order.items.map((item, idx) => (
                     <div key={idx} className="flex justify-between items-center text-sm">
                       <span className="text-gray-600">
-                        {typeof item.itemId === 'object' && item.itemId?.name 
-                          ? item.itemId.name 
-                          : item.itemType} × {item.quantity}
+                        {item.productName || (typeof item.itemId === 'object' && item.itemId?.name) || item.itemType} × {item.quantity}
                       </span>
                       <span className="text-gray-700 font-medium">₹{(item.price * item.quantity).toFixed(2)}</span>
                     </div>

@@ -9,6 +9,9 @@ const router = express.Router();
 // User route - get own orders
 router.get('/user/my-orders', authMiddleware, orderController.getMyOrders);
 
+// User route - update own order status (only for cancellation)
+router.patch('/user/:id/status', authMiddleware, orderController.updateUserOrderStatus);
+
 // Admin routes - get all orders
 router.get('/', authMiddleware, adminMiddleware, orderController.getOrders);
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, ShoppingBag, X } from 'lucide-react';
+import { Search, ShoppingBag, X, User, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../hooks/useCart';
 
@@ -16,6 +16,7 @@ const THEME = {
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const { totalItems, setIsCartOpen } = useCart();
@@ -134,13 +135,56 @@ const Header: React.FC = () => {
             )}
 
             {user ? (
-              <button
-                onClick={handleLogout}
-                className="hidden md:block uppercase text-xs font-bold tracking-widest transition-colors font-oswald hover:text-opacity-80"
-                style={{ color: THEME.cream }}
-              >
-                Logout
-              </button>
+              <div className="relative hidden md:block">
+                <button
+                  onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                  className="flex items-center gap-2 uppercase text-xs font-bold tracking-widest transition-colors font-oswald hover:text-opacity-80 p-2 rounded-lg"
+                  style={{ color: THEME.cream }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = `${THEME.gold}20`}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                >
+                  <User size={20} />
+                </button>
+                
+                {/* Profile Dropdown Menu */}
+                {isProfileMenuOpen && (
+                  <div
+                    className="absolute right-0 mt-2 w-48 rounded-lg shadow-xl z-50 py-2"
+                    style={{ backgroundColor: THEME.espresso, boxShadow: '0 10px 30px rgba(0,0,0,0.3)' }}
+                    onMouseLeave={() => setIsProfileMenuOpen(false)}
+                  >
+                    <div className="px-4 py-3 border-b" style={{ borderColor: `${THEME.gold}33` }}>
+                      <p className="text-xs uppercase tracking-widest font-bold" style={{ color: THEME.gold }}>Account</p>
+                    </div>
+                    <button
+                      onClick={() => {
+                        closeAndNavigate('/profile');
+                        setIsProfileMenuOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-sm transition-colors flex items-center gap-3 hover:bg-opacity-80"
+                      style={{ color: THEME.cream }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = `${THEME.gold}20`}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                    >
+                      <User size={16} />
+                      <span>My Profile</span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        setIsProfileMenuOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-sm transition-colors flex items-center gap-3 border-t"
+                      style={{ color: THEME.cream, borderColor: `${THEME.gold}33` }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = `${THEME.gold}20`}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                    >
+                      <LogOut size={16} />
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                )}
+              </div>
             ) : (
               <button
                 onClick={() => closeAndNavigate('/login')}
@@ -255,6 +299,11 @@ const Header: React.FC = () => {
                       <span className="inline-block transition-transform group-hover:translate-x-2">Admin Dashboard</span>
                     </button>
                   )}
+                  {user && (
+                    <button onClick={() => closeAndNavigate('/profile')} className="block hover:text-white transition-colors text-left group">
+                      <span className="inline-block transition-transform group-hover:translate-x-2">My Profile</span>
+                    </button>
+                  )}
                   <button onClick={() => closeAndNavigate('/workshop')} className="block hover:text-white transition-colors text-left group">
                     <span className="inline-block transition-transform group-hover:translate-x-2">Upcoming Workshops</span>
                   </button>
@@ -273,6 +322,11 @@ const Header: React.FC = () => {
                   <button onClick={() => closeAndNavigate('/franchise')} className="block hover:text-white transition-colors text-left group">
                     <span className="inline-block transition-transform group-hover:translate-x-2">Franchise Enquiries</span>
                   </button>
+                  {user && (
+                    <button onClick={handleLogout} className="block hover:text-white transition-colors text-left group text-red-400 hover:text-red-300">
+                      <span className="inline-block transition-transform group-hover:translate-x-2">Logout</span>
+                    </button>
+                  )}
                 </div>
               </div>
 
