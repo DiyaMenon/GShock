@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import ArtCard from '../components/art/ArtCard';
 import FilterBar from '../components/art/FilterBar';
-import Sidebar from '@/components/art/SideBar';
+import Sidebar from '@/components/art/Sidebar';
 import FeaturedInterstitial from '../components/art/FeaturedInterstitial';
 import { ARTWORKS } from '../data/artworks';
 import { SortOption } from '../components/art/types';
