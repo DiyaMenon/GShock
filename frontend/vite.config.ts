@@ -13,13 +13,16 @@ export default defineConfig(({ mode }) => {
             "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
         },
         // 2. Add the Proxy so /api hits your Backend, not the Frontend
-        proxy: {
-          '/api': {
-            target: 'http://localhost:5001', // Change this to your actual backend port
-            changeOrigin: true,
-            secure: false,
+        // This is only used in development
+        ...(mode === 'development' && {
+          proxy: {
+            '/api': {
+              target: 'http://localhost:5001', // Change this to your actual backend port
+              changeOrigin: true,
+              secure: false,
+            },
           },
-        },
+        }),
       },
       plugins: [react()],
       define: {

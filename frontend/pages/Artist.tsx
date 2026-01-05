@@ -32,7 +32,8 @@ const Artist: React.FC = () => {
         setProfile(artistData);
 
         // 2. Fetch All Artworks
-        const artworksResponse = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL || 'http://localhost:5000/api'}/artworks`);
+        const API_URL = import.meta.env.VITE_BACKEND_API_URL || 'http://localhost:5001/api';
+        const artworksResponse = await axios.get(`${API_URL}/artworks`);
         
         // 3. Filter works by matching the Artist Name
         const relevantWorks = artworksResponse.data.filter((art: any) => {

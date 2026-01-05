@@ -12,16 +12,33 @@ const app = express();
 
 // CORS configuration for Firebase auth
 const corsOptions = {
-  origin: [
-    'http://localhost:5173', // Vite default dev port
-    'http://localhost:3000',
-    'http://127.0.0.1:5173',
-    'http://127.0.0.1:3000',
-  ],
+  origin: getAllowedOrigins(),
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
+
+// Get allowed origins based on environment
+function getAllowedOrigins() {
+  const allowedOrigins = [
+    'http://localhost:5173', // Vite default dev port
+    'http://localhost:3000',
+    'http://127.0.0.1:5173',
+    'http://127.0.0.1:3000',
+  ];
+
+  // Add production frontend URLs from environment variables
+  if (process.env.FRONTEND_URL) {
+    allowedOrigins.push(process.env.FRONTEND_URL);
+  }
+  
+  if (process.env.VERCEL_URL) {
+    // For Vercel deployments
+    allowedOrigins.push(`https://${process.env.VERCEL_URL}`);
+  }
+
+  return allowedOrigins;
+}
 
 // Middleware
 app.use(cors(corsOptions));
