@@ -3,7 +3,7 @@ const SearchHistory = require('../models/searchHistory.model');
 const Order = require('../models/order.model');
 const Product = require('../models/product.model');
 
-// Get or create default suggestions record
+// Helper: Ensure suggestion config exists
 async function ensureSuggestionsExist() {
   let suggestions = await Suggestion.findOne({});
   if (!suggestions) {
@@ -17,77 +17,102 @@ async function ensureSuggestionsExist() {
   return suggestions;
 }
 
-// Get personalized suggestions for a user (or defaults for guests)
+// Helper: Get default products efficiently (With Fallback)
+async function getDefaultProducts(suggestions) {
+  let products = [];
+  
+  // 1. Try to get Admin-defined defaults
+  if (suggestions.defaultSuggestions && suggestions.defaultSuggestions.length > 0) {
+    const defaultIds = suggestions.defaultSuggestions
+      .sort((a, b) => a.displayOrder - b.displayOrder)
+      .map((s) => s.productId);
+
+    const foundProducts = await Product.find({ _id: { $in: defaultIds } });
+    
+    // Map back to preserve order and filter nulls
+    products = defaultIds
+      .map(id => foundProducts.find(p => p._id.toString() === id.toString()))
+      .filter(p => p != null);
+  }
+
+  // 2. FALLBACK: If admin hasn't set defaults (or they were deleted), fetch any 3 products
+  if (products.length < 3) {
+    const randomProducts = await Product.find({ _id: { $nin: products.map(p => p._id) } }).limit(3 - products.length);
+    products = [...products, ...randomProducts];
+  }
+
+  return products;
+}
+
+// Main: Get suggestions for User/Guest
 async function getSuggestions(req, res) {
   try {
-    const userId = req.user?._id; // Optional for guests
+    const userId = req.user?._id;
     const suggestions = await ensureSuggestionsExist();
 
     let suggestedProducts = [];
 
-    // If user is authenticated
-    if (userId) {
-      // Check if user has manual suggestions
-      const userSuggestionsEntry = suggestions.userSuggestions.find(
-        (us) => us.userId.toString() === userId.toString()
-      );
+    // 1. Guest User: Return Defaults
+    if (!userId) {
+      suggestedProducts = await getDefaultProducts(suggestions);
+      return res.status(200).json({ suggestions: suggestedProducts.slice(0, 3), isPersonalized: false });
+    }
 
-      // If user has manual suggestions or auto is disabled
-      if (userSuggestionsEntry || !suggestions.enableAutoSuggestions) {
-        if (userSuggestionsEntry && userSuggestionsEntry.productIds.length > 0) {
-          suggestedProducts = await Product.find({
-            _id: { $in: userSuggestionsEntry.productIds },
-          });
-        } else {
-          // Fall back to default
-          const defaultIds = suggestions.defaultSuggestions
-            .sort((a, b) => a.displayOrder - b.displayOrder)
-            .map((s) => s.productId);
-          suggestedProducts = await Product.find({ _id: { $in: defaultIds } });
-        }
+    // 2. Authenticated User Logic
+    const userSuggestionsEntry = suggestions.userSuggestions.find(
+      (us) => us.userId.toString() === userId.toString()
+    );
+
+    // A. Manual Override exists OR Auto is disabled
+    if (userSuggestionsEntry || !suggestions.enableAutoSuggestions) {
+      if (userSuggestionsEntry && userSuggestionsEntry.productIds.length > 0) {
+        suggestedProducts = await Product.find({
+          _id: { $in: userSuggestionsEntry.productIds },
+        });
       } else {
-        // Auto suggestions enabled
-        if (suggestions.autoSuggestionType === 'orderHistory') {
+        suggestedProducts = await getDefaultProducts(suggestions);
+      }
+    } 
+    // B. Auto Suggestions
+    else {
+      switch (suggestions.autoSuggestionType) {
+        case 'orderHistory':
           suggestedProducts = await getOrderBasedSuggestions(userId);
-        } else if (suggestions.autoSuggestionType === 'searchHistory') {
+          break;
+        case 'searchHistory':
           suggestedProducts = await getSearchBasedSuggestions(userId);
-        } else if (suggestions.autoSuggestionType === 'related') {
+          break;
+        case 'related':
           suggestedProducts = await getRelatedProductSuggestions(userId);
-        } else if (suggestions.autoSuggestionType === 'hybrid') {
-          // Hybrid: combine multiple approaches
+          break;
+        case 'hybrid':
           suggestedProducts = await getHybridSuggestions(userId);
-        }
+          break;
+        default:
+          suggestedProducts = await getHybridSuggestions(userId);
+      }
 
-        // If auto suggestions didn't produce enough, fill with defaults
-        if (suggestedProducts.length < 3) {
-          const defaultIds = suggestions.defaultSuggestions
-            .sort((a, b) => a.displayOrder - b.displayOrder)
-            .map((s) => s.productId);
-          const defaultProducts = await Product.find({ _id: { $in: defaultIds } });
-          suggestedProducts = [...suggestedProducts];
-
-          for (const product of defaultProducts) {
-            if (
-              !suggestedProducts.find((p) => p._id.toString() === product._id.toString())
-            ) {
-              suggestedProducts.push(product);
-              if (suggestedProducts.length >= 3) break;
-            }
+      // Fill with defaults if not enough suggestions
+      if (suggestedProducts.length < 3) {
+        const defaults = await getDefaultProducts(suggestions);
+        
+        // Add defaults that aren't already in the list
+        for (const defProduct of defaults) {
+          if (suggestedProducts.length >= 3) break;
+          const alreadyExists = suggestedProducts.some(p => p._id.toString() === defProduct._id.toString());
+          if (!alreadyExists) {
+            suggestedProducts.push(defProduct);
           }
         }
       }
-    } else {
-      // Guest user - show default suggestions
-      const defaultIds = suggestions.defaultSuggestions
-        .sort((a, b) => a.displayOrder - b.displayOrder)
-        .map((s) => s.productId);
-      suggestedProducts = await Product.find({ _id: { $in: defaultIds } });
     }
 
-    // Return only first 3
+    // Filter out any potential nulls one last time and limit to 3
+    const finalSuggestions = suggestedProducts.filter(p => p != null).slice(0, 3);
+
     res.status(200).json({ 
-      suggestions: suggestedProducts.slice(0, 3),
-      isPersonalized: !!userId 
+      suggestions: finalSuggestions,
+      isPersonalized: true 
     });
   } catch (error) {
     console.error('Error getting suggestions:', error);
@@ -95,129 +120,121 @@ async function getSuggestions(req, res) {
   }
 }
 
-// Get suggestions based on order history
+// Strategy 1: Order History
 async function getOrderBasedSuggestions(userId) {
   try {
     const orders = await Order.find({ user: userId })
-      .populate('items.itemId')
       .sort({ createdAt: -1 })
-      .limit(5);
+      .limit(5)
+      .populate('items.itemId', 'category tags');
 
     const orderedProductIds = new Set();
+    const categories = new Set();
+    const tags = new Set();
+
     orders.forEach((order) => {
       order.items.forEach((item) => {
         if (item.itemType === 'menu' && item.itemId) {
           orderedProductIds.add(item.itemId._id.toString());
+          if (item.itemId.category) categories.add(item.itemId.category);
+          if (item.itemId.tags) item.itemId.tags.forEach(t => tags.add(t));
         }
       });
     });
 
     if (orderedProductIds.size === 0) return [];
 
-    // Find products with similar categories/tags
-    const orderedProducts = await Product.find({ _id: { $in: Array.from(orderedProductIds) } });
-    const categories = [...new Set(orderedProducts.map((p) => p.category))];
-    const tags = [...new Set(orderedProducts.flatMap((p) => p.tags || []))];
-
-    const suggestions = await Product.find({
-      $and: [
-        { _id: { $nin: Array.from(orderedProductIds) } },
-        {
-          $or: [{ category: { $in: categories } }, { tags: { $in: tags } }],
-        },
+    return await Product.find({
+      _id: { $nin: Array.from(orderedProductIds) },
+      $or: [
+        { category: { $in: Array.from(categories) } }, 
+        { tags: { $in: Array.from(tags) } }
       ],
-    })
-      .limit(3);
-
-    return suggestions;
+    }).limit(3);
   } catch (error) {
     console.error('Error in getOrderBasedSuggestions:', error);
     return [];
   }
 }
 
-// Get suggestions based on search history
+// Strategy 2: Search History
 async function getSearchBasedSuggestions(userId) {
   try {
     const searchHistory = await SearchHistory.find({ user: userId })
       .sort({ createdAt: -1 })
-      .limit(10);
+      .limit(10)
+      .lean();
+
+    if (!searchHistory.length) return [];
 
     const searchedTags = [...new Set(searchHistory.flatMap((sh) => sh.tags || []))];
-    const searchQueries = [...new Set(searchHistory.map((sh) => sh.searchQuery))];
+    const searchQueries = [...new Set(searchHistory.map((sh) => sh.searchQuery).filter(Boolean))];
 
     if (searchedTags.length === 0 && searchQueries.length === 0) return [];
 
-    const suggestions = await Product.find({
-      $or: [
-        { tags: { $in: searchedTags } },
-        { name: { $regex: searchQueries.join('|'), $options: 'i' } },
-        { description: { $regex: searchQueries.join('|'), $options: 'i' } },
-      ],
-    })
-      .limit(3);
+    const queryConditions = [];
+    if (searchedTags.length) queryConditions.push({ tags: { $in: searchedTags } });
+    if (searchQueries.length) {
+      const regex = searchQueries.join('|');
+      queryConditions.push({ name: { $regex: regex, $options: 'i' } });
+      queryConditions.push({ description: { $regex: regex, $options: 'i' } });
+    }
 
-    return suggestions;
+    return await Product.find({ $or: queryConditions }).limit(3);
   } catch (error) {
     console.error('Error in getSearchBasedSuggestions:', error);
     return [];
   }
 }
 
-// Get related product suggestions (complementary items)
+// Strategy 3: Related Products
 async function getRelatedProductSuggestions(userId) {
   try {
-    const orders = await Order.find({ user: userId })
-      .populate('items.itemId')
+    const lastOrder = await Order.findOne({ user: userId })
       .sort({ createdAt: -1 })
-      .limit(3);
+      .populate('items.itemId', 'category');
 
-    const lastOrderedProductIds = new Set();
-    if (orders.length > 0) {
-      orders[0].items.forEach((item) => {
-        if (item.itemType === 'menu' && item.itemId) {
-          lastOrderedProductIds.add(item.itemId._id.toString());
-        }
-      });
-    }
+    if (!lastOrder) return [];
 
-    if (lastOrderedProductIds.size === 0) return [];
+    const lastProductIds = new Set();
+    const categories = new Set();
 
-    // Find products in same category or with complementary tags
-    const lastProducts = await Product.find({ _id: { $in: Array.from(lastOrderedProductIds) } });
-    const categories = lastProducts.map((p) => p.category);
+    lastOrder.items.forEach((item) => {
+      if (item.itemType === 'menu' && item.itemId) {
+        lastProductIds.add(item.itemId._id.toString());
+        categories.add(item.itemId.category);
+      }
+    });
 
-    const suggestions = await Product.find({
-      $and: [
-        { _id: { $nin: Array.from(lastOrderedProductIds) } },
-        { category: { $in: categories } },
-      ],
-    })
-      .limit(3);
-
-    return suggestions;
+    return await Product.find({
+      _id: { $nin: Array.from(lastProductIds) },
+      category: { $in: Array.from(categories) },
+    }).limit(3);
   } catch (error) {
     console.error('Error in getRelatedProductSuggestions:', error);
     return [];
   }
 }
 
-// Hybrid: combine multiple approaches
+// Strategy 4: Hybrid
 async function getHybridSuggestions(userId) {
   try {
-    const orderBased = await getOrderBasedSuggestions(userId);
-    const searchBased = await getSearchBasedSuggestions(userId);
-    const related = await getRelatedProductSuggestions(userId);
+    const [orderBased, searchBased, related] = await Promise.all([
+      getOrderBasedSuggestions(userId),
+      getSearchBasedSuggestions(userId),
+      getRelatedProductSuggestions(userId)
+    ]);
 
-    // Combine and deduplicate
-    const allSuggestions = [...orderBased, ...searchBased, ...related];
     const uniqueMap = new Map();
-
-    allSuggestions.forEach((product) => {
-      if (!uniqueMap.has(product._id.toString())) {
-        uniqueMap.set(product._id.toString(), product);
+    const addProduct = (p) => {
+      if (p && p._id && !uniqueMap.has(p._id.toString())) {
+        uniqueMap.set(p._id.toString(), p);
       }
-    });
+    };
+
+    orderBased.forEach(addProduct);
+    searchBased.forEach(addProduct);
+    related.forEach(addProduct);
 
     return Array.from(uniqueMap.values()).slice(0, 3);
   } catch (error) {
@@ -230,16 +247,10 @@ async function getHybridSuggestions(userId) {
 async function getDefaultSuggestions(req, res) {
   try {
     const suggestions = await ensureSuggestionsExist();
-    const products = await Product.find({
-      _id: { $in: suggestions.defaultSuggestions.map((s) => s.productId) },
-    });
-
-    const sorted = suggestions.defaultSuggestions
-      .sort((a, b) => a.displayOrder - b.displayOrder)
-      .map((s) => products.find((p) => p._id.toString() === s.productId.toString()));
+    const sortedProducts = await getDefaultProducts(suggestions);
 
     res.status(200).json({
-      suggestions: sorted,
+      suggestions: sortedProducts,
       settings: {
         enableAutoSuggestions: suggestions.enableAutoSuggestions,
         autoSuggestionType: suggestions.autoSuggestionType,
@@ -254,20 +265,16 @@ async function getDefaultSuggestions(req, res) {
 async function updateDefaultSuggestions(req, res) {
   try {
     const { productIds } = req.body;
-
     if (!Array.isArray(productIds) || productIds.length < 3) {
       return res.status(400).json({ message: 'Exactly 3 products must be selected' });
     }
 
     const suggestions = await ensureSuggestionsExist();
-
     suggestions.defaultSuggestions = productIds.map((id, index) => ({
       productId: id,
       displayOrder: index,
     }));
-
     await suggestions.save();
-
     res.status(200).json(suggestions);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error: error.message });
@@ -278,17 +285,19 @@ async function updateDefaultSuggestions(req, res) {
 async function getAllUserSuggestions(req, res) {
   try {
     const suggestions = await ensureSuggestionsExist();
-    const userSuggestions = await Promise.all(
-      suggestions.userSuggestions.map(async (us) => {
-        const products = await Product.find({ _id: { $in: us.productIds } });
-        return {
+    const userSuggestions = [];
+    
+    for (const us of suggestions.userSuggestions) {
+      const products = await Product.find({ _id: { $in: us.productIds } });
+      if (products.length > 0) {
+        userSuggestions.push({
           userId: us.userId,
           products,
           type: us.type,
           createdAt: us.createdAt,
-        };
-      })
-    );
+        });
+      }
+    }
 
     res.status(200).json(userSuggestions);
   } catch (error) {
@@ -306,13 +315,9 @@ async function setUserSuggestions(req, res) {
     }
 
     const suggestions = await ensureSuggestionsExist();
-
-    // Remove existing suggestions for this user
     suggestions.userSuggestions = suggestions.userSuggestions.filter(
       (us) => us.userId.toString() !== userId
     );
-
-    // Add new suggestions
     suggestions.userSuggestions.push({
       userId,
       productIds,
@@ -321,48 +326,37 @@ async function setUserSuggestions(req, res) {
     });
 
     await suggestions.save();
-
     res.status(200).json(suggestions);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 }
 
-// Admin: Remove user suggestions (revert to auto)
+// Admin: Remove user suggestions
 async function removeUserSuggestions(req, res) {
   try {
     const { userId } = req.params;
-
     const suggestions = await ensureSuggestionsExist();
     suggestions.userSuggestions = suggestions.userSuggestions.filter(
       (us) => us.userId.toString() !== userId
     );
-
     await suggestions.save();
-
     res.status(200).json({ message: 'User suggestions removed' });
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 }
 
-// Admin: Update suggestion settings
+// Admin: Update settings
 async function updateSuggestionSettings(req, res) {
   try {
     const { enableAutoSuggestions, autoSuggestionType } = req.body;
-
     const suggestions = await ensureSuggestionsExist();
 
-    if (enableAutoSuggestions !== undefined) {
-      suggestions.enableAutoSuggestions = enableAutoSuggestions;
-    }
-
-    if (autoSuggestionType !== undefined) {
-      suggestions.autoSuggestionType = autoSuggestionType;
-    }
+    if (enableAutoSuggestions !== undefined) suggestions.enableAutoSuggestions = enableAutoSuggestions;
+    if (autoSuggestionType !== undefined) suggestions.autoSuggestionType = autoSuggestionType;
 
     await suggestions.save();
-
     res.status(200).json(suggestions);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error: error.message });

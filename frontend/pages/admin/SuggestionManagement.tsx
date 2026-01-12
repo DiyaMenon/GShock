@@ -53,7 +53,7 @@ const SuggestionManagement: React.FC = () => {
     fetchData();
   }, []);
 
-  const fetchData = async () => {
+const fetchData = async () => {
     try {
       setLoading(true);
       const [productsRes, usersRes, defaultRes, userSuggsRes] = await Promise.all([
@@ -71,10 +71,17 @@ const SuggestionManagement: React.FC = () => {
 
       setAllProducts(productsRes.data || []);
       setAllUsers(usersRes.data || []);
-      setDefaultSuggestions(defaultRes.data.suggestions || []);
+      
+      // FIX: Filter out null/undefined products before mapping
+      const validSuggestions = (defaultRes.data.suggestions || []).filter((p: Product | null) => p && p._id);
+      
+      setDefaultSuggestions(validSuggestions);
       setAutoEnabled(defaultRes.data.settings.enableAutoSuggestions);
       setAutoType(defaultRes.data.settings.autoSuggestionType);
-      setSelectedDefaultProducts((defaultRes.data.suggestions || []).map((p: Product) => p._id));
+      
+      // FIX: Use the filtered array here
+      setSelectedDefaultProducts(validSuggestions.map((p: Product) => p._id));
+      
       setUserSuggestions(userSuggsRes.data || []);
       setError('');
     } catch (err) {
