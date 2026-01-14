@@ -1,7 +1,7 @@
-// Adjust the BASE_URL to match your backend (e.g., http://localhost:5000)
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+// frontend/services/api.js
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:10000';
 
-export const sendChatMessage = async (message, token = null) => {
+export const sendChatMessage = async (message, token = null, history = []) => {
   const headers = {
     'Content-Type': 'application/json',
   };
@@ -13,7 +13,8 @@ export const sendChatMessage = async (message, token = null) => {
   const response = await fetch(`${BASE_URL}/api/chat`, {
     method: 'POST',
     headers: headers,
-    body: JSON.stringify({ message }),
+    // Sending message AND history
+    body: JSON.stringify({ message, history }),
   });
 
   if (!response.ok) {

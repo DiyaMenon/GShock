@@ -12,57 +12,44 @@ const SendIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
 );
 
-interface Message {
-  sender: 'user' | 'bot';
-  text: string;
+// --- Types ---
+interface RecommendationData {
+  itemName: string;
+  price: number;
+  imageUrl: string;
 }
 
-// --- Helper: Product Card Parser ---
-// Detects {{REC:ImageURL|Name|Price}} and turns it into a UI Card
-const renderMessageContent = (text: string) => {
-  // Regex to capture the {{REC:...}} pattern
-  // Group 1: Text before
-  // Group 2: The Tag content (Url|Name|Price)
-  // Group 3: Remaining text
-  const parts = text.split(/({{REC:.*?}})/g);
+interface Message {
+  sender: 'user' | 'bot';
+  type?: 'text' | 'recommendation';
+  text: string;
+  data?: RecommendationData;
+}
 
-  return parts.map((part, index) => {
-    if (part.startsWith('{{REC:') && part.endsWith('}}')) {
-      // Clean the tag: Remove {{REC: and }}
-      const content = part.slice(6, -2);
-      const [imgUrl, name, price] = content.split('|');
-
-      return (
-        <div key={index} className="mt-3 mb-1 bg-white rounded-xl overflow-hidden shadow-md border border-gray-100 max-w-[220px] transform transition-all hover:scale-[1.02]">
-          <div className="h-32 overflow-hidden bg-gray-100">
-            <img 
-              src={imgUrl} 
-              alt={name} 
-              className="w-full h-full object-cover"
-              onError={(e) => (e.currentTarget.src = 'https://via.placeholder.com/200x150?text=No+Image')}
-            />
-          </div>
-          <div className="p-3">
-            <h4 className="font-bold text-[#3E2723] text-sm truncate" title={name}>{name}</h4>
-            <div className="flex justify-between items-center mt-2">
-              <span className="text-[#D4AF37] font-bold text-sm">₹{price}</span>
-              <button className="text-[10px] bg-[#3E2723] text-white px-2 py-1 rounded-full hover:bg-[#5D4037]">
-                View Item
-              </button>
-            </div>
-          </div>
-        </div>
-      );
-    }
-    // Render regular text
-    return <span key={index} className="whitespace-pre-wrap">{part}</span>;
-  });
-};
+// --- Component: Product Card ---
+const ProductCard = ({ data }: { data: RecommendationData }) => (
+  <div className="mt-3 mb-2 bg-white rounded-xl overflow-hidden shadow-md border border-gray-100 w-full max-w-[240px]">
+    <div className="h-32 overflow-hidden bg-gray-100 relative">
+      <img 
+        src={data.imageUrl} 
+        alt={data.itemName} 
+        className="w-full h-full object-cover"
+        onError={(e) => (e.currentTarget.src = 'https://via.placeholder.com/200x150?text=No+Image')}
+      />
+      <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-md px-2 py-1 rounded-md shadow-sm">
+         <span className="text-[#D4AF37] font-bold text-xs">₹{data.price}</span>
+      </div>
+    </div>
+    <div className="p-3">
+      <h4 className="font-bold text-[#3E2723] text-sm truncate" title={data.itemName}>{data.itemName}</h4>
+    </div>
+  </div>
+);
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { sender: 'bot', text: 'Hello! I am your virtual barista. Looking for a coffee recommendation?' }
+    { sender: 'bot', type: 'text', text: 'Hello! I am your G-Shock Barista. What can I get for you?' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -79,16 +66,34 @@ const Chatbot = () => {
   const handleSend = async () => {
     if (!input.trim()) return;
 
-    const userMessage = input;
+    const userText = input;
+    setMessages(prev => [...prev, { sender: 'user', text: userText }]);
     setInput('');
-    setMessages(prev => [...prev, { sender: 'user', text: userMessage }]);
     setIsLoading(true);
 
     try {
-      const token = localStorage.getItem('token'); 
-      const data = await sendChatMessage(userMessage, token);
-      setMessages(prev => [...prev, { sender: 'bot', text: data.response }]);
+      const token = localStorage.getItem('token');
+      
+      // 1. Prepare History (Last 5 messages)
+      const historyPayload = messages.slice(-5).map(m => ({
+        role: m.sender === 'user' ? 'user' : 'model',
+        parts: [{ text: m.text }]
+      }));
+
+      // 2. Call API (Sending text + history)
+      const response = await sendChatMessage(userText, token, historyPayload);
+
+      // 3. Handle Structure Response
+      // Backend returns { type, text, data }
+      setMessages(prev => [...prev, { 
+        sender: 'bot', 
+        type: response.type, 
+        text: response.text, 
+        data: response.data 
+      }]);
+
     } catch (error) {
+      console.error(error);
       setMessages(prev => [...prev, { sender: 'bot', text: 'Sorry, I am having trouble connecting.' }]);
     } finally {
       setIsLoading(false);
@@ -127,33 +132,27 @@ const Chatbot = () => {
             {messages.map((msg, index) => (
               <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
                 {msg.sender === 'bot' && (
-                  <div className="w-6 h-6 rounded-full bg-[#3E2723] text-[#D4AF37] flex items-center justify-center text-xs mr-2 mt-1 flex-shrink-0">
-                    G
-                  </div>
+                  <div className="w-6 h-6 rounded-full bg-[#3E2723] text-[#D4AF37] flex items-center justify-center text-xs mr-2 mt-1 flex-shrink-0">G</div>
                 )}
-                <div 
-                  className={`max-w-[85%] p-3 rounded-2xl text-sm shadow-sm ${
+                <div className={`max-w-[85%] flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}>
+                  
+                  {/* Text Bubble */}
+                  <div className={`p-3 rounded-2xl text-sm shadow-sm ${
                     msg.sender === 'user' 
                       ? 'bg-[#3E2723] text-white rounded-tr-none' 
                       : 'bg-white text-gray-800 border border-gray-100 rounded-tl-none'
-                  }`}
-                >
-                  {renderMessageContent(msg.text)}
+                  }`}>
+                    {msg.text}
+                  </div>
+
+                  {/* Recommendation Card */}
+                  {msg.type === 'recommendation' && msg.data && (
+                    <ProductCard data={msg.data} />
+                  )}
+
                 </div>
               </div>
             ))}
-            
-            {isLoading && (
-              <div className="flex justify-start">
-                 <div className="w-6 h-6 rounded-full bg-[#3E2723] text-[#D4AF37] flex items-center justify-center text-xs mr-2 mt-1 flex-shrink-0">G</div>
-                <div className="bg-white p-3 rounded-2xl rounded-tl-none border border-gray-100 shadow-sm flex gap-1 items-center">
-                  <span className="text-xs text-gray-400 mr-2">Brewing answer...</span>
-                  <div className="w-1.5 h-1.5 bg-[#D4AF37] rounded-full animate-bounce"></div>
-                  <div className="w-1.5 h-1.5 bg-[#D4AF37] rounded-full animate-bounce delay-75"></div>
-                  <div className="w-1.5 h-1.5 bg-[#D4AF37] rounded-full animate-bounce delay-150"></div>
-                </div>
-              </div>
-            )}
             <div ref={messagesEndRef} />
           </div>
 
@@ -176,9 +175,6 @@ const Chatbot = () => {
                 <SendIcon />
               </button>
             </div>
-            <div className="text-center mt-1">
-               <span className="text-[9px] text-gray-400">Powered by G-Shock AI</span>
-            </div>
           </div>
         </div>
       )}
@@ -189,13 +185,7 @@ const Chatbot = () => {
           onClick={() => setIsOpen(true)}
           className="group relative flex items-center justify-center bg-[#3E2723] text-[#D4AF37] w-14 h-14 rounded-full shadow-lg hover:shadow-2xl hover:scale-110 transition-all duration-300"
         >
-          <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white"></span>
           <MessageIcon />
-          
-          {/* Tooltip */}
-          <span className="absolute right-16 bg-white text-[#3E2723] text-xs font-bold px-3 py-1 rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-            Chat with us!
-          </span>
         </button>
       )}
     </div>
