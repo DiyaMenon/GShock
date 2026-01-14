@@ -41,6 +41,15 @@ const CafeInterior: React.FC<CafeInteriorProps> = ({ onAction }) => {
     for (let i = -12; i < 10; i += 2.2) arr.push(i);
     return arr;
   }, []);
+  const vinesPerBeam = useMemo(() => {
+  return beams.map(() =>
+    Array.from({ length: 2 }).map(() => ({
+      x: (Math.random() - 0.5) * 18,
+      length: 2.5 + Math.random() * 4.5,
+    }))
+  );
+}, [beams]);
+
 
   const colors = {
     wall: "#f2efea",
