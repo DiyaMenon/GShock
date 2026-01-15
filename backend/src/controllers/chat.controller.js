@@ -2,69 +2,117 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const Interaction = require('../models/interaction.model');
 const { getSystemContext } = require('../utils/chatbotContext');
 
-// Initialize Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+// --- Define Tools ---
+const tools = [
+  {
+    functionDeclarations: [
+      {
+        name: "recommend_item",
+        description: "Display a visual card for a specific coffee, workshop, or artwork.",
+        parameters: {
+          type: "OBJECT",
+          properties: {
+            itemName: { type: "STRING", description: "The exact name of the item from the inventory" },
+            price: { type: "NUMBER", description: "The price of the item" },
+            imageUrl: { type: "STRING", description: "The image URL of the item" },
+            reason: { type: "STRING", description: "A 1-sentence reason why you are showing this card." }
+          },
+          required: ["itemName", "price", "imageUrl", "reason"]
+        }
+      }
+    ]
+  }
+];
 
 async function chatWithAI(req, res) {
   try {
-    const { message } = req.body;
-    const userId = req.user ? req.user._id : null; // Handle both logged-in and guest users
+    let { message, history } = req.body; 
+    const userId = req.user ? req.user._id : null;
 
-    if (!message) {
-      return res.status(400).json({ message: 'Message is required' });
+    // Sanitize History
+    if (Array.isArray(history) && history.length > 0) {
+      while (history.length > 0 && history[0].role === 'model') {
+        history.shift(); 
+      }
     }
 
-    // 1. Get Live Data
     const liveContext = await getSystemContext();
 
-    // 2. Define the AI Persona
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-    
-    const prompt = `
-      system: You are a Virtual Barista.
-      YOUR KNOWLEDGE BASE:
+    // --- 🧠 THE BRAIN UPGRADE ---
+    // We give it a specific persona and strict instructions on how to behave.
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-flash-latest", 
+      tools: tools,
+      systemInstruction: `
+      ROLE: You are 'G-Shock', the expert Barista and Curator at Rabuste Coffee.
+      
+      TONE: Warm, knowledgeable, sophisticated, but brief. Like a cool coffee expert.
+      
+      DATA SOURCE:
       ${liveContext}
 
-      RULES:
-      1. Be helpful and concise.
-      2. CRITICAL: When you recommend a specific item, you MUST append a special tag at the end of the sentence containing the Image, Name, and Price.
+      INSTRUCTIONS:
+      1. **Check the Date:** Always look at 'TODAY'S DATE' in the data before answering "When is the next workshop?".
+      2. **Be Specific:** If asked about "rate" or "price", give the exact price in ₹.
+      3. **Use the Tool:** If you mention a specific product, workshop, or painting that is IN STOCK, you MUST use the 'recommend_item' tool to show it.
+      4. **No Hallucinations:** Do not make up items. Only sell what is on the list.
+      5. **Short Answers:** Keep text responses under 2 sentences unless explaining a complex flavor.
       
-      FORMAT: {{REC:ImageURL|Name|Price}}
+      EXAMPLE INTERACTION:
+      User: "What's the nearest workshop?"
+      You: (Checks date) "The 'Latte Art Basics' is coming up on Jan 12th. It's a great start for beginners." (Calls Tool)
+      `
+    });
+
+    const chat = model.startChat({
+      history: history || [],
+    });
+
+    const result = await chat.sendMessage(message);
+    const response = await result.response;
+    const functionCalls = response.functionCalls ? response.functionCalls() : [];
+
+    let finalResponse;
+
+    if (functionCalls && functionCalls.length > 0) {
+      const call = functionCalls[0];
+      const args = call.args;
       
-      Example: "I highly recommend the Ethiopian Yirgacheffe, it has a lovely floral aroma. {{REC:https://example.com/coffee.jpg|Ethiopian Yirgacheffe|350}}"
-      
-      3. Only use the image URLs and Prices provided in the knowledge base.
-      
-      user: ${message}
-    `;
+      finalResponse = {
+        type: 'recommendation',
+        text: args.reason, // This ensures the text bubble matches the card
+        data: {
+          itemName: args.itemName,
+          price: args.price,
+          imageUrl: args.imageUrl
+        }
+      };
+    } else {
+      finalResponse = {
+        type: 'text',
+        text: response.text(),
+        data: null
+      };
+    }
 
-
-
-    // 3. Generate Response
-    const result = await model.generateContent(prompt);
-    const aiResponse = result.response.text();
-
-    // 4. Save Interaction to Database (Using your existing Interaction model)
-    // This satisfies the "Learn what users ask" goal in your model file
-    await Interaction.create({
+    // Log Interaction
+    Interaction.create({
       user: userId,
       query: message,
-      intent: 'general_chat', 
-      response: aiResponse,
-    });
+      intent: finalResponse.type,
+      response: finalResponse.text
+    }).catch(err => console.log('Log Error:', err.message));
 
-    // 5. Send back to frontend
-    res.status(200).json({ 
-      response: aiResponse,
-      message: 'Success' 
-    });
+    res.status(200).json(finalResponse);
 
   } catch (error) {
-    console.error('Chatbot Error:', error);
-    res.status(500).json({ 
-      message: 'I am taking a quick coffee break. Please try again in a moment.',
-      error: error.message 
-    });
+    console.error('❌ Chat Error:', error.message);
+    if (error.message.includes('429')) {
+      return res.status(429).json({ type: 'text', text: "Whoa, huge line at the counter! Give me 30 seconds." });
+    }
+    res.status(500).json({ type: 'text', text: "My espresso machine needs a reboot. Try again in a sec." });
   }
 }
 

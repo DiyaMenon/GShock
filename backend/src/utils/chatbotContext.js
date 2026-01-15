@@ -1,59 +1,64 @@
-const Product = require('../models/product.model'); // Switching to the real Product model
+const Product = require('../models/product.model');
 const Workshop = require('../models/workshop.model');
 const Artwork = require('../models/artwork.model');
 
+// Cache Settings
+let cachedContext = null;
+let lastFetchTime = 0;
+const CACHE_TTL = 10 * 60 * 1000; // 10 Minutes
+
 async function getSystemContext() {
   try {
-    // 1. Fetch Real Products from your Backend
-    // We only select items that are 'In Stock'
-    const products = await Product.find({ stockStatus: 'In Stock' })
-      .select('name category price tastingNotes tags description imageUrl')
-      .lean();
+    const now = Date.now();
+    // Use cache if fresh
+    if (cachedContext && (now - lastFetchTime < CACHE_TTL)) {
+      return cachedContext;
+    }
 
-    // 2. Fetch Approved Workshops
-    const workshops = await Workshop.find({ status: 'Approved', isActive: true })
-      .select('title date category price description primaryImageUrl')
-      .lean();
+    console.log("🔄 Refreshing Chatbot Context...");
 
-    // 3. Fetch Available Artworks
-    const artworks = await Artwork.find({ status: 'Available' })
-      .select('title artistName price tastingNotes tags primaryImageUrl')
-      .lean();
+    const [products, workshops, artworks] = await Promise.all([
+      Product.find({ stockStatus: 'In Stock' }).lean(),
+      Workshop.find({ status: 'Approved', isActive: true }).sort({ date: 1 }).lean(), // Sorted by date
+      Artwork.find({ status: 'Available' }).lean()
+    ]);
 
-    console.log(`🤖 Live Context Loaded: ${products.length} Products, ${workshops.length} Workshops, ${artworks.length} Artworks`);
+    // --- 1. CRITICAL: Add Date Awareness ---
+    // The bot needs to know "Today" to calculate "Next Week" or "Upcoming"
+    const todayStr = new Date().toDateString();
+    let context = `SYSTEM CONTEXT:\n- TODAY'S DATE: ${todayStr}\n- LOCATION: Rabuste Coffee (Ahmedabad, Gujarat)\n\nINVENTORY DATA:\n`;
 
-    let context = "Here is the LIVE inventory from the database. Use ONLY this data.\n\n";
-
-    // --- Format Products (Coffee/Food) ---
+    // --- 2. Format Menu ---
     if (products.length > 0) {
-      context += "=== ☕ CURRENT MENU (From Inventory) ===\n";
+      context += "=== ☕ CAFE MENU ===\n";
       products.forEach(p => {
-        // AI Note: We explicitly attach the Image URL so the bot can display it
-        // Using 'description' or 'tastingNotes' based on what's available
-        const info = p.tastingNotes || p.description;
-        context += `- ${p.name} (${p.category}) | ₹${p.price} | Info: ${info} | Image: ${p.imageUrl || ''}\n`;
+        // Add more details for better answers
+        const info = [p.tastingNotes, p.description].filter(Boolean).join('. ');
+        context += `- ITEM: "${p.name}" | TYPE: ${p.category} | PRICE: ₹${p.price} | FLAVOR: ${info} | IMG: ${p.imageUrl}\n`;
       });
-    } else {
-      context += "=== MENU ===\n(No products currently in stock)\n";
     }
 
-    // --- Format Workshops ---
+    // --- 3. Format Workshops ---
     if (workshops.length > 0) {
-      context += "\n=== 🎓 WORKSHOPS ===\n";
+      context += "\n=== 🎓 WORKSHOPS SCHEDULE ===\n";
       workshops.forEach(w => {
-        context += `- ${w.title} | Date: ${new Date(w.date).toDateString()} | ₹${w.price} | Image: ${w.primaryImageUrl || ''}\n`;
+        const d = new Date(w.date);
+        context += `- WORKSHOP: "${w.title}" | DATE: ${d.toDateString()} | PRICE: ₹${w.price} | DETAILS: ${w.description} | IMG: ${w.primaryImageUrl}\n`;
       });
     }
 
-    // --- Format Art ---
+    // --- 4. Format Art ---
     if (artworks.length > 0) {
       context += "\n=== 🎨 ART GALLERY ===\n";
       artworks.forEach(a => {
-        context += `- "${a.title}" by ${a.artistName} | ₹${a.price} | Style: ${a.tastingNotes} | Image: ${a.primaryImageUrl || ''}\n`;
+        context += `- ART: "${a.title}" by ${a.artistName} | PRICE: ₹${a.price} | STYLE: ${a.tastingNotes} | IMG: ${a.primaryImageUrl}\n`;
       });
     }
 
+    cachedContext = context;
+    lastFetchTime = now;
     return context;
+
   } catch (error) {
     console.error("❌ Context Error:", error);
     return "Error loading inventory.";
