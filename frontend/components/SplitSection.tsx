@@ -30,7 +30,7 @@ const SplitSection: React.FC<SplitSectionProps> = ({
   const bgColor = isDark ? 'bg-[#3E2723]' : backgroundColor;
 
   const MediaComponent = () => (
-    <div className="relative w-full h-[50vh] md:h-[85vh] overflow-hidden group rounded-2xl md:rounded-3xl">
+    <div className="relative w-full h-[40vh] sm:h-[50vh] md:h-[85vh] overflow-hidden group rounded-xl md:rounded-2xl md:rounded-3xl">
       {mediaType === 'video' ? (
         <video
           autoPlay
@@ -55,24 +55,24 @@ const SplitSection: React.FC<SplitSectionProps> = ({
   const ContentComponent = () => (
     <div className={`flex flex-col justify-center ${textColor}`}>
       {svgTitle ? (
-        <img src={svgTitle} alt={title} className="w-full max-w-md mb-8" />
+        <img src={svgTitle} alt={title} className="w-full max-w-xs sm:max-w-md mb-6 sm:mb-8" />
       ) : (
-        <h2 className="text-4xl md:text-6xl font-oswald font-bold uppercase mb-6 leading-tight">
+        <h2 className="text-2xl sm:text-4xl md:text-6xl font-oswald font-bold uppercase mb-4 sm:mb-6 leading-tight">
           {title}
         </h2>
       )}
 
-      <p className="text-base md:text-lg leading-relaxed mb-8 max-w-xl opacity-90">
+      <p className="text-sm sm:text-base md:text-lg leading-relaxed mb-6 sm:mb-8 max-w-xl opacity-90">
         {text}
       </p>
 
       <a
         href={ctaLink}
-        className={`inline-block w-fit border-2 ${
+        className={`inline-block w-fit border-2 px-6 sm:px-8 py-2 sm:py-3 font-bold uppercase tracking-widest text-xs sm:text-sm transition-colors duration-300 ${
           isDark
             ? 'border-cream text-cream hover:bg-cream hover:text-[#3E2723]'
             : 'border-[#3E2723] text-[#3E2723] hover:bg-[#3E2723] hover:text-cream'
-        } px-8 py-3 font-bold uppercase tracking-widest transition-colors duration-300`}
+        }`}
       >
         {ctaText}
       </a>
@@ -82,8 +82,8 @@ const SplitSection: React.FC<SplitSectionProps> = ({
   return (
     <section className={`w-full ${bgColor} pt-6 pb-6 md:pt-10 md:pb-10`}>
       {/* FLUID CONTAINER — SAME AS DoubleSplit */}
-      <div className="mx-auto w-full px-4 sm:px-6 md:px-10 xl:px-16 2xl:px-24">
-        <div className="flex flex-col md:flex-row items-stretch gap-8 md:gap-12">
+      <div className="mx-auto w-full px-3 sm:px-6 md:px-10 xl:px-16 2xl:px-24">
+        <div className="flex flex-col md:flex-row items-stretch gap-6 sm:gap-8 md:gap-12">
           {/* MEDIA */}
           <div
             className={`w-full md:w-1/2 ${

@@ -93,12 +93,12 @@ const Header: React.FC = () => {
         }`}
         style={{ backgroundColor: THEME.espresso }}
       >
-        <div className="container mx-auto px-6 md:px-12 flex justify-between items-center">
+        <div className="container mx-auto px-3 sm:px-6 md:px-12 flex justify-between items-center">
           
           {/* LOGO */}
           <button
           onClick={() => closeAndNavigate('/')}
-          className="flex items-center gap-3 md:gap-4 transition-opacity duration-300 hover:opacity-80"
+          className="flex items-center gap-2 sm:gap-3 md:gap-4 transition-opacity duration-300 hover:opacity-80"
           aria-label="Rabuste Home"
         >
 
@@ -107,14 +107,14 @@ const Header: React.FC = () => {
             src="https://ik.imagekit.io/btpcp9tvm/GShock/Rabuste%20logo.png"
             alt="Rabuste Wordmark"
             loading="eager"
-            className="h-8 md:h-10 object-contain"
+            className="h-6 sm:h-8 md:h-10 object-contain"
           />
         </button>
 
 
 
           {/* RIGHT CONTROLS */}
-          <div className="flex items-center gap-4 md:gap-8">
+          <div className="flex items-center gap-2 sm:gap-4 md:gap-8">
             {/* Desktop Links */}
             <button
               onClick={() => closeAndNavigate('/visit-cafe')}
@@ -258,20 +258,20 @@ const Header: React.FC = () => {
       <div
         className={`fixed inset-0 z-40 transition-all duration-700 ease-[cubic-bezier(0.85,0,0.15,1)] ${
           isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        } overflow-y-auto pt-24`}
+        } overflow-y-auto pt-20 md:pt-24`}
         style={{ backgroundColor: THEME.espresso, color: THEME.cream }}
       >
-        <div className="container mx-auto px-6 md:px-12 py-12 min-h-screen flex flex-col">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
+        <div className="container mx-auto px-4 sm:px-6 md:px-12 py-8 md:py-12 min-h-screen flex flex-col">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 lg:gap-24">
             
             {/* NAV SECTIONS */}
-            <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-12">
+            <div className="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
               {navItems.map((item, idx) => (
                 <div key={item.name} 
                      className={`group transform transition-all duration-700 ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
                      style={{ transitionDelay: `${idx * 75}ms` }}
                 >
-                  <h3 className="text-3xl md:text-5xl font-oswald font-bold mb-6 transition-all cursor-default uppercase opacity-40 group-hover:opacity-100"
+                  <h3 className="text-2xl sm:text-3xl md:text-5xl font-oswald font-bold mb-4 sm:mb-6 transition-all cursor-default uppercase opacity-40 group-hover:opacity-100"
                       style={{ color: THEME.cream }}>
                     {item.name}
                   </h3>
@@ -283,7 +283,7 @@ const Header: React.FC = () => {
                         <li key={link.label}>
                           <button
                             onClick={() => closeAndNavigate(link.path)}
-                            className="text-lg md:text-xl font-sans transition-colors text-left font-light hover:translate-x-1 duration-300"
+                            className="text-base sm:text-lg md:text-xl font-sans transition-colors text-left font-light hover:translate-x-1 duration-300"
                             style={{ color: THEME.cream }}
                             onMouseEnter={(e) => e.currentTarget.style.color = THEME.gold}
                             onMouseLeave={(e) => e.currentTarget.style.color = THEME.cream}
@@ -299,15 +299,15 @@ const Header: React.FC = () => {
             </div>
 
             {/* SIDE INFO */}
-            <div className={`lg:col-span-4 flex flex-col gap-12 transition-all duration-1000 delay-300 ${isMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'}`}
+            <div className={`md:col-span-4 flex flex-col gap-8 sm:gap-12 transition-all duration-1000 delay-300 ${isMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'}`}
                  style={{ color: `${THEME.cream}99` }}>
               
               <div>
-                <h4 className="font-oswald uppercase tracking-[0.2em] text-sm mb-6 border-b pb-2"
+                <h4 className="font-oswald uppercase tracking-[0.2em] text-xs sm:text-sm mb-4 sm:mb-6 border-b pb-2"
                     style={{ color: THEME.gold, borderColor: `${THEME.gold}33` }}>
                   The Experience
                 </h4>
-                <div className="space-y-4 font-sans text-lg">
+                <div className="space-y-4 font-sans text-base sm:text-lg">
                   <button onClick={() => closeAndNavigate('/visit-cafe')} className="block hover:text-white transition-colors text-left group">
                     <span className="inline-block transition-transform group-hover:translate-x-2">Visit the Café</span>
                   </button>
@@ -334,11 +334,11 @@ const Header: React.FC = () => {
               </div>
 
               <div>
-                <h4 className="font-oswald uppercase tracking-[0.2em] text-sm mb-6 border-b pb-2"
+                <h4 className="font-oswald uppercase tracking-[0.2em] text-xs sm:text-sm mb-4 sm:mb-6 border-b pb-2"
                     style={{ color: THEME.gold, borderColor: `${THEME.gold}33` }}>
                   Connect
                 </h4>
-                <div className="space-y-4 font-sans text-lg">
+                <div className="space-y-4 font-sans text-base sm:text-lg">
                   <a href="mailto:hello@rabuste.coffee" className="block hover:text-white transition-colors group">
                      <span className="inline-block transition-transform group-hover:translate-x-2">hello@rabuste.coffee</span>
                   </a>
@@ -357,7 +357,7 @@ const Header: React.FC = () => {
                  <div className="flex gap-4">
                     {['IG', 'TW', 'FB'].map((social) => (
                       <div key={social} 
-                           className="w-12 h-12 rounded-full border flex items-center justify-center transition-all cursor-pointer hover:-translate-y-1"
+                           className="w-10 sm:w-12 h-10 sm:h-12 rounded-full border flex items-center justify-center transition-all cursor-pointer hover:-translate-y-1"
                            style={{ borderColor: `${THEME.cream}33`, color: THEME.cream }}
                            onMouseEnter={(e) => {
                              e.currentTarget.style.borderColor = THEME.gold;
@@ -378,8 +378,8 @@ const Header: React.FC = () => {
             </div>
           </div>
 
-          <div className="mt-auto pt-24">
-            <p className="text-5xl md:text-9xl font-oswald uppercase leading-none tracking-tighter select-none opacity-10"
+          <div className="mt-auto pt-12 md:pt-24">
+            <p className="text-3xl sm:text-5xl md:text-9xl font-oswald uppercase leading-none tracking-tighter select-none opacity-10"
                style={{ color: THEME.gold }}>
               Bold Coffee.<br />Bold Culture.
             </p>

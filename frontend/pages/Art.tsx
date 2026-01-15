@@ -121,12 +121,12 @@ const Art: React.FC = () => {
     return list;
   }, [filteredArtworks, selectedMediums, selectedStatuses]);
 
-  if (loading) return <div className="min-h-screen bg-cream flex items-center justify-center text-[#3E2723]">Curating collection...</div>;
-  if (error) return <div className="min-h-screen bg-cream flex items-center justify-center text-red-500">{error}</div>;
+  if (loading) return <div className="min-h-screen bg-cream flex items-center justify-center text-[#3E2723] px-4">Curating collection...</div>;
+  if (error) return <div className="min-h-screen bg-cream flex items-center justify-center text-red-500 px-4">{error}</div>;
 
   return (
     <div className="min-h-screen bg-cream font-sans text-[#3E2723] overflow-x-hidden">
-      <main className="max-w-[1700px] mx-auto px-6 md:px-12 pt-24 pb-16 flex">
+      <main className="max-w-[1700px] mx-auto px-4 sm:px-6 md:px-10 lg:px-12 pt-16 sm:pt-20 md:pt-24 pb-12 md:pb-16 flex flex-col lg:flex-row">
         <Sidebar
           isOpen={isSidebarOpen}
           totalResults={filteredArtworks.length}
@@ -137,8 +137,8 @@ const Art: React.FC = () => {
         />
 
         <div className="flex-grow">
-          <div className="flex justify-between items-center mb-16">
-            <h1 className="text-6xl font-serif font-black tracking-tighter italic">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6 mb-10 sm:mb-12 md:mb-16">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-serif font-black tracking-tighter italic">
               Art
             </h1>
             <FilterBar
@@ -148,7 +148,7 @@ const Art: React.FC = () => {
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-x-10 md:gap-y-16 lg:gap-y-20">
             {itemsWithInterstitial.map((item, index) =>
               item.isInterstitial ? (
                 <FeaturedInterstitial key={`interstitial-${index}`} />
@@ -159,8 +159,8 @@ const Art: React.FC = () => {
           </div>
 
           {filteredArtworks.length === 0 && (
-            <div className="py-40 text-center">
-              <p className="text-[11px] font-black tracking-[0.4em] uppercase text-[#3E2723]/50 mb-6">
+            <div className="py-20 sm:py-32 md:py-40 text-center">
+              <p className="text-[10px] sm:text-[11px] font-black tracking-[0.4em] uppercase text-[#3E2723]/50 mb-4 sm:mb-6">
                 No matching pieces in this collection.
               </p>
               <button
@@ -168,7 +168,7 @@ const Art: React.FC = () => {
                   setSelectedMediums([]);
                   setSelectedStatuses([]);
                 }}
-                className="text-[12px] font-bold underline underline-offset-8 text-[#3E2723] hover:text-[#3E2723]/70 transition-colors"
+                className="text-[11px] sm:text-[12px] font-bold underline underline-offset-8 text-[#3E2723] hover:text-[#3E2723]/70 transition-colors"
               >
                 Clear filters
               </button>

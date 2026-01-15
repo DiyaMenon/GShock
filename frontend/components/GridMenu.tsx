@@ -20,13 +20,13 @@ const GridMenu: React.FC = () => {
   ];
 
   return (
-    <section className="w-full px-4 sm:px-6 md:px-10 lg:px-16 py-16 md:py-24">
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+    <section className="w-full px-3 sm:px-4 md:px-6 lg:px-10 lg:px-16 py-12 sm:py-16 md:py-20 lg:py-24">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 md:gap-6 lg:gap-8">
         {items.map((item, i) => (
           <a
             key={i}
             href={item.link}
-            className="relative aspect-square group overflow-hidden rounded-xl border border-cream/10 bg-black/10"
+            className="relative aspect-square group overflow-hidden rounded-lg md:rounded-xl border border-cream/10 bg-black/10"
           >
             {/* image */}
             <img
@@ -36,12 +36,12 @@ const GridMenu: React.FC = () => {
             />
 
             {/* overlay */}
-            <div className="absolute inset-0 bg-black/30 group-hover:bg-black/45 transition-colors duration-500 flex flex-col items-center justify-center text-center px-6">
-              <h3 className="text-white text-xl sm:text-2xl font-bold uppercase mb-5 tracking-wide transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-400">
+            <div className="absolute inset-0 bg-black/30 group-hover:bg-black/45 transition-colors duration-500 flex flex-col items-center justify-center text-center px-4 sm:px-6">
+              <h3 className="text-white text-sm sm:text-lg md:text-2xl font-bold uppercase mb-3 sm:mb-5 tracking-wide transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-400">
                 {item.title}
               </h3>
 
-              <span className="bg-cream text-[#3E2723] px-7 py-2.5 uppercase font-semibold text-xs tracking-widest transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-400 delay-100 hover:bg-gold hover:text-white">
+              <span className="bg-cream text-[#3E2723] px-5 sm:px-7 py-1.5 sm:py-2.5 uppercase font-semibold text-[10px] sm:text-xs tracking-widest transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-400 delay-100 hover:bg-gold hover:text-white">
                 Shop
               </span>
             </div>

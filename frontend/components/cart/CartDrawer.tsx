@@ -34,36 +34,36 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
       {/* Drawer */}
       <div
-        className={`fixed top-0 right-0 h-full w-full max-w-md bg-white z-[101] shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.7,0,0.3,1)] ${
+        className={`fixed top-0 right-0 h-full w-full max-w-full sm:max-w-md bg-white z-[101] shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.7,0,0.3,1)] ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="px-8 py-6 border-b border-gray-100 flex justify-between items-center">
-            <h2 className="text-sm font-black uppercase tracking-[0.2em]">Your Order</h2>
+          <div className="px-4 sm:px-8 py-4 sm:py-6 border-b border-gray-100 flex justify-between items-center">
+            <h2 className="text-xs sm:text-sm font-black uppercase tracking-[0.2em]">Your Order</h2>
             <button onClick={onClose} className="hover:rotate-90 transition-transform">
-              <X size={24} />
+              <X size={20} />
             </button>
           </div>
 
           {/* Items */}
-          <div className="flex-grow overflow-y-auto px-8 py-6 no-scrollbar">
+          <div className="flex-grow overflow-y-auto px-4 sm:px-8 py-4 sm:py-6 no-scrollbar">
             {items.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-center">
-                <p className="text-gray-300 text-[10px] uppercase tracking-[0.2em] mb-4">Your cart is empty</p>
+                <p className="text-gray-300 text-[9px] sm:text-[10px] uppercase tracking-[0.2em] mb-4">Your cart is empty</p>
                 <button
                   onClick={onClose}
-                  className="text-[10px] font-black uppercase tracking-widest border-b border-black pb-1 hover:text-gold hover:border-gold transition-colors"
+                  className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest border-b border-black pb-1 hover:text-gold hover:border-gold transition-colors"
                 >
                   Explore Menu
                 </button>
               </div>
             ) : (
-              <div className="space-y-8">
+              <div className="space-y-6 sm:space-y-8">
                 {items.map((item) => (
-                  <div key={item.id} className="flex gap-4 group">
-                    <div className="w-20 h-24 bg-gray-100 flex-shrink-0 overflow-hidden">
+                  <div key={item.id} className="flex gap-3 sm:gap-4 group">
+                    <div className="w-16 sm:w-20 h-20 sm:h-24 bg-gray-100 flex-shrink-0 overflow-hidden">
                       <img
                         src={item.imageUrl}
                         alt={item.name}
@@ -73,31 +73,31 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                     <div className="flex-grow flex flex-col justify-between">
                       <div>
                         <div className="flex justify-between items-start mb-1">
-                          <h3 className="text-[11px] font-black uppercase tracking-widest leading-tight pr-4">
+                          <h3 className="text-[9px] sm:text-[11px] font-black uppercase tracking-widest leading-tight pr-3 sm:pr-4">
                             {item.name}
                           </h3>
-                          <button onClick={() => onRemove(item.id)} className="text-gray-300 hover:text-red-500 transition-colors">
-                            <Trash2 size={14} />
+                          <button onClick={() => onRemove(item.id)} className="text-gray-300 hover:text-red-500 transition-colors flex-shrink-0">
+                            <Trash2 size={12} />
                           </button>
                         </div>
-                        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+                        <p className="text-[8px] sm:text-[10px] text-gray-400 font-bold uppercase tracking-widest">
                           {item.price}
                         </p>
                       </div>
-                      <div className="flex items-center gap-4">
-                        <div className="flex items-center border border-gray-100">
+                      <div className="flex items-center gap-3 sm:gap-4">
+                        <div className="flex items-center border border-gray-100 text-sm">
                           <button
                             onClick={() => onUpdateQuantity(item.id, -1)}
-                            className="p-1 px-2 hover:bg-gray-50 transition-colors"
+                            className="p-1 px-1.5 sm:px-2 hover:bg-gray-50 transition-colors"
                           >
-                            <Minus size={12} />
+                            <Minus size={10} />
                           </button>
-                          <span className="text-[10px] font-black w-6 text-center">{item.quantity}</span>
+                          <span className="text-[8px] sm:text-[10px] font-black w-5 sm:w-6 text-center">{item.quantity}</span>
                           <button
                             onClick={() => onUpdateQuantity(item.id, 1)}
-                            className="p-1 px-2 hover:bg-gray-50 transition-colors"
+                            className="p-1 px-1.5 sm:px-2 hover:bg-gray-50 transition-colors"
                           >
-                            <Plus size={12} />
+                            <Plus size={10} />
                           </button>
                         </div>
                       </div>
@@ -110,14 +110,14 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
           {/* Footer */}
           {items.length > 0 && (
-            <div className="px-8 py-8 border-t border-gray-100 bg-gray-50/50">
-              <div className="flex justify-between items-end mb-6">
-                <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">Subtotal</span>
-                <span className="text-xl font-black tracking-tighter">₹{(totalPrice || 0).toFixed(2)}</span>
+            <div className="px-4 sm:px-8 py-6 sm:py-8 border-t border-gray-100 bg-gray-50/50">
+              <div className="flex justify-between items-end mb-4 sm:mb-6">
+                <span className="text-[8px] sm:text-[10px] font-black uppercase tracking-widest text-gray-400">Subtotal</span>
+                <span className="text-lg sm:text-xl font-black tracking-tighter">₹{(totalPrice || 0).toFixed(2)}</span>
               </div>
               <button
                 onClick={onCheckout}
-                className="w-full bg-[#3E2723] text-white py-5 text-[10px] font-black uppercase tracking-widest hover:bg-[#3E2723] transition-colors flex justify-between px-8 items-center group"
+                className="w-full bg-[#3E2723] text-white py-4 sm:py-5 text-[8px] sm:text-[10px] font-black uppercase tracking-widest hover:bg-[#3E2723] transition-colors flex justify-between px-6 sm:px-8 items-center group"
               >
                 <span>Proceed to Checkout</span>
                 <span className="group-hover:translate-x-2 transition-transform">→</span>

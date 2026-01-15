@@ -98,26 +98,26 @@ const SuggestionSection: React.FC = () => {
   }
 
   return (
-    <section className="py-16 px-6 bg-cream">
+    <section className="py-8 sm:py-12 md:py-16 px-3 sm:px-6 bg-cream">
       <div className="max-w-7xl mx-auto">
         {/* HEADER */}
-        <div className="mb-12">
+        <div className="mb-8 sm:mb-10 md:mb-12">
           <div className="flex items-center gap-3 mb-2">
             <div
-              className="w-1 h-8"
+              className="w-1 h-6 sm:h-8"
               style={{ backgroundColor: THEME.gold }}
             />
-            <h2 className="text-4xl md:text-5xl font-bold" style={{ color: THEME.espresso }}>
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold" style={{ color: THEME.espresso }}>
               Curated For You
             </h2>
           </div>
-          <p className="text-lg mt-3" style={{ color: THEME.bronze }}>
+          <p className="text-xs sm:text-base md:text-lg mt-2 sm:mt-3" style={{ color: THEME.bronze }}>
             {token ? 'Personalized suggestions based on your taste' : 'Discover handpicked favorites'}
           </p>
         </div>
 
         {/* GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           {suggestions.map((product) => (
             <div
               key={product._id}
@@ -128,20 +128,20 @@ const SuggestionSection: React.FC = () => {
               }}
             >
               {/* IMAGE */}
-              <div className="relative overflow-hidden bg-gray-100 h-64">
+              <div className="relative overflow-hidden bg-gray-100 h-40 sm:h-48 md:h-64">
                 <img
                   src={product.imageUrl}
                   alt={product.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 />
                 <div
-                  className="absolute top-3 right-3 p-2 rounded-full cursor-pointer transition-all hover:scale-110"
+                  className="absolute top-2 sm:top-3 right-2 sm:right-3 p-1.5 sm:p-2 rounded-full cursor-pointer transition-all hover:scale-110"
                   style={{ backgroundColor: `${THEME.gold}20` }}
                 >
-                  <Heart size={20} style={{ color: THEME.gold }} />
+                  <Heart size={16} className="sm:h-5 sm:w-5" style={{ color: THEME.gold }} />
                 </div>
                 <div
-                  className="absolute top-3 left-3 px-3 py-1 rounded text-xs font-bold uppercase tracking-widest text-white"
+                  className="absolute top-2 sm:top-3 left-2 sm:left-3 px-2 sm:px-3 py-0.5 sm:py-1 rounded text-[8px] sm:text-xs font-bold uppercase tracking-widest text-white"
                   style={{ backgroundColor: THEME.espresso }}
                 >
                   {product.category}
@@ -149,12 +149,12 @@ const SuggestionSection: React.FC = () => {
               </div>
 
               {/* CONTENT */}
-              <div className="p-5">
-                <h3 className="text-lg font-bold truncate mb-1" style={{ color: THEME.espresso }}>
+              <div className="p-3 sm:p-4 md:p-5">
+                <h3 className="text-sm sm:text-base md:text-lg font-bold truncate mb-1" style={{ color: THEME.espresso }}>
                   {product.name}
                 </h3>
                 <p
-                  className="text-sm line-clamp-2 mb-4"
+                  className="text-xs sm:text-sm line-clamp-2 mb-3 sm:mb-4"
                   style={{ color: THEME.bronze }}
                 >
                   {product.description}
@@ -162,8 +162,8 @@ const SuggestionSection: React.FC = () => {
 
                 {/* RATING */}
                 {product.rating && (
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="flex text-yellow-500">
+                  <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                    <div className="flex text-yellow-500 text-sm">
                       {'★'.repeat(Math.floor(product.rating))}
                     </div>
                     <span className="text-xs" style={{ color: THEME.bronze }}>
@@ -173,18 +173,18 @@ const SuggestionSection: React.FC = () => {
                 )}
 
                 {/* PRICE & CTA */}
-                <div className="flex items-center justify-between pt-4 border-t" style={{ borderColor: `${THEME.gold}40` }}>
+                <div className="flex items-center justify-between pt-3 sm:pt-4 border-t" style={{ borderColor: `${THEME.gold}40` }}>
                   <div>
-                    <p className="text-xs uppercase tracking-widest" style={{ color: THEME.bronze }}>
+                    <p className="text-[8px] sm:text-xs uppercase tracking-widest" style={{ color: THEME.bronze }}>
                       Price
                     </p>
-                    <p className="text-2xl font-bold" style={{ color: THEME.gold }}>
+                    <p className="text-lg sm:text-xl md:text-2xl font-bold" style={{ color: THEME.gold }}>
                       ₹{product.price}
                     </p>
                   </div>
                   <button
                     onClick={() => handleAddToCart(product)}
-                    className={`p-3 rounded-lg transition-all font-bold flex items-center gap-2 ${
+                    className={`p-2 sm:p-3 rounded-lg transition-all font-bold flex items-center gap-1 sm:gap-2 text-xs sm:text-sm ${
                       addedToCart === product._id
                         ? 'scale-95'
                         : 'hover:scale-105 active:scale-95'
@@ -194,7 +194,7 @@ const SuggestionSection: React.FC = () => {
                       color: THEME.white,
                     }}
                   >
-                    <ShoppingCart size={18} />
+                    <ShoppingCart size={14} className="sm:h-4 sm:w-4 md:h-5 md:w-5" />
                     {addedToCart === product._id ? '✓' : 'Add'}
                   </button>
                 </div>
@@ -205,8 +205,8 @@ const SuggestionSection: React.FC = () => {
 
         {/* FOOTER NOTE */}
         {token && (
-          <div className="mt-12 text-center">
-            <p className="text-sm" style={{ color: THEME.bronze }}>
+          <div className="mt-8 sm:mt-10 md:mt-12 text-center">
+            <p className="text-xs sm:text-sm" style={{ color: THEME.bronze }}>
               These suggestions are powered by your order & search history
             </p>
           </div>

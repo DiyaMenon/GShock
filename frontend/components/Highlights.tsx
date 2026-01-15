@@ -39,8 +39,8 @@ const Highlights: React.FC = () => {
 
   if (loading) {
     return (
-      <section className="py-24 px-6 text-center" style={{ backgroundColor: THEME.cream, color: THEME.espresso }}>
-        <p>Loading highlights...</p>
+      <section className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 text-center" style={{ backgroundColor: THEME.cream, color: THEME.espresso }}>
+        <p className="text-sm sm:text-base">Loading highlights...</p>
       </section>
     );
   }
@@ -50,23 +50,23 @@ const Highlights: React.FC = () => {
   }
 
   return (
-    <section className="py-24" style={{ backgroundColor: THEME.cream, color: THEME.espresso }}>
+    <section className="py-12 sm:py-16 md:py-24" style={{ backgroundColor: THEME.cream, color: THEME.espresso }}>
       {/* HEADER */}
-      <div className="container mx-auto px-4 text-center mb-16">
-        <h2 className="text-4xl md:text-6xl font-oswald font-bold uppercase mb-6">
+      <div className="container mx-auto px-4 sm:px-6 text-center mb-10 sm:mb-12 md:mb-16">
+        <h2 className="text-3xl sm:text-4xl md:text-6xl font-oswald font-bold uppercase mb-4 sm:mb-6">
           Highlights
         </h2>
-        <p className="max-w-xl mx-auto opacity-80">
+        <p className="max-w-xl mx-auto opacity-80 text-sm sm:text-base md:text-lg">
           Featuring the best moments from Rabuste
         </p>
       </div>
 
       {/* ARCHES LAYOUT */}
-      <div className="flex flex-col md:flex-row justify-center items-stretch gap-8 px-4 max-w-7xl mx-auto">
+      <div className="flex flex-col md:flex-row justify-center items-stretch gap-4 sm:gap-6 md:gap-8 px-3 sm:px-6 max-w-7xl mx-auto">
         {reels.map((reel) => (
           <div
             key={reel._id}
-            className="group relative w-full md:w-1/3 aspect-[3/4] overflow-hidden rounded-t-[10rem] bg-black/5"
+            className="group relative w-full md:w-1/3 aspect-[3/4] overflow-hidden rounded-t-3xl md:rounded-t-[10rem] bg-black/5"
           >
             {/* VIDEO */}
             <video
@@ -79,8 +79,8 @@ const Highlights: React.FC = () => {
             />
 
             {/* OVERLAY */}
-            <div className="absolute inset-0 bg-black/15 group-hover:bg-black/30 transition-colors flex flex-col justify-end p-8 text-center">
-              <h3 className="text-sm font-oswald uppercase tracking-wide text-[#FFFCF2]">
+            <div className="absolute inset-0 bg-black/15 group-hover:bg-black/30 transition-colors flex flex-col justify-end p-4 sm:p-6 text-center">
+              <h3 className="text-xs sm:text-sm font-oswald uppercase tracking-wide text-[#FFFCF2]">
                 {reel.description || reel.title}
               </h3>
             </div>

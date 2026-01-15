@@ -78,7 +78,7 @@ const WorkshopSubmissionForm: React.FC = () => {
     <div className="mb-12">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-6 py-4 font-black uppercase tracking-widest text-sm rounded-full transition-all hover:scale-[1.01] shadow-lg bg-[#3E2723] text-[#FFFCF2]"
+        className="w-full px-4 sm:px-6 py-3 sm:py-4 font-black uppercase tracking-widest text-xs sm:text-sm rounded-full transition-all hover:scale-[1.01] shadow-lg bg-[#3E2723] text-[#FFFCF2]"
       >
         {isOpen ? '✕ Close Form' : '+ Become a Tutor - Submit Workshop'}
       </button>
@@ -296,7 +296,7 @@ const Workshop: React.FC = () => {
       <section className="relative h-[65vh] flex items-center justify-center overflow-hidden" style={{ backgroundColor: THEME.espresso }}>
         <div className="absolute top-[-20%] right-[-10%] w-[50vh] h-[50vh] rounded-full blur-[100px] opacity-20" style={{ backgroundColor: THEME.gold }}></div>
         <div className="absolute bottom-[-10%] left-[-10%] w-[40vh] h-[40vh] rounded-full blur-[80px] opacity-10" style={{ backgroundColor: THEME.bronze }}></div>
-        <div className="relative z-10 text-center px-6 max-w-4xl mx-auto mt-12">
+        <div className="relative z-10 text-center px-4 sm:px-6 max-w-4xl mx-auto mt-8 sm:mt-12">
           <span className="text-[11px] font-bold uppercase tracking-[0.4em] mb-6 block" style={{ color: THEME.bronze }}>The Lab Curriculum</span>
           <h1 className="text-6xl md:text-8xl font-serif uppercase text-white mb-6 leading-[0.9]">Brewing <br /><span className="italic font-light lowercase opacity-90" style={{ color: THEME.gold }}>Sophistication</span></h1>
           <p className="text-lg font-light max-w-lg mx-auto leading-relaxed opacity-80" style={{ color: THEME.white }}>Join our sensory scientists and master baristas in exploring the technical limits of coffee extraction.</p>
@@ -309,8 +309,8 @@ const Workshop: React.FC = () => {
       </div>
 
       {/* MAIN CONTENT */}
-      <section className="py-20 px-6 max-w-[1600px] mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-16">
+      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 max-w-[1600px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 md:gap-16">
           
           {/* SIDEBAR */}
           <aside className="sticky top-24 h-fit rounded-[2rem] p-8 border border-opacity-20 shadow-sm" style={{ backgroundColor: THEME.latte, borderColor: THEME.espresso }}>
@@ -368,7 +368,7 @@ const Workshop: React.FC = () => {
             {loading ? (
                <div className="py-20 text-center opacity-50" style={{ color: THEME.espresso }}>Loading Workshops...</div>
             ) : filteredAndSortedWorkshops.length > 0 ? (
-              <div className="workshop-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-12 gap-y-16">
+              <div className="workshop-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8 md:gap-x-12 md:gap-y-16">
                 {filteredAndSortedWorkshops.map(w => (
                   <WorkshopCard key={w.id} workshop={w} />
                 ))}
@@ -381,7 +381,7 @@ const Workshop: React.FC = () => {
       </section>
 
       {/* FAQ SECTION */}
-      <section className="py-32 px-6" style={{ backgroundColor: THEME.latte }}>
+      <section className="py-16 sm:py-20 md:py-32 px-4 sm:px-6" style={{ backgroundColor: THEME.latte }}>
         <div className="max-w-3xl mx-auto">
           <div className="mb-12 text-center">
              <span className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-60" style={{ color: THEME.espresso }}>Need Help?</span>

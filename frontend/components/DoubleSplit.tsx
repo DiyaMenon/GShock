@@ -21,7 +21,7 @@ const SingleBlock: React.FC<BlockProps> = ({
   link,
 }) => {
   return (
-    <div className="relative w-full h-[55vh] sm:h-[65vh] lg:h-[75vh] xl:h-[80vh] overflow-hidden group rounded-xl">
+    <div className="relative w-full h-[40vh] sm:h-[55vh] lg:h-[75vh] xl:h-[80vh] overflow-hidden group rounded-lg md:rounded-xl">
       {/* MEDIA */}
       <div className="absolute inset-0 z-0">
         {mediaType === 'video' ? (
@@ -47,18 +47,18 @@ const SingleBlock: React.FC<BlockProps> = ({
       </div>
 
       {/* CONTENT */}
-      <div className="absolute inset-0 z-10 flex flex-col justify-end p-6 sm:p-8 lg:p-10 text-cream">
-        <h2 className="text-2xl sm:text-3xl lg:text-5xl font-oswald font-bold uppercase mb-3 leading-tight">
+      <div className="absolute inset-0 z-10 flex flex-col justify-end p-4 sm:p-6 lg:p-10 text-cream">
+        <h2 className="text-lg sm:text-2xl lg:text-5xl font-oswald font-bold uppercase mb-2 sm:mb-3 leading-tight">
           {title}
         </h2>
 
-        <p className="max-w-lg text-sm sm:text-base lg:text-lg mb-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 leading-relaxed">
+        <p className="max-w-lg text-xs sm:text-sm lg:text-lg mb-3 sm:mb-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 leading-relaxed">
           {text}
         </p>
 
         <a
           href={link}
-          className="w-fit text-gold text-xs sm:text-sm lg:text-base font-bold uppercase tracking-widest hover:text-white transition-colors"
+          className="w-fit text-gold text-[10px] sm:text-xs lg:text-base font-bold uppercase tracking-widest hover:text-white transition-colors"
         >
           Learn More →
         </a>
@@ -69,9 +69,9 @@ const SingleBlock: React.FC<BlockProps> = ({
 
 const DoubleSplit: React.FC<DoubleSplitProps> = ({ left, right }) => {
   return (
-    <section className="w-full bg-cream py-10 sm:py-14 lg:py-20">
+    <section className="w-full bg-cream py-8 sm:py-12 lg:py-20">
       {/* FLUID CONTAINER */}
-      <div className="mx-auto w-full px-4 sm:px-6 md:px-10 xl:px-16 2xl:px-24">
+      <div className="mx-auto w-full px-3 sm:px-6 md:px-10 xl:px-16 2xl:px-24">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-10">
           <SingleBlock {...left} />
           <SingleBlock {...right} />

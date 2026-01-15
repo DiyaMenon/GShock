@@ -13,16 +13,16 @@ const FilterBar: React.FC<FilterBarProps> = ({
   onSortChange,
 }) => {
   return (
-    <div className="flex justify-end items-center space-x-8">
-      <div className="flex items-center space-x-3">
-        <span className="text-[11px] font-black tracking-widest uppercase text-[#3E2723]/60">
+    <div className="flex flex-col sm:flex-row justify-end items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 md:space-x-8 w-full sm:w-auto">
+      <div className="flex items-center space-x-2 sm:space-x-3">
+        <span className="text-[9px] sm:text-[10px] md:text-[11px] font-black tracking-widest uppercase text-[#3E2723]/60">
           Sort:
         </span>
 
         <select
           value={currentSort}
           onChange={(e) => onSortChange(e.target.value as SortOption)}
-          className="bg-transparent text-[11px] font-black tracking-widest uppercase outline-none cursor-pointer border-none focus:ring-0 p-0 pr-2 appearance-none text-[#3E2723]"
+          className="bg-transparent text-[9px] sm:text-[10px] md:text-[11px] font-black tracking-widest uppercase outline-none cursor-pointer border-none focus:ring-0 p-0 pr-2 appearance-none text-[#3E2723]"
         >
           <option>Newest</option>
           <option>Price: Low to High</option>
@@ -31,7 +31,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
         </select>
 
         <svg
-          className="w-2 h-2 text-[#3E2723]"
+          className="w-1.5 h-1.5 sm:w-2 sm:h-2 text-[#3E2723]"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"

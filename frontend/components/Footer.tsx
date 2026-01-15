@@ -4,16 +4,16 @@ import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#3E2723] text-cream py-16 border-t border-white/10">
-      <div className="container mx-auto px-8">
+    <footer className="bg-[#3E2723] text-cream py-8 sm:py-12 md:py-16 border-t border-white/10">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8">
         {/* TOP SECTION */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 sm:gap-10 md:gap-12 mb-12 md:mb-16">
           {/* NEWSLETTER */}
           <div className="md:col-span-2">
-            <h3 className="text-xl font-bold font-oswald uppercase mb-4">
+            <h3 className="text-lg sm:text-xl font-bold font-oswald uppercase mb-3 sm:mb-4">
               Stay Connected with Rabuste
             </h3>
-            <p className="mb-6 text-white/60 max-w-md">
+            <p className="mb-4 sm:mb-6 text-white/60 text-sm sm:text-base max-w-md">
               Get updates on new Robusta brews, featured artists, workshops, and café
               launches. Thoughtfully curated — no noise, just experiences.
             </p>
@@ -21,9 +21,9 @@ const Footer: React.FC = () => {
               <input
                 type="email"
                 placeholder="Email Address"
-                className="bg-transparent flex-grow px-4 py-2 outline-none text-white placeholder-white/40"
+                className="bg-transparent flex-grow px-3 sm:px-4 py-2 outline-none text-white placeholder-white/40 text-xs sm:text-sm"
               />
-              <button className="bg-gold text-white px-6 py-2 font-bold uppercase text-sm hover:bg-white hover:text-[#3E2723] transition-colors">
+              <button className="bg-gold text-white px-4 sm:px-6 py-2 font-bold uppercase text-xs sm:text-sm hover:bg-white hover:text-[#3E2723] transition-colors">
                 Join
               </button>
             </form>
@@ -31,10 +31,10 @@ const Footer: React.FC = () => {
 
           {/* EXPLORE */}
           <div>
-            <h3 className="text-xl font-bold font-oswald uppercase mb-4">
+            <h3 className="text-lg sm:text-xl font-bold font-oswald uppercase mb-3 sm:mb-4">
               Explore
             </h3>
-            <ul className="space-y-2 text-white/60">
+            <ul className="space-y-2 text-white/60 text-sm sm:text-base">
               <li><a href="#" className="hover:text-gold">Coffee</a></li>
               <li><a href="#" className="hover:text-gold">Why Robusta</a></li>
               <li><a href="#" className="hover:text-gold">Art Gallery</a></li>
@@ -45,12 +45,12 @@ const Footer: React.FC = () => {
 
           {/* CONTACT */}
           <div>
-            <h3 className="text-xl font-bold font-oswald uppercase mb-4">
+            <h3 className="text-lg sm:text-xl font-bold font-oswald uppercase mb-3 sm:mb-4">
               Contact
             </h3>
-            <ul className="space-y-2 text-white/60">
+            <ul className="space-y-2 text-white/60 text-sm sm:text-base">
               <li>
-                <a href="#" className="hover:text-gold">
+                <a href="#" className="hover:text-gold break-all">
                   hello@rabuste.coffee
                 </a>
               </li>
@@ -59,7 +59,7 @@ const Footer: React.FC = () => {
                   Franchise Enquiries
                 </a>
               </li>
-              <li className="pt-2 text-sm">
+              <li className="pt-2 text-xs sm:text-sm">
                 Open Daily<br />
                 Grab-and-Go Experience
               </li>
@@ -68,59 +68,59 @@ const Footer: React.FC = () => {
         </div>
 
         {/* BRAND STATEMENT */}
-        <div className="flex justify-between items-end opacity-20 hover:opacity-40 transition-opacity mb-16 border-b border-white/10 pb-8">
-          <span className="text-9xl font-oswald font-bold leading-none">
+        <div className="flex justify-between items-end opacity-20 hover:opacity-40 transition-opacity mb-12 md:mb-16 border-b border-white/10 pb-6 md:pb-8">
+          <span className="text-4xl sm:text-6xl md:text-9xl font-oswald font-bold leading-none">
             RABUSTE
           </span>
-          <span className="text-6xl font-oswald font-bold leading-none hidden md:inline">
+          <span className="text-3xl sm:text-5xl md:text-6xl font-oswald font-bold leading-none hidden md:inline">
             COFFEE
           </span>
         </div>
 
         {/* BOTTOM LINKS */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-sm mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-xs sm:text-sm mb-10 md:mb-12">
           <div>
-            <h4 className="font-bold uppercase mb-2">About</h4>
+            <h4 className="font-bold uppercase mb-2 text-xs sm:text-sm">About</h4>
             <ul className="space-y-1 text-white/50">
-              <li><Link to="/ourstory" className="hover:text-gold">Our Story </Link></li>
-              <li><a href="#">Café Concept</a></li>
-              <li><a href="#">Culture & Values</a></li>
+              <li><Link to="/ourstory" className="hover:text-gold text-xs sm:text-sm">Our Story </Link></li>
+              <li><a href="#" className="text-xs sm:text-sm">Café Concept</a></li>
+              <li><a href="#" className="text-xs sm:text-sm">Culture & Values</a></li>
             </ul>
           </div>
           <div>
-            <h4 className="font-bold uppercase mb-2">Experience</h4>
+            <h4 className="font-bold uppercase mb-2 text-xs sm:text-sm">Experience</h4>
             <ul className="space-y-1 text-white/50">
-              <li><a href="#">Workshops</a></li>
-              <li><a href="#">Art at Rabuste</a></li>
-              <li><a href="#">Community</a></li>
+              <li><a href="#" className="text-xs sm:text-sm">Workshops</a></li>
+              <li><a href="#" className="text-xs sm:text-sm">Art at Rabuste</a></li>
+              <li><a href="#" className="text-xs sm:text-sm">Community</a></li>
             </ul>
           </div>
           <div>
-            <h4 className="font-bold uppercase mb-2">Business</h4>
+            <h4 className="font-bold uppercase mb-2 text-xs sm:text-sm">Business</h4>
             <ul className="space-y-1 text-white/50">
-              <li><a href="#">Franchise</a></li>
-              <li><a href="#">Partnerships</a></li>
+              <li><a href="#" className="text-xs sm:text-sm">Franchise</a></li>
+              <li><a href="#" className="text-xs sm:text-sm">Partnerships</a></li>
             </ul>
           </div>
         </div>
 
         {/* FOOTER BOTTOM */}
-        <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 text-white/40 text-xs">
-          <div className="flex gap-4 mb-4 md:mb-0">
-            <p>Bold Coffee. Bold Culture.</p>
-            <p>© Rabuste Coffee. All Rights Reserved.</p>
+        <div className="flex flex-col gap-4 md:gap-0 md:flex-row justify-between items-start md:items-center pt-6 md:pt-8 border-t border-white/10 text-white/40 text-[10px] sm:text-xs">
+          <div className="flex flex-col gap-2 md:flex-row md:gap-4">
+            <p className="text-[10px] sm:text-xs">Bold Coffee. Bold Culture.</p>
+            <p className="text-[10px] sm:text-xs">© Rabuste Coffee. All Rights Reserved.</p>
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex flex-col gap-4 md:flex-row md:gap-6">
             <div className="flex gap-4">
-              <a href="#" className="hover:text-gold"><Facebook size={16} /></a>
-              <a href="#" className="hover:text-gold"><Instagram size={16} /></a>
-              <a href="#" className="hover:text-gold"><Twitter size={16} /></a>
-              <a href="#" className="hover:text-gold"><Youtube size={16} /></a>
+              <a href="#" className="hover:text-gold"><Facebook size={14} /></a>
+              <a href="#" className="hover:text-gold"><Instagram size={14} /></a>
+              <a href="#" className="hover:text-gold"><Twitter size={14} /></a>
+              <a href="#" className="hover:text-gold"><Youtube size={14} /></a>
             </div>
-            <div className="flex gap-4">
-              <a href="#">Terms</a>
-              <a href="#">Privacy</a>
+            <div className="flex gap-4 text-[10px] sm:text-xs">
+              <a href="#" className="hover:text-gold">Terms</a>
+              <a href="#" className="hover:text-gold">Privacy</a>
             </div>
           </div>
         </div>

@@ -47,19 +47,19 @@ export const CoffeeMenu: React.FC<CoffeeMenuProps> = ({ items, onAddToCart }) =>
   }, [activeCategory, menuItems]);
 
   return (
-    <div className="container mx-auto px-6 max-w-7xl">
+    <div className="container mx-auto px-3 sm:px-6 md:px-8 max-w-7xl">
       {/* Editorial Header */}
-      <header className="pt-24 pb-16 text-center">
-        <h1 className="text-6xl md:text-[140px] font-black tracking-tighter leading-none mb-10 font-oswald uppercase select-none text-[#3E2723]">
+      <header className="pt-16 sm:pt-20 md:pt-24 pb-10 sm:pb-12 md:pb-16 text-center">
+        <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-[140px] font-black tracking-tighter leading-none mb-6 sm:mb-8 md:mb-10 font-oswald uppercase select-none text-[#3E2723]">
           MENU
         </h1>
 
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12 mt-4 px-2 text-left">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 sm:gap-8 md:gap-12 mt-4 px-2 text-left">
           <div className="max-w-md">
-            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">
+            <h4 className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">
               THE RABUSTE COLLECTION
             </h4>
-            <p className="text-sm text-[#3E2723] font-medium leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#3E2723] font-medium leading-relaxed">
               Curated specialty Robusta. Bold, high-crema profiles engineered for the urban decision-maker, accompanied by artisanal bites.
             </p>
           </div>
@@ -67,7 +67,7 @@ export const CoffeeMenu: React.FC<CoffeeMenuProps> = ({ items, onAddToCart }) =>
           <div className="flex flex-wrap gap-2 md:gap-4 w-full md:w-auto">
             <button
               onClick={() => setActiveCategory('All')}
-              className={`text-[10px] font-black uppercase tracking-widest px-8 py-4 border transition-all flex-grow md:flex-none ${
+              className={`text-[9px] sm:text-[10px] font-black uppercase tracking-widest px-4 sm:px-8 py-2 sm:py-4 border transition-all flex-grow md:flex-none ${
                 activeCategory === 'All'
                   ? 'bg-[#3E2723] text-white border-[#3E2723]'
                   : 'bg-white text-black border-gray-100 hover:border-[#3E2723] hover:text-[#3E2723]'
@@ -80,7 +80,7 @@ export const CoffeeMenu: React.FC<CoffeeMenuProps> = ({ items, onAddToCart }) =>
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`text-[10px] font-black uppercase tracking-widest px-8 py-4 border transition-all flex-grow md:flex-none ${
+                className={`text-[9px] sm:text-[10px] font-black uppercase tracking-widest px-4 sm:px-8 py-2 sm:py-4 border transition-all flex-grow md:flex-none ${
                   activeCategory === cat
                     ? 'bg-[#3E2723] text-white border-[#3E2723]'
                     : 'bg-white text-[#3E2723] border-gray-100 hover:border-[#3E2723] hover:text-[#3E2723]'
@@ -92,11 +92,11 @@ export const CoffeeMenu: React.FC<CoffeeMenuProps> = ({ items, onAddToCart }) =>
           </div>
         </div>
 
-        <hr className="mt-12 border-gray-100" />
+        <hr className="mt-8 sm:mt-10 md:mt-12 border-gray-100" />
       </header>
 
       {/* Product Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20 py-20">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-x-12 md:gap-y-16 lg:gap-y-20 py-12 sm:py-16 md:py-20">
         {filteredMenu.map((item) => (
           <div key={item.id} className="reveal-up active">
             <CoffeeCard
@@ -109,15 +109,15 @@ export const CoffeeMenu: React.FC<CoffeeMenuProps> = ({ items, onAddToCart }) =>
 
       {/* Empty State */}
       {filteredMenu.length === 0 && (
-        <div className="py-24 text-center">
-          <p className="text-gray-400 italic serif">
+        <div className="py-16 sm:py-20 md:py-24 text-center">
+          <p className="text-gray-400 italic serif text-sm sm:text-base">
             No items currently available in this category.
           </p>
         </div>
       )}
 
       {/* 🔥 Suggestions at the bottom */}
-      <div className="mt-12 pt-12 border-t border-gray-100">
+      <div className="mt-8 sm:mt-10 md:mt-12 pt-8 sm:pt-10 md:pt-12 border-t border-gray-100">
         <SuggestionSection />
       </div>
     </div>
