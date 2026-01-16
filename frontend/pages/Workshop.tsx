@@ -17,8 +17,119 @@ const THEME = {
   white: '#FFFFFF',
 };
 
+/* ================= WORKSHOP CALENDAR COMPONENT ================= */
+interface CalendarProps {
+  workshops: WorkshopType[];
+  selectedDate: Date | null;
+  onDateSelect: (date: Date | null) => void;
+}
+
+const WorkshopCalendar: React.FC<CalendarProps> = ({ workshops, selectedDate, onDateSelect }) => {
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+
+  // Derived state: Set of strings "YYYY-MM-DD" that have workshops
+  const workshopDates = useMemo(() => {
+    const dates = new Set<string>();
+    workshops.forEach(w => {
+      try {
+        const d = new Date(w.date);
+        dates.add(d.toDateString());
+      } catch (e) { console.error("Invalid date", w.date); }
+    });
+    return dates;
+  }, [workshops]);
+
+  const getDaysInMonth = (date: Date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const days = new Date(year, month + 1, 0).getDate();
+    const firstDay = new Date(year, month, 1).getDay();
+    return { days, firstDay };
+  };
+
+  const { days, firstDay } = getDaysInMonth(currentMonth);
+
+  const changeMonth = (offset: number) => {
+    const newDate = new Date(currentMonth);
+    newDate.setMonth(newDate.getMonth() + offset);
+    setCurrentMonth(newDate);
+  };
+
+  const handleDayClick = (day: number) => {
+    const clickedDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+    
+    // Toggle: if already selected, deselect
+    if (selectedDate && clickedDate.toDateString() === selectedDate.toDateString()) {
+      onDateSelect(null);
+    } else {
+      onDateSelect(clickedDate);
+    }
+  };
+
+  const renderDays = () => {
+    const dayElements = [];
+    
+    // Empty slots for days before the 1st
+    for (let i = 0; i < firstDay; i++) {
+      dayElements.push(<div key={`empty-${i}`} className="h-8 w-8" />);
+    }
+
+    // Actual days
+    for (let d = 1; d <= days; d++) {
+      const dateStr = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), d).toDateString();
+      const hasWorkshop = workshopDates.has(dateStr);
+      const isSelected = selectedDate?.toDateString() === dateStr;
+      const isToday = new Date().toDateString() === dateStr;
+
+      dayElements.push(
+        <button
+          key={d}
+          onClick={() => handleDayClick(d)}
+          className={`
+            relative h-8 w-8 text-xs font-medium rounded-full flex items-center justify-center transition-all duration-300
+            ${isSelected ? 'text-white shadow-md scale-110' : 'text-[#3E2723] hover:bg-[#D99A46] hover:text-white hover:bg-opacity-50'}
+            ${!isSelected && isToday ? 'border border-[#966328]' : ''}
+          `}
+          style={{ backgroundColor: isSelected ? THEME.espresso : 'transparent' }}
+        >
+          {d}
+          {/* Indicator Dot for Workshops */}
+          {hasWorkshop && !isSelected && (
+            <span className="absolute bottom-1 h-1 w-1 rounded-full" style={{ backgroundColor: THEME.bronze }}></span>
+          )}
+        </button>
+      );
+    }
+    return dayElements;
+  };
+
+  return (
+    <div className="mb-8 p-4 bg-white rounded-2xl border border-opacity-20 shadow-sm" style={{ borderColor: THEME.espresso }}>
+      {/* Calendar Header */}
+      <div className="flex justify-between items-center mb-4">
+        <button onClick={() => changeMonth(-1)} className="text-[#3E2723] hover:text-[#966328] px-2 text-lg">‹</button>
+        <span className="text-sm font-bold uppercase tracking-widest" style={{ color: THEME.espresso }}>
+          {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+        </span>
+        <button onClick={() => changeMonth(1)} className="text-[#3E2723] hover:text-[#966328] px-2 text-lg">›</button>
+      </div>
+
+      {/* Week Days */}
+      <div className="grid grid-cols-7 mb-2 text-center">
+        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, i) => (
+          <span key={i} className="text-[10px] font-bold opacity-50" style={{ color: THEME.espresso }}>{day}</span>
+        ))}
+      </div>
+
+      {/* Days Grid */}
+      <div className="grid grid-cols-7 gap-y-1 justify-items-center">
+        {renderDays()}
+      </div>
+    </div>
+  );
+};
+
 /* ================= WORKSHOP SUBMISSION FORM ================= */
-// (Kept largely the same, just ensured API URL is dynamic)
 const WorkshopSubmissionForm: React.FC = () => {
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
@@ -43,14 +154,10 @@ const WorkshopSubmissionForm: React.FC = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Show preview
     const reader = new FileReader();
-    reader.onload = (ev) => {
-      setImagePreview(ev.target?.result as string);
-    };
+    reader.onload = (ev) => setImagePreview(ev.target?.result as string);
     reader.readAsDataURL(file);
 
-    // Upload to ImageKit
     try {
       setIsUploading(true);
       const uploadFormData = new FormData();
@@ -59,9 +166,7 @@ const WorkshopSubmissionForm: React.FC = () => {
 
       const response = await fetch(`${API_BASE_URL}/media/upload`, {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-        },
+        headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
         body: uploadFormData,
       });
 
@@ -73,8 +178,6 @@ const WorkshopSubmissionForm: React.FC = () => {
     } catch (error) {
       console.error('Image upload failed:', error);
       setSubmitMessage({ type: 'error', text: 'Failed to upload image' });
-      setImagePreview('');
-      setImageFile(null);
     } finally {
       setIsUploading(false);
     }
@@ -91,7 +194,6 @@ const WorkshopSubmissionForm: React.FC = () => {
     setSubmitMessage(null);
 
     try {
-      // Logic to determine headers based on your auth implementation
       const token = localStorage.getItem('authToken'); 
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
@@ -130,16 +232,13 @@ const WorkshopSubmissionForm: React.FC = () => {
       </button>
 
       {isOpen && (
-        <div className="mt-6 border rounded-3xl p-8 shadow-xl"
-             style={{ backgroundColor: THEME.white, borderColor: THEME.gold }}>
+        <div className="mt-6 border rounded-3xl p-8 shadow-xl" style={{ backgroundColor: THEME.white, borderColor: THEME.gold }}>
           <h3 className="text-2xl font-serif font-bold mb-6" style={{ color: THEME.espresso }}>Submit Your Workshop</h3>
-          
           {submitMessage && (
             <div className={`mb-6 p-4 rounded-lg font-bold ${submitMessage.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
               {submitMessage.text}
             </div>
           )}
-
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: THEME.bronze }}>Workshop Title *</label>
@@ -194,27 +293,11 @@ const WorkshopSubmissionForm: React.FC = () => {
                   )}
                 </div>
                 <div className="flex-1">
-                  <input 
-                    type="file" 
-                    accept="image/*" 
-                    onChange={handleImageChange}
-                    disabled={isUploading}
-                    className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 text-sm" 
-                    style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} 
-                  />
+                  <input type="file" accept="image/*" onChange={handleImageChange} disabled={isUploading} className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 text-sm" style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} />
                   {isUploading && <p className="text-xs mt-2" style={{ color: THEME.bronze }}>Uploading...</p>}
-                  <p className="text-xs mt-2" style={{ color: THEME.bronze }}>Upload image or paste URL below</p>
                 </div>
               </div>
-              <input 
-                type="url" 
-                name="imageUrl" 
-                value={formData.imageUrl} 
-                onChange={handleInputChange} 
-                placeholder="https://example.com/image.jpg" 
-                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 mt-3" 
-                style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} 
-              />
+              <input type="url" name="imageUrl" value={formData.imageUrl} onChange={handleInputChange} placeholder="https://example.com/image.jpg" className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 mt-3" style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} />
             </div>
             <button type="submit" disabled={isSubmitting || isUploading} className="w-full px-6 py-4 font-black uppercase tracking-widest rounded-lg transition-all hover:opacity-90 disabled:opacity-50" style={{ backgroundColor: THEME.espresso, color: THEME.cream }}>
               {isSubmitting ? 'Brewing Submission...' : 'Submit Workshop'}
@@ -229,8 +312,6 @@ const WorkshopSubmissionForm: React.FC = () => {
 /* ================= WORKSHOP CARD ================= */
 const WorkshopCard: React.FC<{ workshop: WorkshopType }> = ({ workshop }) => {
   const [booked, setBooked] = useState(false);
-
-  // Parse dates safely
   const dateObj = new Date(workshop.date);
   const startTimeObj = workshop.startTime ? new Date(workshop.startTime) : null;
 
@@ -298,25 +379,24 @@ const Workshop: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [workshops, setWorkshops] = useState<WorkshopType[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  // Filters State
   const [priceFilters, setPriceFilters] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<string>('date-asc');
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
   const API_BASE_URL = import.meta.env.VITE_BACKEND_API_URL || '/api';
 
   useEffect(() => {
     const fetchWorkshops = async () => {
       try {
         setLoading(true);
-        // FETCH FROM API instead of mocks
         const response = await axios.get(`${API_BASE_URL}/workshops`);
-        
-        // Map backend _id to frontend id
         const mappedData = response.data.map((w: any) => ({
           ...w,
           id: w._id || w.id,
-          // Ensure image exists
           image: w.primaryImageUrl || w.image || 'https://via.placeholder.com/400x300?text=No+Image'
         }));
-
         setWorkshops(mappedData);
       } catch (err) {
         console.error("Failed to load workshops:", err);
@@ -329,6 +409,17 @@ const Workshop: React.FC = () => {
 
   const filteredAndSortedWorkshops = useMemo(() => {
     let result = [...workshops];
+
+    // Filter by Calendar Date
+    if (selectedDate) {
+      result = result.filter(w => {
+        try {
+          return new Date(w.date).toDateString() === selectedDate.toDateString();
+        } catch { return false; }
+      });
+    }
+
+    // Filter by Price
     if (priceFilters.length > 0) {
       result = result.filter(w => {
         if (priceFilters.includes('Free') && w.price === 0) return true;
@@ -336,6 +427,8 @@ const Workshop: React.FC = () => {
         return false;
       });
     }
+
+    // Sorting
     result.sort((a, b) => {
       switch (sortBy) {
         case 'price-asc': return a.price - b.price;
@@ -345,7 +438,7 @@ const Workshop: React.FC = () => {
       }
     });
     return result;
-  }, [workshops, priceFilters, sortBy]);
+  }, [workshops, priceFilters, sortBy, selectedDate]);
 
   const handlePriceFilterChange = (price: string) => {
     setPriceFilters(prev => prev.includes(price) ? prev.filter(p => p !== price) : [...prev, price]);
@@ -363,6 +456,12 @@ const Workshop: React.FC = () => {
     }, containerRef);
     return () => ctx.revert();
   }, [filteredAndSortedWorkshops]);
+
+  const resetFilters = () => {
+    setPriceFilters([]);
+    setSortBy('date-asc');
+    setSelectedDate(null);
+  };
 
   return (
     <div ref={containerRef} className="min-h-screen font-sans selection:text-white" style={{ backgroundColor: THEME.cream, '--tw-selection-bg': THEME.bronze } as React.CSSProperties}>
@@ -390,9 +489,19 @@ const Workshop: React.FC = () => {
           {/* SIDEBAR */}
           <aside className="sticky top-24 h-fit rounded-[2rem] p-8 border border-opacity-20 shadow-sm" style={{ backgroundColor: THEME.latte, borderColor: THEME.espresso }}>
             <div className="flex items-center justify-between mb-8">
-               <h3 className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: THEME.espresso }}>Refine</h3>
-              <button onClick={() => {setPriceFilters([]); setSortBy('date-asc');}} className="text-[10px] uppercase font-bold hover:opacity-60 transition-opacity" style={{ color: THEME.bronze }}>Reset</button>
+               <h3 className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: THEME.espresso }}>Schedule</h3>
+              <button onClick={resetFilters} className="text-[10px] uppercase font-bold hover:opacity-60 transition-opacity" style={{ color: THEME.bronze }}>Reset</button>
             </div>
+
+            {/* NEW CALENDAR COMPONENT */}
+            <WorkshopCalendar 
+              workshops={workshops} 
+              selectedDate={selectedDate} 
+              onDateSelect={setSelectedDate} 
+            />
+
+            <div className="h-px mb-8 opacity-10" style={{ backgroundColor: THEME.espresso }} />
+
             <div className="mb-10">
               <p className="text-[10px] font-bold uppercase tracking-widest mb-4 opacity-40" style={{ color: THEME.espresso }}>Sort By</p>
               <div className="space-y-2">
@@ -409,7 +518,9 @@ const Workshop: React.FC = () => {
                 ))}
               </div>
             </div>
+
             <div className="h-px mb-8 opacity-10" style={{ backgroundColor: THEME.espresso }} />
+            
             <div className="mb-10">
               <p className="text-[10px] font-bold uppercase tracking-widest mb-4 opacity-40" style={{ color: THEME.espresso }}>Investment</p>
               <div className="space-y-4">
@@ -449,7 +560,11 @@ const Workshop: React.FC = () => {
                 ))}
               </div>
             ) : (
-                <div className="py-20 text-center opacity-50" style={{ color: THEME.espresso }}>No workshops found matching criteria.</div>
+                <div className="py-20 text-center opacity-50" style={{ color: THEME.espresso }}>
+                  {selectedDate 
+                    ? `No workshops scheduled for ${selectedDate.toLocaleDateString()}.`
+                    : "No workshops found matching criteria."}
+                </div>
             )}
           </div>
         </div>
