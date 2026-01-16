@@ -53,17 +53,24 @@ const MenuManagement: React.FC = () => {
     
     try {
       const formData = new FormData(e.currentTarget);
-      const imageUrlVal = uploadedUrl || (formData.get('imageUrl') as string) || '';
+      const imageUrlVal = uploadedUrl || (formData.get('imageUrl') as string) || 'https://picsum.photos/seed/coffee/400/400';
       
       const payload = {
-        name: formData.get('name'),
-        description: formData.get('description'),
+        name: formData.get('name') as string,
+        description: formData.get('description') as string,
         price: parseFloat(formData.get('price') as string),
-        category: formData.get('category'),
+        category: formData.get('category') as string,
         imageUrl: imageUrlVal,
-        stockStatus: formData.get('status'),
+        stockStatus: formData.get('status') as string,
         isAvailable: formData.get('status') === 'In Stock'
       };
+
+      // Validate required fields
+      if (!payload.name || !payload.price || !payload.category) {
+        setSubmitError('Name, price, and category are required');
+        setIsSubmitting(false);
+        return;
+      }
 
       if (editingItem) {
         await axios.put(`${API_BASE_URL}/menu/${editingItem._id || editingItem.id}`, payload, {
@@ -78,8 +85,10 @@ const MenuManagement: React.FC = () => {
       await fetchMenu();
       setIsModalOpen(false);
       setEditingItem(null);
+      setUploadedUrl(null);
     } catch (error: any) {
-      setSubmitError(error.response?.data?.message || 'Failed to save item');
+      console.error('Save error:', error);
+      setSubmitError(error.response?.data?.message || error.message || 'Failed to save item');
     } finally {
       setIsSubmitting(false);
     }
@@ -252,6 +261,7 @@ const MenuManagement: React.FC = () => {
                     <div className="flex-1 space-y-2">
                       <input type="file" accept="image/*" onChange={handleImageUpload} className="text-coffee-500 text-xs" />
                       {uploading && <div className="text-xs text-orange-400">Uploading...</div>}
+                      <input type="hidden" name="imageUrl" value={uploadedUrl || ''} />
                     </div>
                   </div>
                 </div>

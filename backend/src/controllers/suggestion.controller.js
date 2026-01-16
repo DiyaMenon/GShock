@@ -1,6 +1,7 @@
 const Suggestion = require('../models/suggestion.model');
 const SearchHistory = require('../models/searchHistory.model');
 const Order = require('../models/order.model');
+const Menu = require('../models/menu.model');
 const Product = require('../models/product.model');
 
 // Helper: Ensure suggestion config exists
@@ -18,6 +19,7 @@ async function ensureSuggestionsExist() {
 }
 
 // Helper: Get default products efficiently (With Fallback)
+// Only returns items that exist in the Menu
 async function getDefaultProducts(suggestions) {
   let products = [];
   
@@ -27,7 +29,7 @@ async function getDefaultProducts(suggestions) {
       .sort((a, b) => a.displayOrder - b.displayOrder)
       .map((s) => s.productId);
 
-    const foundProducts = await Product.find({ _id: { $in: defaultIds } });
+    const foundProducts = await Menu.find({ _id: { $in: defaultIds } });
     
     // Map back to preserve order and filter nulls
     products = defaultIds
@@ -35,9 +37,9 @@ async function getDefaultProducts(suggestions) {
       .filter(p => p != null);
   }
 
-  // 2. FALLBACK: If admin hasn't set defaults (or they were deleted), fetch any 3 products
+  // 2. FALLBACK: If admin hasn't set defaults (or they were deleted), fetch any 3 menu items
   if (products.length < 3) {
-    const randomProducts = await Product.find({ _id: { $nin: products.map(p => p._id) } }).limit(3 - products.length);
+    const randomProducts = await Menu.find({ _id: { $nin: products.map(p => p._id) } }).limit(3 - products.length);
     products = [...products, ...randomProducts];
   }
 
@@ -66,7 +68,7 @@ async function getSuggestions(req, res) {
     // A. Manual Override exists OR Auto is disabled
     if (userSuggestionsEntry || !suggestions.enableAutoSuggestions) {
       if (userSuggestionsEntry && userSuggestionsEntry.productIds.length > 0) {
-        suggestedProducts = await Product.find({
+        suggestedProducts = await Menu.find({
           _id: { $in: userSuggestionsEntry.productIds },
         });
       } else {
@@ -120,7 +122,7 @@ async function getSuggestions(req, res) {
   }
 }
 
-// Strategy 1: Order History
+// Strategy 1: Order History - Only returns items from Menu
 async function getOrderBasedSuggestions(userId) {
   try {
     const orders = await Order.find({ user: userId })
@@ -144,7 +146,7 @@ async function getOrderBasedSuggestions(userId) {
 
     if (orderedProductIds.size === 0) return [];
 
-    return await Product.find({
+    return await Menu.find({
       _id: { $nin: Array.from(orderedProductIds) },
       $or: [
         { category: { $in: Array.from(categories) } }, 
@@ -157,7 +159,7 @@ async function getOrderBasedSuggestions(userId) {
   }
 }
 
-// Strategy 2: Search History
+// Strategy 2: Search History - Only returns items from Menu
 async function getSearchBasedSuggestions(userId) {
   try {
     const searchHistory = await SearchHistory.find({ user: userId })
@@ -180,14 +182,14 @@ async function getSearchBasedSuggestions(userId) {
       queryConditions.push({ description: { $regex: regex, $options: 'i' } });
     }
 
-    return await Product.find({ $or: queryConditions }).limit(3);
+    return await Menu.find({ $or: queryConditions }).limit(3);
   } catch (error) {
     console.error('Error in getSearchBasedSuggestions:', error);
     return [];
   }
 }
 
-// Strategy 3: Related Products
+// Strategy 3: Related Products - Only returns items from Menu
 async function getRelatedProductSuggestions(userId) {
   try {
     const lastOrder = await Order.findOne({ user: userId })
@@ -206,7 +208,7 @@ async function getRelatedProductSuggestions(userId) {
       }
     });
 
-    return await Product.find({
+    return await Menu.find({
       _id: { $nin: Array.from(lastProductIds) },
       category: { $in: Array.from(categories) },
     }).limit(3);
@@ -262,11 +264,21 @@ async function getDefaultSuggestions(req, res) {
 }
 
 // Admin: Update default suggestions
+// Validates that all productIds exist in Menu before saving
 async function updateDefaultSuggestions(req, res) {
   try {
     const { productIds } = req.body;
-    if (!Array.isArray(productIds) || productIds.length < 3) {
+    if (!Array.isArray(productIds) || productIds.length !== 3) {
       return res.status(400).json({ message: 'Exactly 3 products must be selected' });
+    }
+
+    // Validate all products exist in Menu
+    const menuItems = await Menu.find({ _id: { $in: productIds } });
+    if (menuItems.length !== 3) {
+      return res.status(400).json({ 
+        message: 'Invalid products selected. Only menu items can be used for suggestions.',
+        details: 'Some selected products do not exist in the menu.'
+      });
     }
 
     const suggestions = await ensureSuggestionsExist();
@@ -288,7 +300,7 @@ async function getAllUserSuggestions(req, res) {
     const userSuggestions = [];
     
     for (const us of suggestions.userSuggestions) {
-      const products = await Product.find({ _id: { $in: us.productIds } });
+      const products = await Menu.find({ _id: { $in: us.productIds } });
       if (products.length > 0) {
         userSuggestions.push({
           userId: us.userId,
@@ -306,12 +318,22 @@ async function getAllUserSuggestions(req, res) {
 }
 
 // Admin: Set suggestions for a specific user
+// Validates that all productIds exist in Menu before saving
 async function setUserSuggestions(req, res) {
   try {
     const { userId, productIds, type = 'manual' } = req.body;
 
-    if (!Array.isArray(productIds) || productIds.length < 3) {
+    if (!Array.isArray(productIds) || productIds.length !== 3) {
       return res.status(400).json({ message: 'Exactly 3 products must be selected' });
+    }
+
+    // Validate all products exist in Menu
+    const menuItems = await Menu.find({ _id: { $in: productIds } });
+    if (menuItems.length !== 3) {
+      return res.status(400).json({ 
+        message: 'Invalid products selected. Only menu items can be used for suggestions.',
+        details: 'Some selected products do not exist in the menu.'
+      });
     }
 
     const suggestions = await ensureSuggestionsExist();

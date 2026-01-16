@@ -56,8 +56,8 @@ const SuggestionManagement: React.FC = () => {
 const fetchData = async () => {
     try {
       setLoading(true);
-      const [productsRes, usersRes, defaultRes, userSuggsRes] = await Promise.all([
-        axios.get(`${API_BASE_URL}/products`),
+      const [menuRes, usersRes, defaultRes, userSuggsRes] = await Promise.all([
+        axios.get(`${API_BASE_URL}/menu`),
         axios.get(`${API_BASE_URL}/admin/users`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
@@ -69,7 +69,7 @@ const fetchData = async () => {
         }),
       ]);
 
-      setAllProducts(productsRes.data || []);
+      setAllProducts(menuRes.data || []);
       setAllUsers(usersRes.data || []);
       
       // FIX: Filter out null/undefined products before mapping

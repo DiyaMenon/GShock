@@ -23,7 +23,10 @@ const WorkshopSubmissionForm: React.FC = () => {
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>('');
   const [formData, setFormData] = useState({
     title: '', description: '', date: '', startTime: '', endTime: '',
     price: '0', capacity: '', category: 'Breather', imageUrl: '',
@@ -34,6 +37,47 @@ const WorkshopSubmissionForm: React.FC = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Show preview
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      setImagePreview(ev.target?.result as string);
+    };
+    reader.readAsDataURL(file);
+
+    // Upload to ImageKit
+    try {
+      setIsUploading(true);
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', file);
+      uploadFormData.append('type', 'image');
+
+      const response = await fetch(`${API_BASE_URL}/media/upload`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+        body: uploadFormData,
+      });
+
+      if (!response.ok) throw new Error('Upload failed');
+      const data = await response.json();
+      const uploadedUrl = data.url || data.media?.url;
+      setFormData(prev => ({ ...prev, imageUrl: uploadedUrl }));
+      setImageFile(file);
+    } catch (error) {
+      console.error('Image upload failed:', error);
+      setSubmitMessage({ type: 'error', text: 'Failed to upload image' });
+      setImagePreview('');
+      setImageFile(null);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -64,6 +108,8 @@ const WorkshopSubmissionForm: React.FC = () => {
         title: '', description: '', date: '', startTime: '', endTime: '',
         price: '0', capacity: '', category: 'Breather', imageUrl: '',
       });
+      setImageFile(null);
+      setImagePreview('');
       setTimeout(() => setIsOpen(false), 3000);
     } catch (error: any) {
       setSubmitMessage({ type: 'error', text: error.response?.data?.message || 'Failed to submit workshop' });
@@ -138,10 +184,39 @@ const WorkshopSubmissionForm: React.FC = () => {
               </div>
             </div>
             <div>
-              <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: THEME.bronze }}>Image URL</label>
-              <input type="url" name="imageUrl" value={formData.imageUrl} onChange={handleInputChange} placeholder="https://example.com/image.jpg" className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2" style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} />
+              <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: THEME.bronze }}>Workshop Image</label>
+              <div className="flex gap-4 items-start">
+                <div className="w-24 h-24 border-2 rounded-lg overflow-hidden flex-shrink-0" style={{ borderColor: `${THEME.espresso}33` }}>
+                  {imagePreview ? (
+                    <img src={imagePreview} alt="preview" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">No image</div>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    onChange={handleImageChange}
+                    disabled={isUploading}
+                    className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 text-sm" 
+                    style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} 
+                  />
+                  {isUploading && <p className="text-xs mt-2" style={{ color: THEME.bronze }}>Uploading...</p>}
+                  <p className="text-xs mt-2" style={{ color: THEME.bronze }}>Upload image or paste URL below</p>
+                </div>
+              </div>
+              <input 
+                type="url" 
+                name="imageUrl" 
+                value={formData.imageUrl} 
+                onChange={handleInputChange} 
+                placeholder="https://example.com/image.jpg" 
+                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 mt-3" 
+                style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} 
+              />
             </div>
-            <button type="submit" disabled={isSubmitting} className="w-full px-6 py-4 font-black uppercase tracking-widest rounded-lg transition-all hover:opacity-90 disabled:opacity-50" style={{ backgroundColor: THEME.espresso, color: THEME.cream }}>
+            <button type="submit" disabled={isSubmitting || isUploading} className="w-full px-6 py-4 font-black uppercase tracking-widest rounded-lg transition-all hover:opacity-90 disabled:opacity-50" style={{ backgroundColor: THEME.espresso, color: THEME.cream }}>
               {isSubmitting ? 'Brewing Submission...' : 'Submit Workshop'}
             </button>
           </form>

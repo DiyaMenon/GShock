@@ -1,4 +1,4 @@
-const Product = require('../models/product.model');
+const Menu = require('../models/menu.model');
 const Workshop = require('../models/workshop.model');
 const Artwork = require('../models/artwork.model');
 
@@ -17,8 +17,8 @@ async function getSystemContext() {
 
     console.log("🔄 Refreshing Chatbot Context...");
 
-    const [products, workshops, artworks] = await Promise.all([
-      Product.find({ stockStatus: 'In Stock' }).lean(),
+    const [menuItems, workshops, artworks] = await Promise.all([
+      Menu.find({ isAvailable: true }).lean(),
       Workshop.find({ status: 'Approved', isActive: true }).sort({ date: 1 }).lean(), // Sorted by date
       Artwork.find({ status: 'Available' }).lean()
     ]);
@@ -29,9 +29,9 @@ async function getSystemContext() {
     let context = `SYSTEM CONTEXT:\n- TODAY'S DATE: ${todayStr}\n- LOCATION: Rabuste Coffee (Ahmedabad, Gujarat)\n\nINVENTORY DATA:\n`;
 
     // --- 2. Format Menu ---
-    if (products.length > 0) {
+    if (menuItems.length > 0) {
       context += "=== ☕ CAFE MENU ===\n";
-      products.forEach(p => {
+      menuItems.forEach(p => {
         // Add more details for better answers
         const info = [p.tastingNotes, p.description].filter(Boolean).join('. ');
         context += `- ITEM: "${p.name}" | TYPE: ${p.category} | PRICE: ₹${p.price} | FLAVOR: ${info} | IMG: ${p.imageUrl}\n`;
