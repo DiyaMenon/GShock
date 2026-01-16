@@ -93,6 +93,7 @@ export interface Artwork {
   tastingNotes: string;
   description?: string;
   isAvailable?: boolean;
+  tags?: string[];
 }
 
 export interface Workshop {
@@ -190,6 +191,7 @@ export interface Artwork {
   hoverImageUrl?: string;
   themeColor?: string;
   tastingNotes?: string | string[];
+  tags?: string[];
 }
 
 export enum ArtStatus {
