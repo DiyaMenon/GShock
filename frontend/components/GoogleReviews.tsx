@@ -16,7 +16,7 @@ export const GoogleReviews = () => {
     // ✅ FIX: Use the Environment Variable to find the Backend
     const BASE_URL = import.meta.env.VITE_BACKEND_API_URL || 'http://localhost:5000';
 
-    axios.get(`${BASE_URL}/api/google-reviews`) // <--- Uses full URL now
+    axios.get(`${BASE_URL}/google-reviews`) // <--- Uses full URL now
       .then(res => {
         setReviews(res.data.reviews || []);
       })
