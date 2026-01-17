@@ -26,7 +26,7 @@ const ArtCard: React.FC<ArtCardProps> = ({ artwork }) => {
         />
 
         <img
-          src={artwork.hoverImage}
+          src={artwork.primaryImage}
           alt={`${artwork.title} detail`}
           className={`absolute max-w-[85%] max-h-[85%] object-contain transition-all duration-500 ease-in-out ${
             isHovered ? 'opacity-100 scale-110' : 'opacity-0 scale-100'

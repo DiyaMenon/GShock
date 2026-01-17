@@ -3,14 +3,14 @@ import axios from 'axios';
 import ArtCard from '../components/art/ArtCard';
 import FilterBar from '../components/art/FilterBar';
 import Sidebar from '../components/art/Sidebar';
-import FeaturedInterstitial from '../components/art/FeaturedInterstitial';
 import { SortOption } from '../components/art/types';
 
 // Define the interface matching your Backend Data
 interface ArtworkData {
   _id: string;
+  id: string; // Added for frontend compatibility
   title: string;
-  artist: any; // Can be object (populated) or string
+  artist: any; 
   artistName?: string; 
   description: string;
   year: string;
@@ -18,8 +18,8 @@ interface ArtworkData {
   dimensions: string;
   price: number;
   status: string;
-  primaryImageUrl: string;
-  hoverImageUrl: string;
+  primaryImage: string; // ✅ CHANGED: Matches ArtCard expectation
+  hoverImage: string;   // ✅ CHANGED: Matches ArtCard expectation
   themeColor?: string;
 }
 
@@ -43,10 +43,14 @@ const Art: React.FC = () => {
         setLoading(true);
         const response = await axios.get(`${API_BASE_URL}/artworks`);
         
-        // Map backend _id to frontend expected structure if needed
+        // Map backend _id to frontend expected structure
         const mappedData = response.data.map((item: any) => ({
           ...item,
-          id: item._id, // Ensure 'id' exists for components using it
+          id: item._id, 
+          // ✅ FIX 1: Map Backend URLs to Frontend Prop Names
+          primaryImage: item.primaryImageUrl, 
+          hoverImage: item.hoverImageUrl,
+          
           // Handle populated artist field vs flat string
           artist: typeof item.artist === 'object' ? item.artist.displayName : (item.artistName || 'Unknown Artist')
         }));
@@ -97,8 +101,7 @@ const Art: React.FC = () => {
         result.sort((a, b) => a.title.localeCompare(b.title));
         break;
       default:
-        // Assuming 'Newest' uses createdAt or year
-        // If createdAt is available: new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        // Default sort (Newest)
         result.sort((a, b) => parseInt(b.year) - parseInt(a.year));
         break;
     }
@@ -106,20 +109,8 @@ const Art: React.FC = () => {
     return result;
   }, [sortOption, selectedMediums, selectedStatuses, artworks]);
 
-  const itemsWithInterstitial = useMemo(() => {
-    const list = [...filteredArtworks];
-    // Only show interstitial if we have enough items and no filters are active
-    if (
-      list.length >= 4 &&
-      selectedMediums.length === 0 &&
-      selectedStatuses.length === 0
-    ) {
-      const result: any[] = [...list];
-      result.splice(4, 0, { isInterstitial: true });
-      return result;
-    }
-    return list;
-  }, [filteredArtworks, selectedMediums, selectedStatuses]);
+  // ✅ FIX 2: Removed "itemsWithInterstitial" logic entirely.
+  // Now we just render the actual artworks.
 
   if (loading) return <div className="min-h-screen bg-cream flex items-center justify-center text-[#3E2723] px-4">Curating collection...</div>;
   if (error) return <div className="min-h-screen bg-cream flex items-center justify-center text-red-500 px-4">{error}</div>;
@@ -148,14 +139,11 @@ const Art: React.FC = () => {
             />
           </div>
 
+          {/* ✅ FIX 2: Direct Mapping of Artworks (No Interstitial) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-x-10 md:gap-y-16 lg:gap-y-20">
-            {itemsWithInterstitial.map((item, index) =>
-              item.isInterstitial ? (
-                <FeaturedInterstitial key={`interstitial-${index}`} />
-              ) : (
-                <ArtCard key={item._id || item.id} artwork={item} />
-              )
-            )}
+            {filteredArtworks.map((item) => (
+                <ArtCard key={item.id} artwork={item as any} />
+            ))}
           </div>
 
           {filteredArtworks.length === 0 && (
