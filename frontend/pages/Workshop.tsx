@@ -226,80 +226,80 @@ const WorkshopSubmissionForm: React.FC = () => {
     <div className="mb-12">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-4 sm:px-6 py-3 sm:py-4 font-black uppercase tracking-widest text-xs sm:text-sm rounded-full transition-all hover:scale-[1.01] shadow-lg bg-[#3E2723] text-[#FFFCF2]"
+        className="w-full px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 font-black uppercase tracking-widest text-[10px] sm:text-xs md:text-sm rounded-full transition-all hover:scale-[1.01] shadow-lg bg-[#3E2723] text-[#FFFCF2]"
       >
         {isOpen ? '✕ Close Form' : '+ Become a Tutor - Submit Workshop'}
       </button>
 
       {isOpen && (
-        <div className="mt-6 border rounded-3xl p-8 shadow-xl" style={{ backgroundColor: THEME.white, borderColor: THEME.gold }}>
-          <h3 className="text-2xl font-serif font-bold mb-6" style={{ color: THEME.espresso }}>Submit Your Workshop</h3>
+        <div className="mt-4 sm:mt-6 border rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-xl" style={{ backgroundColor: THEME.white, borderColor: THEME.gold }}>
+          <h3 className="text-lg sm:text-xl md:text-2xl font-serif font-bold mb-4 sm:mb-6" style={{ color: THEME.espresso }}>Submit Your Workshop</h3>
           {submitMessage && (
-            <div className={`mb-6 p-4 rounded-lg font-bold ${submitMessage.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+            <div className={`mb-4 sm:mb-6 p-3 sm:p-4 rounded-lg font-bold text-xs sm:text-sm ${submitMessage.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
               {submitMessage.text}
             </div>
           )}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: THEME.bronze }}>Workshop Title *</label>
-              <input type="text" name="title" value={formData.title} onChange={handleInputChange} required className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2" style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} />
+              <label className="block text-[9px] sm:text-xs font-bold uppercase tracking-widest mb-1.5 sm:mb-2" style={{ color: THEME.bronze }}>Workshop Title *</label>
+              <input type="text" name="title" value={formData.title} onChange={handleInputChange} required className="w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 text-xs sm:text-sm" style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} />
             </div>
             <div>
-              <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: THEME.bronze }}>Description</label>
-              <textarea name="description" value={formData.description} onChange={handleInputChange} rows={4} className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 resize-none" style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} />
+              <label className="block text-[9px] sm:text-xs font-bold uppercase tracking-widest mb-1.5 sm:mb-2" style={{ color: THEME.bronze }}>Description</label>
+              <textarea name="description" value={formData.description} onChange={handleInputChange} rows={3} className="w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 resize-none text-xs sm:text-sm" style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: THEME.bronze }}>Date *</label>
-                <input type="date" name="date" value={formData.date} onChange={handleInputChange} required className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2" style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} />
+                <label className="block text-[9px] sm:text-xs font-bold uppercase tracking-widest mb-1.5 sm:mb-2" style={{ color: THEME.bronze }}>Date *</label>
+                <input type="date" name="date" value={formData.date} onChange={handleInputChange} required className="w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 text-xs sm:text-sm" style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} />
               </div>
               <div>
-                <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: THEME.bronze }}>Category</label>
-                <select name="category" value={formData.category} onChange={handleInputChange} className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2" style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }}>
+                <label className="block text-[9px] sm:text-xs font-bold uppercase tracking-widest mb-1.5 sm:mb-2" style={{ color: THEME.bronze }}>Category</label>
+                <select name="category" value={formData.category} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 text-xs sm:text-sm" style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }}>
                   <option>Breather</option>
                   <option>Foundations</option>
                   <option>Expert</option>
                 </select>
               </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: THEME.bronze }}>Start Time</label>
-                <input type="time" name="startTime" value={formData.startTime} onChange={handleInputChange} className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2" style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} />
+                <label className="block text-[9px] sm:text-xs font-bold uppercase tracking-widest mb-1.5 sm:mb-2" style={{ color: THEME.bronze }}>Start Time</label>
+                <input type="time" name="startTime" value={formData.startTime} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 text-xs sm:text-sm" style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} />
               </div>
               <div>
-                <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: THEME.bronze }}>End Time</label>
-                <input type="time" name="endTime" value={formData.endTime} onChange={handleInputChange} className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2" style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} />
+                <label className="block text-[9px] sm:text-xs font-bold uppercase tracking-widest mb-1.5 sm:mb-2" style={{ color: THEME.bronze }}>End Time</label>
+                <input type="time" name="endTime" value={formData.endTime} onChange={handleInputChange} className="w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 text-xs sm:text-sm" style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} />
               </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: THEME.bronze }}>Price (₹)</label>
-                <input type="number" name="price" value={formData.price} onChange={handleInputChange} min="0" className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2" style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} />
+                <label className="block text-[9px] sm:text-xs font-bold uppercase tracking-widest mb-1.5 sm:mb-2" style={{ color: THEME.bronze }}>Price (₹)</label>
+                <input type="number" name="price" value={formData.price} onChange={handleInputChange} min="0" className="w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 text-xs sm:text-sm" style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} />
               </div>
               <div>
-                <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: THEME.bronze }}>Capacity</label>
-                <input type="number" name="capacity" value={formData.capacity} onChange={handleInputChange} min="1" className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2" style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} />
+                <label className="block text-[9px] sm:text-xs font-bold uppercase tracking-widest mb-1.5 sm:mb-2" style={{ color: THEME.bronze }}>Capacity</label>
+                <input type="number" name="capacity" value={formData.capacity} onChange={handleInputChange} min="1" className="w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 text-xs sm:text-sm" style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} />
               </div>
             </div>
             <div>
-              <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: THEME.bronze }}>Workshop Image</label>
-              <div className="flex gap-4 items-start">
-                <div className="w-24 h-24 border-2 rounded-lg overflow-hidden flex-shrink-0" style={{ borderColor: `${THEME.espresso}33` }}>
+              <label className="block text-[9px] sm:text-xs font-bold uppercase tracking-widest mb-1.5 sm:mb-2" style={{ color: THEME.bronze }}>Workshop Image</label>
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 border-2 rounded-lg overflow-hidden flex-shrink-0" style={{ borderColor: `${THEME.espresso}33` }}>
                   {imagePreview ? (
                     <img src={imagePreview} alt="preview" className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">No image</div>
+                    <div className="w-full h-full flex items-center justify-center text-gray-400 text-[9px]">No image</div>
                   )}
                 </div>
-                <div className="flex-1">
-                  <input type="file" accept="image/*" onChange={handleImageChange} disabled={isUploading} className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 text-sm" style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} />
-                  {isUploading && <p className="text-xs mt-2" style={{ color: THEME.bronze }}>Uploading...</p>}
+                <div className="flex-1 w-full">
+                  <input type="file" accept="image/*" onChange={handleImageChange} disabled={isUploading} className="w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 text-xs sm:text-sm" style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} />
+                  {isUploading && <p className="text-[9px] sm:text-xs mt-2" style={{ color: THEME.bronze }}>Uploading...</p>}
                 </div>
               </div>
-              <input type="url" name="imageUrl" value={formData.imageUrl} onChange={handleInputChange} placeholder="https://example.com/image.jpg" className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 mt-3" style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} />
+              <input type="url" name="imageUrl" value={formData.imageUrl} onChange={handleInputChange} placeholder="https://example.com/image.jpg" className="w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-lg focus:outline-none focus:ring-2 mt-2 sm:mt-3 text-xs sm:text-sm" style={{ borderColor: `${THEME.espresso}33`, color: THEME.espresso }} />
             </div>
-            <button type="submit" disabled={isSubmitting || isUploading} className="w-full px-6 py-4 font-black uppercase tracking-widest rounded-lg transition-all hover:opacity-90 disabled:opacity-50" style={{ backgroundColor: THEME.espresso, color: THEME.cream }}>
+            <button type="submit" disabled={isSubmitting || isUploading} className="w-full px-4 sm:px-6 py-2.5 sm:py-3 md:py-4 font-black uppercase tracking-widest text-xs sm:text-sm rounded-lg transition-all hover:opacity-90 disabled:opacity-50" style={{ backgroundColor: THEME.espresso, color: THEME.cream }}>
               {isSubmitting ? 'Brewing Submission...' : 'Submit Workshop'}
             </button>
           </form>
@@ -321,33 +321,33 @@ const WorkshopCard: React.FC<{ workshop: WorkshopType }> = ({ workshop }) => {
   };
 
   return (
-    <div className="workshop-card group relative w-full h-[28rem] bg-white border border-opacity-20 rounded-t-[4rem] overflow-hidden opacity-0 translate-y-12 shadow-sm hover:shadow-xl transition-shadow duration-500" style={{ borderColor: THEME.bronze }}>
+    <div className="workshop-card group relative w-full h-[24rem] sm:h-[28rem] bg-white border border-opacity-20 rounded-t-2xl sm:rounded-t-[4rem] overflow-hidden opacity-0 translate-y-12 shadow-sm hover:shadow-xl transition-shadow duration-500" style={{ borderColor: THEME.bronze }}>
       <div className="relative h-full overflow-hidden transition-all duration-500 group-hover:h-1/2">
         <img src={workshop.image || workshop.primaryImageUrl || 'https://via.placeholder.com/400'} alt={workshop.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale-[10%] group-hover:grayscale-0" />
         <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-300 group-hover:opacity-0">
-          <span className="bg-white/90 backdrop-blur-md text-black text-[24px] text-center font-bold uppercase tracking-widest px-6 py-3 shadow-lg border border-black/5">
+          <span className="bg-white/90 backdrop-blur-md text-black text-base sm:text-xl md:text-2xl text-center font-bold uppercase tracking-widest px-4 sm:px-6 py-2 sm:py-3 shadow-lg border border-black/5">
             {workshop.title}
           </span>
         </div>
       </div>
-      <div className="absolute inset-x-0 bottom-0 top-auto h-1/2 py-6 px-6 flex flex-col bg-white border-t transition-all duration-500 translate-y-full group-hover:translate-y-0" style={{ backgroundColor: THEME.cream, borderColor: THEME.bronze }}>
-        <div className="flex justify-between items-start mb-4 border-b pb-4" style={{ borderColor: `${THEME.bronze}30` }}>
-           <h3 className="text-lg font-serif font-black uppercase leading-none" style={{ color: THEME.espresso }}>{workshop.title}</h3>
+      <div className="absolute inset-x-0 bottom-0 top-auto h-1/2 py-4 sm:py-6 px-4 sm:px-6 flex flex-col bg-white border-t transition-all duration-500 translate-y-full group-hover:translate-y-0" style={{ backgroundColor: THEME.cream, borderColor: THEME.bronze }}>
+        <div className="flex justify-between items-start mb-2 sm:mb-4 border-b pb-2 sm:pb-4" style={{ borderColor: `${THEME.bronze}30` }}>
+           <h3 className="text-xs sm:text-lg font-serif font-black uppercase leading-none" style={{ color: THEME.espresso }}>{workshop.title}</h3>
           <div className="text-right">
-             <div className="text-[14px] font-bold uppercase tracking-widest" style={{ color: THEME.bronze }}>
+             <div className="text-[11px] sm:text-[14px] font-bold uppercase tracking-widest" style={{ color: THEME.bronze }}>
               {dateObj.toLocaleDateString('en-US', { month: 'short', day: '2-digit' })}
             </div>
-             <div className="text-[11px] font-medium uppercase" style={{ color: `${THEME.espresso}66` }}>
+             <div className="text-[9px] sm:text-[11px] font-medium uppercase" style={{ color: `${THEME.espresso}66` }}>
                {startTimeObj ? startTimeObj.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }) : 'TBA'}
              </div>
           </div>
         </div>
-        <p className="font-light mb-4 line-clamp-3 text-[13px] italic leading-relaxed" style={{ color: `${THEME.espresso}CC` }}>{workshop.description}</p>
-        <div className="mt-auto flex items-center gap-4">
-          <div className="text-[18px] font-black uppercase tracking-widest" style={{ color: THEME.bronze }}>
+        <p className="font-light mb-2 sm:mb-4 line-clamp-3 text-[10px] sm:text-[13px] italic leading-relaxed" style={{ color: `${THEME.espresso}CC` }}>{workshop.description}</p>
+        <div className="mt-auto flex items-center gap-2 sm:gap-4">
+          <div className="text-sm sm:text-lg md:text-[18px] font-black uppercase tracking-widest" style={{ color: THEME.bronze }}>
             {workshop.price === 0 ? 'FREE' : `₹${workshop.price}`}
           </div>
-          <button onClick={handleReserve} disabled={booked} style={{ backgroundColor: booked ? THEME.bronze : THEME.espresso, color: THEME.cream }} className="flex-1 text-[10px] font-black uppercase tracking-[0.2em] py-3 transition-all duration-300 hover:opacity-90 active:scale-95 rounded-lg">
+          <button onClick={handleReserve} disabled={booked} style={{ backgroundColor: booked ? THEME.bronze : THEME.espresso, color: THEME.cream }} className="flex-1 text-[8px] sm:text-[10px] font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] py-2 sm:py-3 transition-all duration-300 hover:opacity-90 active:scale-95 rounded-lg">
             {booked ? 'Reserved' : 'Book Seat'}
           </button>
         </div>
@@ -360,14 +360,14 @@ const WorkshopCard: React.FC<{ workshop: WorkshopType }> = ({ workshop }) => {
 const FaqItem: React.FC<{ faq: { question: string; answer: string } }> = ({ faq }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="border-b py-6 last:border-0" style={{ borderColor: `${THEME.bronze}40` }}>
+    <div className="border-b py-4 sm:py-5 md:py-6 last:border-0" style={{ borderColor: `${THEME.bronze}40` }}>
       <button onClick={() => setIsOpen(!isOpen)} className="w-full flex justify-between items-center text-left group">
-        <h3 className="text-lg md:text-xl font-serif italic transition-colors duration-300 pr-8" style={{ color: isOpen ? THEME.bronze : THEME.espresso }}>{faq.question}</h3>
-        <span className={`text-2xl font-light transition-transform duration-500 ${isOpen ? 'rotate-45' : ''}`} style={{ color: THEME.bronze }}>+</span>
+        <h3 className="text-xs sm:text-sm md:text-lg font-serif italic transition-colors duration-300 pr-4 sm:pr-8 leading-tight sm:leading-normal" style={{ color: isOpen ? THEME.bronze : THEME.espresso }}>{faq.question}</h3>
+        <span className={`text-xl sm:text-2xl font-light transition-transform duration-500 flex-shrink-0`} style={{ color: THEME.bronze }}>+</span>
       </button>
-      <div className={`grid transition-all duration-500 ease-in-out ${isOpen ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0 mt-0'}`}>
+      <div className={`grid transition-all duration-500 ease-in-out ${isOpen ? 'grid-rows-[1fr] opacity-100 mt-3 sm:mt-4' : 'grid-rows-[0fr] opacity-0 mt-0'}`}>
         <div className="overflow-hidden">
-          <p className="text-sm font-light leading-loose max-w-2xl" style={{ color: `${THEME.espresso}CC` }}>{faq.answer}</p>
+          <p className="text-[11px] sm:text-sm md:text-base font-light leading-relaxed sm:leading-loose max-w-2xl" style={{ color: `${THEME.espresso}CC` }}>{faq.answer}</p>
         </div>
       </div>
     </div>
@@ -467,30 +467,30 @@ const Workshop: React.FC = () => {
     <div ref={containerRef} className="min-h-screen font-sans selection:text-white" style={{ backgroundColor: THEME.cream, '--tw-selection-bg': THEME.bronze } as React.CSSProperties}>
       
       {/* HERO SECTION */}
-      <section className="relative h-[65vh] flex items-center justify-center overflow-hidden" style={{ backgroundColor: THEME.espresso }}>
+      <section className="relative h-screen sm:h-[65vh] flex items-center justify-center overflow-hidden" style={{ backgroundColor: THEME.espresso }}>
         <div className="absolute top-[-20%] right-[-10%] w-[50vh] h-[50vh] rounded-full blur-[100px] opacity-20" style={{ backgroundColor: THEME.gold }}></div>
         <div className="absolute bottom-[-10%] left-[-10%] w-[40vh] h-[40vh] rounded-full blur-[80px] opacity-10" style={{ backgroundColor: THEME.bronze }}></div>
-        <div className="relative z-10 text-center px-4 sm:px-6 max-w-4xl mx-auto mt-8 sm:mt-12">
-          <span className="text-[11px] font-bold uppercase tracking-[0.4em] mb-6 block" style={{ color: THEME.bronze }}>The Lab Curriculum</span>
-          <h1 className="text-6xl md:text-8xl font-serif uppercase text-white mb-6 leading-[0.9]">Brewing <br /><span className="italic font-light lowercase opacity-90" style={{ color: THEME.gold }}>Sophistication</span></h1>
-          <p className="text-lg font-light max-w-lg mx-auto leading-relaxed opacity-80" style={{ color: THEME.white }}>Join our sensory scientists and master baristas in exploring the technical limits of coffee extraction.</p>
+        <div className="relative z-10 text-center px-3 sm:px-6 md:px-8 max-w-4xl mx-auto mt-8 sm:mt-0">
+          <span className="text-[9px] sm:text-[11px] font-bold uppercase tracking-[0.3em] sm:tracking-[0.4em] mb-4 sm:mb-6 block" style={{ color: THEME.bronze }}>The Lab Curriculum</span>
+          <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-serif uppercase text-white mb-4 sm:mb-6 leading-[0.9]">Brewing <br /><span className="italic font-light lowercase opacity-90 text-2xl sm:text-4xl md:text-6xl lg:text-7xl" style={{ color: THEME.gold }}>Sophistication</span></h1>
+          <p className="text-xs sm:text-base md:text-lg font-light max-w-lg mx-auto leading-relaxed opacity-80" style={{ color: THEME.white }}>Join our sensory scientists and master baristas in exploring the technical limits of coffee extraction.</p>
         </div>
       </section>
 
       {/* WORKSHOPS HEADER */}
-      <div className="text-center py-20 border-b border-opacity-10" style={{ backgroundColor: THEME.cream, borderColor: THEME.espresso }}>
-        <h2 className="text-4xl md:text-5xl font-serif font-black uppercase tracking-tight" style={{ color: THEME.espresso }}>Technical Masterclasses</h2>
+      <div className="text-center py-8 sm:py-12 md:py-20 px-4 sm:px-6 border-b border-opacity-10" style={{ backgroundColor: THEME.cream, borderColor: THEME.espresso }}>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-black uppercase tracking-tight" style={{ color: THEME.espresso }}>Technical Masterclasses</h2>
       </div>
 
       {/* MAIN CONTENT */}
-      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 max-w-[1600px] mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 md:gap-16">
+      <section className="py-6 sm:py-12 md:py-16 lg:py-20 px-3 sm:px-6 md:px-8 max-w-[1600px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-[250px_1fr] xl:grid-cols-[280px_1fr] gap-6 md:gap-10 lg:gap-16">
           
           {/* SIDEBAR */}
-          <aside className="sticky top-24 h-fit rounded-[2rem] p-8 border border-opacity-20 shadow-sm" style={{ backgroundColor: THEME.latte, borderColor: THEME.espresso }}>
-            <div className="flex items-center justify-between mb-8">
-               <h3 className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: THEME.espresso }}>Schedule</h3>
-              <button onClick={resetFilters} className="text-[10px] uppercase font-bold hover:opacity-60 transition-opacity" style={{ color: THEME.bronze }}>Reset</button>
+          <aside className="lg:sticky lg:top-24 h-fit rounded-2xl lg:rounded-[2rem] p-6 sm:p-8 border border-opacity-20 shadow-sm" style={{ backgroundColor: THEME.latte, borderColor: THEME.espresso }}>
+            <div className="flex items-center justify-between mb-6 sm:mb-8">
+               <h3 className="text-xs sm:text-[10px] md:text-xs font-black uppercase tracking-[0.15em] sm:tracking-[0.2em]" style={{ color: THEME.espresso }}>Schedule</h3>
+              <button onClick={resetFilters} className="text-[8px] sm:text-[10px] uppercase font-bold hover:opacity-60 transition-opacity" style={{ color: THEME.bronze }}>Reset</button>
             </div>
 
             {/* NEW CALENDAR COMPONENT */}
@@ -500,18 +500,18 @@ const Workshop: React.FC = () => {
               onDateSelect={setSelectedDate} 
             />
 
-            <div className="h-px mb-8 opacity-10" style={{ backgroundColor: THEME.espresso }} />
+            <div className="h-px mb-6 sm:mb-8 opacity-10" style={{ backgroundColor: THEME.espresso }} />
 
-            <div className="mb-10">
-              <p className="text-[10px] font-bold uppercase tracking-widest mb-4 opacity-40" style={{ color: THEME.espresso }}>Sort By</p>
-              <div className="space-y-2">
+            <div className="mb-8 sm:mb-10">
+              <p className="text-[8px] sm:text-[10px] font-bold uppercase tracking-widest mb-3 sm:mb-4 opacity-40" style={{ color: THEME.espresso }}>Sort By</p>
+              <div className="space-y-1.5 sm:space-y-2">
                 {[
                   { id: 'date-asc', label: 'Earliest Date' },
                   { id: 'date-desc', label: 'Latest Date' },
                   { id: 'price-asc', label: 'Price: Low to High' },
                   { id: 'price-desc', label: 'Price: High to Low' }
                 ].map(option => (
-                  <button key={option.id} onClick={() => setSortBy(option.id)} className={`block w-full text-left text-sm transition-all duration-300 ${sortBy === option.id ? 'translate-x-2 font-bold' : 'hover:translate-x-1 opacity-60 hover:opacity-100'}`} style={{ color: THEME.espresso }}>
+                  <button key={option.id} onClick={() => setSortBy(option.id)} className={`block w-full text-left text-xs sm:text-sm transition-all duration-300 ${sortBy === option.id ? 'translate-x-2 font-bold' : 'hover:translate-x-1 opacity-60 hover:opacity-100'}`} style={{ color: THEME.espresso }}>
                     {sortBy === option.id && <span className="mr-2" style={{ color: THEME.bronze }}>●</span>}
                     {option.label}
                   </button>
@@ -519,13 +519,13 @@ const Workshop: React.FC = () => {
               </div>
             </div>
 
-            <div className="h-px mb-8 opacity-10" style={{ backgroundColor: THEME.espresso }} />
+            <div className="h-px mb-6 sm:mb-8 opacity-10" style={{ backgroundColor: THEME.espresso }} />
             
-            <div className="mb-10">
-              <p className="text-[10px] font-bold uppercase tracking-widest mb-4 opacity-40" style={{ color: THEME.espresso }}>Investment</p>
-              <div className="space-y-4">
+            <div className="mb-8 sm:mb-10">
+              <p className="text-[8px] sm:text-[10px] font-bold uppercase tracking-widest mb-3 sm:mb-4 opacity-40" style={{ color: THEME.espresso }}>Investment</p>
+              <div className="space-y-3 sm:space-y-4">
                 {["Free", "Paid"].map(price => (
-                  <label key={price} className="flex items-center justify-between text-sm cursor-pointer group">
+                  <label key={price} className="flex items-center justify-between text-xs sm:text-sm cursor-pointer group">
                     <span className={`transition-colors duration-300 ${priceFilters.includes(price) ? 'font-bold' : 'opacity-70 group-hover:opacity-100'}`} style={{ color: THEME.espresso }}>{price}</span>
                     <div className="relative flex items-center justify-center">
                       <input type="checkbox" checked={priceFilters.includes(price)} onChange={() => handlePriceFilterChange(price)} className="peer h-4 w-4 opacity-0 absolute cursor-pointer" />
@@ -537,9 +537,9 @@ const Workshop: React.FC = () => {
                 ))}
               </div>
             </div>
-             <div className="h-px mb-8 opacity-10" style={{ backgroundColor: THEME.espresso }} />
+             <div className="h-px mb-6 sm:mb-8 opacity-10" style={{ backgroundColor: THEME.espresso }} />
              <div>
-                <ul className="space-y-3 text-sm opacity-80" style={{ color: THEME.espresso }}>
+                <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm opacity-80" style={{ color: THEME.espresso }}>
                      <li><a href="/" className="hover:underline">Home</a></li>
                      <li><a href="/menu" className="hover:underline">The Menu</a></li>
                      <li><a href="/art" className="hover:underline">Art Gallery</a></li>
@@ -552,15 +552,15 @@ const Workshop: React.FC = () => {
             <WorkshopSubmissionForm />
             
             {loading ? (
-               <div className="py-20 text-center opacity-50" style={{ color: THEME.espresso }}>Loading Workshops...</div>
+               <div className="py-12 sm:py-16 md:py-20 text-center opacity-50 text-xs sm:text-base" style={{ color: THEME.espresso }}>Loading Workshops...</div>
             ) : filteredAndSortedWorkshops.length > 0 ? (
-              <div className="workshop-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8 md:gap-x-12 md:gap-y-16">
+              <div className="workshop-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-x-10 lg:gap-y-12">
                 {filteredAndSortedWorkshops.map(w => (
                   <WorkshopCard key={w.id} workshop={w} />
                 ))}
               </div>
             ) : (
-                <div className="py-20 text-center opacity-50" style={{ color: THEME.espresso }}>
+                <div className="py-12 sm:py-16 md:py-20 text-center opacity-50 text-xs sm:text-base" style={{ color: THEME.espresso }}>
                   {selectedDate 
                     ? `No workshops scheduled for ${selectedDate.toLocaleDateString()}.`
                     : "No workshops found matching criteria."}
@@ -571,13 +571,13 @@ const Workshop: React.FC = () => {
       </section>
 
       {/* FAQ SECTION */}
-      <section className="py-16 sm:py-20 md:py-32 px-4 sm:px-6" style={{ backgroundColor: THEME.latte }}>
+      <section className="py-10 sm:py-16 md:py-24 lg:py-32 px-3 sm:px-6 md:px-8" style={{ backgroundColor: THEME.latte }}>
         <div className="max-w-3xl mx-auto">
-          <div className="mb-12 text-center">
-             <span className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-60" style={{ color: THEME.espresso }}>Need Help?</span>
-             <h2 className="text-3xl font-serif font-bold mt-2" style={{ color: THEME.espresso }}>Common Queries</h2>
+          <div className="mb-8 sm:mb-10 md:mb-12 text-center">
+             <span className="text-[8px] sm:text-[10px] font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em] opacity-60" style={{ color: THEME.espresso }}>Need Help?</span>
+             <h2 className="text-xl sm:text-2xl md:text-3xl font-serif font-bold mt-2 sm:mt-3" style={{ color: THEME.espresso }}>Common Queries</h2>
           </div>
-          <div className="bg-white rounded-3xl p-8 shadow-sm border border-opacity-10" style={{ borderColor: THEME.espresso }}>
+          <div className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 shadow-sm border border-opacity-10" style={{ borderColor: THEME.espresso }}>
             {FAQS.map((faq, i) => (
                 <FaqItem key={i} faq={faq} />
             ))}

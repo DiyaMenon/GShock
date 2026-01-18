@@ -135,7 +135,7 @@ const Header: React.FC = () => {
             )}
 
             {user ? (
-              <div className="relative hidden md:block">
+              <div className="relative">
                 <button
                   onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
                   className="flex items-center gap-2 uppercase text-xs font-bold tracking-widest transition-colors font-oswald hover:text-opacity-80 p-2 rounded-lg"
@@ -171,21 +171,6 @@ const Header: React.FC = () => {
                       <span>My Profile</span>
                     </button>
 
-                    {/* ADDED: My Orders Button */}
-                    <button
-                      onClick={() => {
-                        closeAndNavigate('/my-orders');
-                        setIsProfileMenuOpen(false);
-                      }}
-                      className="w-full text-left px-4 py-2 text-sm transition-colors flex items-center gap-3 hover:bg-opacity-80"
-                      style={{ color: THEME.cream }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = `${THEME.gold}20`}
-                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                    >
-                      <Package size={16} />
-                      <span>My Orders</span>
-                    </button>
-
                     <button
                       onClick={() => {
                         handleLogout();
@@ -205,10 +190,12 @@ const Header: React.FC = () => {
             ) : (
               <button
                 onClick={() => closeAndNavigate('/login')}
-                className="hidden md:block uppercase text-xs font-bold tracking-widest transition-colors font-oswald hover:text-opacity-80"
+                className="flex items-center gap-2 transition-colors hover:text-opacity-80 p-2 rounded-lg"
                 style={{ color: THEME.cream }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = `${THEME.gold}20`}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
               >
-                Login
+                <User size={20} />
               </button>
             )}
 
@@ -218,7 +205,7 @@ const Header: React.FC = () => {
                 closeAndNavigate('/menu');
                 setIsCartOpen(true);
               }}
-              className="flex items-center gap-2 uppercase text-xs font-bold tracking-widest transition-colors font-oswald hover:text-opacity-80"
+              className="hidden sm:flex items-center gap-2 uppercase text-xs font-bold tracking-widest transition-colors font-oswald hover:text-opacity-80"
               style={{ color: THEME.cream }}
             >
               <div className="relative">

@@ -7,7 +7,6 @@ import Layout from './admin/Layout';
 import Header from '../components/Header'; // Ensure this path matches your project
 import Dashboard from './admin/Dashboard';
 import MenuManagement from './admin/MenuManagement';
-import OrderManagement from './admin/OrderManagement';
 import AdminOrders from './admin/AdminOrders';
 import ArtGalleryManagement from './admin/ArtGalleryManagement';
 import WorkshopManagement from './admin/WorkshopManagement';
@@ -235,7 +234,6 @@ const Admin: React.FC = () => {
         <Route path="/artists" element={<ArtistManagement />} />
 
         <Route path="/menu" element={<MenuManagement items={menuItems} onAddItem={handleAddMenuItem} onUpdateItem={handleUpdateMenuItem} onDeleteItem={handleDeleteMenuItem}/>} />
-        <Route path="/orders" element={<OrderManagement orders={orders} onUpdateStatus={handleUpdateOrderStatus} />} />
         <Route path="/payment-orders" element={<AdminOrders />} />
         <Route path="/workshops" element={<WorkshopManagement workshops={workshops} onUpdateStatus={handleUpdateWorkshopStatus} onDelete={handleDeleteWorkshop} />} />
         <Route path="/franchise" element={<FranchiseManagement leads={leads} onUpdateStatus={handleUpdateFranchiseStatus} />} />
